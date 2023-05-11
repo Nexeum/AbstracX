@@ -30,7 +30,7 @@ function folder_get($target, $type = 0): int|array
     closedir($f);
     return $list;
 }
-
+// Revisar permisos de TEMP
 function file_upload($file, $targetid, $allowedtypes, $allowedsize): int|string
 {
     $fileempty = empty($_FILES[$file]);
