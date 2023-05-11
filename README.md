@@ -38,13 +38,13 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd Nexeum-Judge
+  cd Judge
 ```
 
 Start the server
 
 ```bash
-  python judge.py -judge
+  python3 judge.py -judge
 ```
 
 
