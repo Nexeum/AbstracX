@@ -44,7 +44,7 @@ Go to the project directory
 Start the server
 
 ```bash
-  python judge.py -judge
+  python3 judge.py -judge
 ```
 
 
