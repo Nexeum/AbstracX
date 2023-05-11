@@ -38,7 +38,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd Nexeum-Judge
+  cd Judge
 ```
 
 Start the server
