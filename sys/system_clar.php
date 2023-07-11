@@ -183,7 +183,7 @@ function display_clarifications()
     }
     $url = "display=clarifications&type=" . $type . "&reply=" . $reply;
     $_GET["page"] = max(1, ceil($totalCount / $limit));
-    $x = paginate($url, $total, $limit);
+    $x = paginate($url, $totalCount, $limit);
     $page = $x[0];
     $pagenav = $x[1];
     echo $pagenav . "<br><br>";
