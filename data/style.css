@@ -1,55 +1,15 @@
-@font-face {
-	font-family: Calibri;
-	src: url('fonts/calibri.ttf');
-  }
-  
+@import url('https://fonts.googleapis.com/css2?family=Hind Guntur:wght@300&family=Hind+Guntur&display=swap');
+
   @font-face {
-	font-family: Calibri;
-	src: url('fonts/calibrib.ttf');
-	font-weight: bold;
-  }
-  
-  @font-face {
-	font-family: Calibri;
-	src: url('fonts/calibrii.ttf');
-	font-style: italic;
-  }
-  
-  @font-face {
-	font-family: Calibri;
-	src: url('fonts/calibriz.ttf');
-	font-weight: bold;
-	font-style: italic;
-  }
-  
-  @font-face {
-	font-family: Consola;
-	src: url('fonts/consola.ttf');
-  }
-  
-  @font-face {
-	font-family: Consola;
-	src: url('fonts/consolab.ttf');
-	font-weight: bold;
-  }
-  
-  @font-face {
-	font-family: Consola;
-	src: url('fonts/consolai.ttf');
-	font-style: italic;
-  }
-  
-  @font-face {
-	font-family: Consola;
-	src: url('fonts/consolaz.ttf');
-	font-weight: bold;
+	font-family: 'Hind Guntur', sans-serif;
+	src: url('fonts/Hind Guntur.ttf');
 	font-style: italic;
   }
   
   * {
 	border-collapse: collapse;
-	font-family: Calibri, Tahoma;
-	font-size: 14px;
+	font-family: Hind Guntur;
+	font-size: 20px;
   }
   
   a,
@@ -64,13 +24,13 @@
   }
   
   h1 {
-	font-size: 24px;
+	font-size: 25px;
 	margin: 20px 0;
   }
   
   h2,
   h2 a {
-	font-size: 18px;
+	font-size: 15px;
   }
   
   h3 {
@@ -80,7 +40,7 @@
   }
   
   code {
-	font-family: Consola, 'Courier New';
+	font-family: Hind Guntur;
 	text-align: left;
 	overflow: auto;
   }
@@ -91,19 +51,19 @@
   
   green {
 	color: green;
-	font-family: Consola;
+	font-family: Hind Guntur;
 	text-decoration: underline;
   }
   
   red {
 	color: red;
-	font-family: Consola;
+	font-family: Hind Guntur;
 	text-decoration: underline;
   }
   
   sno {
 	color: #888888;
-	font-family: Consola;
+	font-family: Hind Guntur;
 	text-decoration: none;
   }
   
@@ -114,7 +74,7 @@
 	height: 200px;
 	min-height: 200px;
 	padding: 5px;
-	font-family: Consola, 'Courier New';
+	font-family: Hind Guntur, 'Courier New';
 	text-align: left;
 	font-size: 13px;
   }
@@ -207,8 +167,8 @@
   }
   
   div.messagebox {
-	background: #FFBBBB;
-	border: 1px solid red;
+	background: rgb(126, 228, 126);
+	border: 1px solid green;
 	padding: 5px;
 	text-align: center;
 	border-radius: 10px;
@@ -295,7 +255,7 @@
 	width: 526px;
 	padding: 10px;
 	background: #CCCCFF;
-	font-family: Consola;
+	font-family: Hind Guntur;
   }
   
   div.centerbox table.io div.code {
@@ -316,7 +276,7 @@
 	min-width: 100%;
 	max-width: 100%;
 	min-height: 400px;
-	font-family: Consola;
+	font-family: Hind Guntur;
   }
   
   table.submission tr.NA td {
