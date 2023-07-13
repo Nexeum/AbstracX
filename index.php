@@ -7,7 +7,7 @@ include("sys/system_init.php");
 ?>
 
     <html lang="en">
-    <head><title>Nexeum Online Judge [SourceCode]</title>
+    <head><title>Nexeum Online Judge</title>
         <meta name="description" content="Nexeum Online Judge"/>
         <meta charset="utf-8"/>
 
