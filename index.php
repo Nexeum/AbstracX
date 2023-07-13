@@ -14,6 +14,7 @@ include("sys/system_init.php");
         <link rel='shortcut icon' href='data/laptop_black.png'/>
         <link rel='stylesheet' type='text/css' href='data/style.css'/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
         <script src="data/jquery.js" type="text/javascript"></script>
         <script src="data/browser.js" type="text/javascript"></script>
         <script src="data/select.js" type="text/javascript"></script>
@@ -104,6 +105,7 @@ include("sys/system_init.php");
     <link type="text/css" rel="stylesheet" href="data/syntax-highlighter/shCoreDefault.css"/>
 
     <script>
+        CKEDITOR.replace( 'notice' );
         let countdown = -1;
 
         function step() {

@@ -58,9 +58,15 @@ function display_notice(): void
         echo "</textarea>
                   <br><br>
                   <div style='text-align: center;'>
+<<<<<<< Updated upstream
                     <input type='submit' value='Update Notice'>
                     <input type='button' value='Clear Changes' onClick='window.location.reload();'>
                     <input type='button' value='Cancel' onClick=\"window.location='?display=notice';\">
+=======
+                    <input type='submit' value='Update Notice' class='btn btn-primary' >
+                    <input type='button' value='Clear Changes' class='btn btn-secondary' class='bi bi-trash3' onClick='window.location.reload();'>
+                    <input type='button' value='Cancel' class='btn btn-danger'  onClick=\"window.location='?display=notice';\">
+>>>>>>> Stashed changes
                   </div>
               </form>";
     } else {
