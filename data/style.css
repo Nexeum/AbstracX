@@ -1,15 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Hind Guntur:wght@300&family=Hind+Guntur&display=swap');
-
   @font-face {
-	font-family: 'Hind Guntur', sans-serif;
-	src: url('fonts/Hind Guntur.ttf');
+	font-family: 'Cascadia';
+	src: url('fonts/Cascadia.ttf');
 	font-style: italic;
   }
   
   * {
 	border-collapse: collapse;
-	font-family: Hind Guntur;
-	font-size: 20px;
+	font-family: Cascadia;
+	font-size: 15px;
   }
   
   a,
@@ -19,18 +17,23 @@
 	cursor: pointer;
   }
   
-  a:hover {
-	color: red;
+.sidebox a{
+  text-decoration: none;
+  color: #000000;
+}
+
+a:hover {
+	color: rgb(10, 90, 157);
   }
-  
+
   h1 {
-	font-size: 25px;
-	margin: 20px 0;
+	font-size: 20px;
+	margin: 35px 0;
   }
   
   h2,
   h2 a {
-	font-size: 15px;
+	font-size: 10px;
   }
   
   h3 {
@@ -40,7 +43,7 @@
   }
   
   code {
-	font-family: Hind Guntur;
+	font-family: Cascadia;
 	text-align: left;
 	overflow: auto;
   }
@@ -51,19 +54,19 @@
   
   green {
 	color: green;
-	font-family: Hind Guntur;
+	font-family: Cascadia;
 	text-decoration: underline;
   }
   
   red {
 	color: red;
-	font-family: Hind Guntur;
+	font-family: Cascadia;
 	text-decoration: underline;
   }
   
   sno {
 	color: #888888;
-	font-family: Hind Guntur;
+	font-family: Cascadia;
 	text-decoration: none;
   }
   
@@ -74,13 +77,13 @@
 	height: 200px;
 	min-height: 200px;
 	padding: 5px;
-	font-family: Hind Guntur, 'Courier New';
+	font-family: Cascadia;
 	text-align: left;
 	font-size: 13px;
   }
   
   table.main {
-	width: 1200px;
+	width: 100%; 
   }
   
   table.main td.side {
@@ -94,9 +97,9 @@
   
   div.sidebox,
   div.centerbox {
-	border: 1px solid #0000FF;
+	border: 1px solid #2196f3;
 	border-radius: 10px;
-	background: #EEEEFF;
+	background: #e8f5ff;
 	margin: 10px 5px 0 5px;
   }
   
@@ -119,23 +122,23 @@
   div.sidebox table td,
   div.sidebox table th {
 	text-align: center;
-	border: 1px solid #EEEEFF;
+	border: 1px solid #e8f5ff;
   }
   
   div.sidebox table td {
-	background: #DDDDFF;
+	background: #ffffff;
   }
   
   div.sidebox table th {
-	background: #BBBBFF;
+	background: #2196f3;
   }
   
   div.sidebox table tr.AC td {
-	background: #CCCCFF;
+	background: #c3e3fd;
   }
   
   div.sidebox table tr.rank td {
-	background: #CCCCFF;
+	background: #e8f5ff;
   }
   
   span.nologin0 {
@@ -190,15 +193,15 @@
   }
   
   div.centerbox table td {
-	background: #DDDDFF;
+	background: #c7e6ff;
   }
   
   div.centerbox table td.highlight {
-	background: #CCCCFF;
+	background: #9acef8;
   }
   
   div.centerbox table th {
-	background: #BBBBFF;
+	background: #e8f5ff;
   }
   
   div.centerbox table input,
@@ -255,7 +258,7 @@
 	width: 526px;
 	padding: 10px;
 	background: #CCCCFF;
-	font-family: Hind Guntur;
+	font-family: Cascadia;
   }
   
   div.centerbox table.io div.code {
@@ -276,7 +279,7 @@
 	min-width: 100%;
 	max-width: 100%;
 	min-height: 400px;
-	font-family: Hind Guntur;
+	font-family: Cascadia;
   }
   
   table.submission tr.NA td {
