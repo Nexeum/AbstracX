@@ -186,14 +186,13 @@ a:hover {
   div.centerbox table td,
   div.centerbox table th {
 	padding: 5px;
-	background: #DDDDFF;
-	border: 1px solid #EEEEFF;
+	background: #97d0ff;
+	border: 1px solid #000000;
 	text-align: center;
-	border-radius: 0;
   }
   
   div.centerbox table td {
-	background: #c7e6ff;
+	background: #ffffff;
   }
   
   div.centerbox table td.highlight {
@@ -201,7 +200,7 @@ a:hover {
   }
   
   div.centerbox table th {
-	background: #e8f5ff;
+	background: #6eb8f5;
   }
   
   div.centerbox table input,
@@ -232,7 +231,7 @@ a:hover {
   }
   
   div.centerbox form.updatepass input {
-	width: 140px;
+	width: 190px;
   }
   
   div.centerbox div.probindex table td,
@@ -251,13 +250,13 @@ a:hover {
   div.centerbox div.limit {
 	width: 580px;
 	overflow: auto;
-	border: 0px solid #BBBBFF;
+	border: 0px solid #DDDDFF;
   }
   
   div.centerbox div.code {
 	width: 526px;
 	padding: 10px;
-	background: #CCCCFF;
+	background: #DDDDFF;
 	font-family: Cascadia;
   }
   
@@ -281,6 +280,7 @@ a:hover {
 	min-height: 400px;
 	font-family: Cascadia;
   }
+  
   
   table.submission tr.NA td {
 	background: #DDDDFF;
@@ -306,3 +306,27 @@ a:hover {
 	max-height: 300px;
 	width: 185px;
   }
+
+  .updatepass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#floatingInputValue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+}
+
+#ChangePasswordButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+#aSubmissions{
+  text-decoration: none;
+}
