@@ -20,13 +20,15 @@
     </table>
     <br>
     <form action='?action=commitdata' method='post'
-          onSubmit="return confirm('Are you sure you wish to perform a Data Commitment operation?');">
+        onSubmit="return confirm('Are you sure you wish to perform a Data Commitment operation?');">
         <label>
             <input name='recordname' placeholder='Enter Record Name Here'>
         </label>
-        <input type='submit' value='Commit Data'></form>
+        <input type='submit' value='Commit Data'>
+    </form>
     <br><br>
     <h2>Administrator Options : Committed Data</h2>
+
     <table>
         <tr>
             <th>Record Name</th>
@@ -35,42 +37,47 @@
             <th>Options</th>
         </tr>
         <?php
-        global $mysql_database;
         $link = mysqli_connect("localhost", "root", "", "nexeum");
         $data = mysqli_query($link, "SHOW TABLES");
-        $tables = array();
+        $tables = [];
+
         while ($temp = mysqli_fetch_row($data)) {
             $tables[] = $temp[0];
         }
+
+        $confirmMessage = "Are you sure you wish to perform this action?";
 
         foreach ($tables as $table) {
             if (str_starts_with($table, 'backup_')) {
                 $system = mysqli_query($link, "SELECT * FROM $table WHERE info='system'");
                 $system = mysqli_fetch_array($system);
 
-                echo "<form action='?action=commitupdate' method='post' onsubmit=\"return confirm('Are you sure you wish to perform this action?');\">
-            <input type='hidden' name='tablename' value='$table'>
-            <tr>
-                <td><input title='Modify to Rename' name='recordname' value=\"" . stripslashes($system["name"]) . "\"></td>
-                <td>" . date("d M Y, H:i:s", $system["id"]) . "</td>
-                <td>
-                    <select name='status'>";
+                $name = stripslashes($system["name"]);
+                $id = date("d M Y, H:i:s", $system["id"]);
+                $score = $system["score"];
 
-                if ($system["score"] == "Active") {
-                    echo "<option selected='selected'>Active</option><option>Inactive</option>";
-                } else {
-                    echo "<option>Active</option><option selected='selected'>Inactive</option>";
-                }
+                $isActive = $score == "Active";
+                $isInactive = $score == "Inactive";
 
-                echo "<option>Delete</option>
-                </select>
-            </td>
-            <td><input type='submit' value='Update'></td>
-            </tr>
-        </form>";
+                echo "
+            <form action='?action=commitupdate' method='post' onsubmit=\"return confirm('$confirmMessage');\">
+                <input type='hidden' name='tablename' value='$table'>
+                <tr>
+                    <td><input title='Modify to Rename' name='recordname' value=\"$name\"></td>
+                    <td>$id</td>
+                    <td>
+                        <select name='status'>
+                            <option " . ($isActive ? "selected='selected'" : "") . ">Active</option>
+                            <option " . ($isInactive ? "selected='selected'" : "") . ">Inactive</option>
+                            <option>Delete</option>
+                        </select>
+                    </td>
+                    <td><input type='submit' value='Update'></td>
+                </tr>
+            </form>
+            ";
             }
         }
-
         ?>
     </table>
 </div>
