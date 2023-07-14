@@ -17,14 +17,14 @@ function display_account()
     $dataRow = mysqli_fetch_array($data);
     echo "<div style='text-align: center;'><h2 style='text-align: center;'>$_SESSION[teamname] : Account Details</h2>";
     echo "<form class='updatepass' action='?action=updatepass' method='post'>
-		  <input type='password' name='pass0' placeholder='Original Password'>
-		  <input type='password' name='pass1' placeholder='New Password'> 
-		  <input type='password' name='pass2' placeholder='Retype New Password'> 
-		  <input type='submit' value='Change Password'></form>";
-    echo "<a href='?display=submissions&tid=$_SESSION[tid]'>Click here to view your submissions.</a><br><br>";
+		  <input type='password' class='form-control' id='floatingInputValue' name='pass0' placeholder='Original Password'>
+		  <input type='password' class='form-control' id='floatingInputValue' name='pass1' placeholder='New Password'> 
+		  <input type='password' class='form-control' id='floatingInputValue' name='pass2' placeholder='Retype New Password'> 
+		  <input type='submit' class='btn btn-primary btn-sm' id='ChangePasswordButton'  value='Change Password'>  </form>";
+    echo "<a href='?display=submissions&tid=$_SESSION[tid]' id='aSubmissions' >Click here to view your submissions.</a><br><br>";
     echo "The details about the members of the team as mentioned at the time of registeration are as follows:<br><br>";
     echo "<div style='display: flex; justify-content: center;'>";
-    echo "<table class='account'>
+    echo "<table class='account table table-bordered'>
           <tr>
             <th>Team</th>
             <th>Full Name</th>
