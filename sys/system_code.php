@@ -83,7 +83,7 @@ function display_code(): void
         echo "<tr><th>Language</th><th>File Name</th><th>Submission Time</th><th>Run Time</th></tr>";
         echo "<tr><td>" . ($run["language"] == "Brain" ? "Brainf**k" : $run["language"]) . "</td><td>$filename</td><td>" . fdate($run["submittime"]) . "</td><td>$run[time]</td></tr>";
 
-        echo "<tr><td colspan=10 style='text-align:left;'><div class='limit'><pre class='brush: " . $brush[$run["language"]] . "'>$code</pre></div></td></tr>";
+        echo "<tr><td colspan=10 style='text-align:left;'><div class='limit'><pre class='brush: " . $brush[$run["language"]] . "'><code class='language-".$run['language']."'>$code</code></pre></div></td></tr>";
         if (($run["result"] != "RTE" || $_SESSION["status"] == "Admin") && !empty($run["error"])) {
             echo "<tr><th colspan=10>Error Message</th></tr><tr><td colspan=10 style='text-align:left;padding:0;'><div class='limit'><pre class='brush:text'>" . htmlentities(preg_replace("/<br>/i", "\n", filter($run["error"]))) . "</pre></div></td></tr>";
         }
