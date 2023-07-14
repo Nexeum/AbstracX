@@ -14,6 +14,8 @@ include("sys/system_init.php");
         <link rel='shortcut icon' href='data/laptop_black.png'/>
         <link rel='stylesheet' type='text/css' href='data/style.css'/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
         <script src="data/jquery.js" type="text/javascript"></script>
         <script src="data/browser.js" type="text/javascript"></script>
         <script src="data/select.js" type="text/javascript"></script>
@@ -89,19 +91,8 @@ include("sys/system_init.php");
             </td>
     </table>
     <a id="bottom"></a>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <script type="text/javascript">SyntaxHighlighter.all();</script>
-    <script type="text/javascript" src="data/syntax-highlighter/shCore.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushCpp.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushCSharp.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushJava.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushJScript.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushPerl.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushPhp.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushPlain.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushPython.js"></script>
-    <script type="text/javascript" src="data/syntax-highlighter/shBrushRuby.js"></script>
-    <link type="text/css" rel="stylesheet" href="data/syntax-highlighter/shCoreDefault.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 
     <script>
         let countdown = -1;
