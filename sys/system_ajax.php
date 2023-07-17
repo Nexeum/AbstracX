@@ -68,7 +68,7 @@ function action_adminwork(): void
     } else {
         $limit = 10;
     }
-    $data = mysqli_query($link, "SELECT runs.result as result,runs.rid as rid,runs.tid as tid,runs.pid as pid,teams.teamname as teamname,problems.name as probname,problems.code as probcode FROM runs,problems,teams WHERE runs.access!='deleted' AND runs.pid = problems.pid AND runs.tid = teams.tid AND runs.access!='deleted' AND teams.status='Normal' AND problems.status='Active' ORDER BY rid DESC LIMIT 0," . $limit);
+    $data = mysqli_query($link, "SELECT runs.result as result,runs.rid as rid,runs.tid as tid,runs.pid as pid,teams.teamname as teamname,problems.name as probname,problems.code as probcode FROM runs,problems,teams WHERE runs.access!='deleted' AND runs.pid = problems.pid AND runs.tid = teams.tid AND runs.access!='deleted' AND teams.status='Normal' AND problems.status='Active' ORDER BY rid DESC LIMIT 0," . $limit); 
     while ($temp = mysqli_fetch_array($data)) {
         $result = $temp["result"];
         if (isset($fullresult[$result])) {

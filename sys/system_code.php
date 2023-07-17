@@ -5,7 +5,7 @@ function display_code(): void
     global $fullresult, $extension, $brush;
     $link = mysqli_connect("localhost", "root", "","nexeum");
 
-    echo "<h2 style='text-align: center;''>>Source Code</h2>";
+    echo "<h2 style='text-align: center;''>Source Code</h2>";
     if (empty($_GET["rid"])) {
         $rid = 0;
     } else {

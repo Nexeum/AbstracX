@@ -4,10 +4,9 @@ function display_problem()
 {
     global $admin, $currentmessage, $defaultlang, $maxcodesize, $execoptions;
     $link = mysqli_connect("localhost", "root", "", "nexeum");
-
     if ($admin["mode"] == "Lockdown" && $_SESSION["tid"] == 0) {
         $_SESSION["message"] = $currentmessage;
-        $_SESSION["message"][] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
+        $_SESSION["message"] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
         echo "<script>window.location='?display=faq';</script>";
         return;
     }
@@ -41,11 +40,11 @@ function display_problem()
                 unset($g[array_search("", $g)]);
                 $g[] = "";
             }
-            echo "<div class='filter'><b>Select Group<b> : <select style='width:150px;' id='category-select' onChange=\"$('input#query').attr('value',''); problem_search(); if(this.value==0){ $('span.group').slideDown(250); } else { for(i=1;i<=" . count($g) . ";i++){ if(this.value=='group'+i) $('span#group'+i).slideDown(250); else $('span#group'+i).slideUp(250); } }\"><option value=0>All Groups</option>";
+            echo "<div class='filter'><b>Select Group<b> : <select class='form-select' style='width:150px;' id='category-select' onChange=\"$('input#query').attr('value',''); problem_search(); if(this.value==0){ $('span.group').slideDown(250); } else { for(i=1;i<=" . count($g) . ";i++){ if(this.value=='group'+i) $('span#group'+i).slideDown(250); else $('span#group'+i).slideUp(250); } }\"><option value=0>All Groups</option>";
             foreach ($g as $i => $gn) {
                 echo "<option value='group" . ($i + 1) . "'>" . preg_replace("/^#[0-9]+ /", "", ($gn == "" ? "Unclassified" : $gn)) . "</option>";
             }
-            echo "</select> <input placeholder='Enter Search Term Here' id='query' onKeyUp=\"$('#category-select').val(0); $('span.group').slideDown(250); problem_search();\" style='text-align:center;'> <input type='button' value='Clear' onClick=\"$('input#query').attr('value',''); problem_search();\"></div>";
+            echo "</select> <input class='form-control' placeholder='Enter Search Term Here' id='query' onKeyUp=\"$('#category-select').val(0); $('span.group').slideDown(250); problem_search();\" style='text-align:center;'> <input class='btn btn-danger' type='button' value='Clear' onClick=\"$('input#query').attr('value',''); problem_search();\"></div>";
             if (($nac = mysqli_getdata("SELECT distinct pid FROM runs WHERE tid=$_SESSION[tid] AND result!='AC' AND access!='deleted'")) == NULL) {
                 $nac = array();
             } else {
@@ -70,7 +69,7 @@ function display_problem()
             echo "<div class='probheaders2' style='display:none;'><h2>Search Results</h2>";
             echo "<table><th>Problem ID</th><th>Problem Name</th><th>Problem Code</th><th>Problem Type</th><th>Score</th><th>Statistics</th></tr></table></div>";
             foreach ($g as $i => $gn) {
-                echo "<span id='group" . ($i + 1) . "' class='group'><div class='probheaders1'><h2><a href='?display=submissions&pgr=" . urlencode($gn) . "'>Problem Group : " . preg_replace("/^#[0-9]+ /i", "", ($gn == "" ? "Unclassified" : $gn)) . "</a></h2>";
+                echo "<span id='group" . ($i + 1) . "' class='group'><div class='probheaders1'><h2><a id='aSubmissions' href='?display=submissions&pgr=" . urlencode($gn) . "'>Problem Group : " . preg_replace("/^#[0-9]+ /i", "", ($gn == "" ? "Unclassified" : $gn)) . "</a></h2>";
                 echo "<table><th>Problem ID</th><th>Problem Name</th><th>Problem Code</th><th>Problem Type</th><th>Score</th><th>Statistics</th></tr></table></div>";
                 $data = mysqli_query($link,"SELECT * FROM problems WHERE status='Active' and pgroup='" . $gn . "' ORDER BY pid");
                 while ($problem = mysqli_fetch_array($data)) {

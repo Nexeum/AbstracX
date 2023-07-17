@@ -1,8 +1,8 @@
 <div style="text-align: center;">
     <div style="text-align: center; justify-content: center;" id="teamlist">
         <h2>Administrator Options: List of Teams</h2>
-        <input type="button" value="Add New Team" onclick="window.location='?display=register'" />
-        <input type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
+        <input class="btn btn-info" type="button" value="Add New Team" onclick="window.location='?display=register'" />
+        <input class="btn btn-success" type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
             onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');" /><br><br>
         <?php
         $link = mysqli_connect("localhost", "root", "", "nexeum");
@@ -14,7 +14,7 @@
         [$page, $pagenav] = paginate("display=adminteam", $totalCount, $limit);
         echo $pagenav . "<br><br>";
         ?>
-        <table class="adminteam">
+        <table style="width: 100%" class="adminteam">
             <tr>
                 <th>Team ID</th>
                 <th>Team Name</th>
@@ -55,7 +55,7 @@
                     $groupname = mysqli_fetch_assoc($groupname);
                     $groupname = $groupname["groupname"];
                 }
-                echo "<tr><td>$t[tid]</td><td><a href='?display=submissions&tid=$t[tid]'>$t[teamname]</td><td>$groupname</td><td>$t[status]</td><td>$members</td><td>$ip $platform</td><td><input type='button' value='Edit' onClick=\"$script\" /></td></tr>";
+                echo "<tr><td>$t[tid]</td><td><a href='?display=submissions&tid=$t[tid]'>$t[teamname]</td><td>$groupname</td><td>$t[status]</td><td>$members</td><td>$ip $platform</td><td><input class='btn btn-info' type='button' value='Edit' onClick=\"$script\" /></td></tr>";
             }
             ?>
         </table>

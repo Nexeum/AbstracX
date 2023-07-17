@@ -2,11 +2,11 @@
     <h2>Administrator Options : Account Settings</h2>
     <div style="display: flex; justify-content: center;">
         <form action="?action=updateaccount" method="post">
-            <table style="width: 80%">
+            <table style="width: 100%">
                 <tr>
                     <th>Multiple Login</th>
                     <td>
-                        <select id="contest_multilogin" name="contest_multilogin" style="width:100%;">
+                        <select class="form-select" id="contest_multilogin" name="contest_multilogin" style="width:100%;">
                             <option value="0" <?php if ($admin["multilogin"] == 0)
                                 echo "selected"; ?>>Not Allowed
                             </option>
@@ -21,7 +21,7 @@
                 <tr>
                     <th>Registration Mode</th>
                     <td>
-                        <select id="contest_regautoauth" name="contest_regautoauth" style="width:100%;">
+                        <select class="form-select" id="contest_regautoauth" name="contest_regautoauth" style="width:100%;">
                             <option value="0" <?php if ($admin["regautoauth"] == 0)
                                 echo "selected"; ?>>Authorization
                                 Required</option>
@@ -47,7 +47,7 @@
                 document.getElementById("contest_multilogin").value = <?php echo $admin["multilogin"]; ?>;
                 document.getElementById("contest_regautoauth").value = <?php echo $admin["regautoauth"]; ?>;
             </script>
-            <input type="submit" value="Update Account Settings">
+            <input class="btn btn-success" type="submit" value="Update Account Settings">
         </form>
     </div>
 
@@ -55,11 +55,11 @@
     <h2>Administrator Options : Contest Settings</h2>
     <div style="display: flex; justify-content: center;">
         <form action="?action=updatecontest" method="post">
-            <table style="width: 80%">
+            <table style="width: 100%">
                 <tr>
                     <th>Contest Mode</th>
                     <td>
-                        <select id="contest_mode" name="contest_mode" style="width:100%;">
+                        <select class="form-select" id="contest_mode" name="contest_mode" style="width:100%;">
                             <option <?php if ($admin["mode"] == "Lockdown")
                                 echo "selected"; ?>>Lockdown</option>
                             <option <?php if ($admin["mode"] == "Disabled")
@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <th>Set Contest End Time</th>
-                    <td><input style="width:100%;" id="contest_endtime" name="contest_endtime"
+                    <td><input class="form-control" style="width:100%;" id="contest_endtime" name="contest_endtime"
                             placeholder="Enter Number of Minutes from Now"></td>
                 </tr>
                 <tr>
@@ -104,7 +104,7 @@
                 </tr>
                 <tr>
                     <th>Set Incorrect Submission Penalty</th>
-                    <td><input style="width:100%;" name="contest_penalty" placeholder="Enter Penalty in Minutes"></td>
+                    <td><input class="form-control" style="width:100%;" name="contest_penalty" placeholder="Enter Penalty in Minutes"></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <th>Set Ajax Refresh Rate</th>
-                    <td><input style="width:100%;" name="contest_ajaxrr" placeholder="Enter Refresh Rate in Seconds">
+                    <td><input class="form-control" style="width:100%;" name="contest_ajaxrr" placeholder="Enter Refresh Rate in Seconds">
                     </td>
                 </tr>
                 <tr>
@@ -126,7 +126,7 @@
                 </tr>
             </table>
             <br>
-            <input type="submit" value="Update Contest Settings">
+            <input class="btn btn-success" type="submit" value="Update Contest Settings">
         </form>
     </div>
 
@@ -134,64 +134,64 @@
     <h2>Administrator Options : Style Settings</h2>
     <div style="display: flex; justify-content: center;">
         <form action="?action=updatestyle" method="post">
-            <table style="width: 80%">
+            <table style="width: 100%">
                 <tr title="Number of submissions to be displayed in the 'My Submissions' box.">
                     <th>Personal Submissions (Box)</th>
-                    <td><input style="width:100%;" name="contest_mysublist" value="<?php echo $admin["mysublist"]; ?>">
+                    <td><input class="form-control" style="width:100%;" name="contest_mysublist" value="<?php echo $admin["mysublist"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of submissions to be displayed in the 'Latest Submissions' box.">
                     <th>Latest Submissions (Box)</th>
-                    <td><input style="width:100%;" name="contest_allsublist"
+                    <td><input class="form-control" style="width:100%;" name="contest_allsublist"
                             value="<?php echo $admin["allsublist"]; ?>"></td>
                 </tr>
                 <tr title="Number of top teams to be displayed in the 'Current Rankings' box.">
                     <th>Current Rankings (Box)</th>
-                    <td><input style="width:100%;" name="contest_ranklist" value="<?php echo $admin["ranklist"]; ?>">
+                    <td><input class="form-control" style="width:100%;" name="contest_ranklist" value="<?php echo $admin["ranklist"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of private clarifications to be displayed in the 'My Submissions' box.">
                     <th>Private Clarifications (Box)</th>
-                    <td><input style="width:100%;" name="contest_clarprivate"
+                    <td><input class="form-control" style="width:100%;" name="contest_clarprivate"
                             value="<?php echo $admin["clarprivate"]; ?>"></td>
                 </tr>
                 <tr title="Number of public clarifications to be displayed in the 'Public Submissions' box.">
                     <th>Public Clarifications (Box)</th>
-                    <td><input style="width:100%;" name="contest_clarpublic"
+                    <td><input class="form-control" style="width:100%;" name="contest_clarpublic"
                             value="<?php echo $admin["clarpublic"]; ?>"></td>
                 </tr>
                 <tr title="Number of clarifications to be displayed on the Clarifications page at one page.">
                     <th>Clarifications (Page)</th>
-                    <td><input style="width:100%;" name="contest_clarpage" value="<?php echo $admin["clarpage"]; ?>">
+                    <td><input class="form-control" style="width:100%;" name="contest_clarpage" value="<?php echo $admin["clarpage"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of submissions to be displayed on the Submission Statistics page at one page.">
                     <th>Submission Statistics (Page)</th>
-                    <td><input style="width:100%;" name="contest_substatpage"
+                    <td><input class="form-control" style="width:100%;" name="contest_substatpage"
                             value="<?php echo $admin["substatpage"]; ?>"></td>
                 </tr>
                 <tr title="Number of teams to be displayed on the Current Rankings page at one page.">
                     <th>Current Rankings (Page)</th>
-                    <td><input style="width:100%;" name="contest_rankpage" value="<?php echo $admin["rankpage"]; ?>">
+                    <td><input class="form-control" style="width:100%;" name="contest_rankpage" value="<?php echo $admin["rankpage"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of teams to be displayed on the Problem Settings page at one time.">
                     <th>Problem Settings (Page)</th>
-                    <td><input style="width:100%;" name="contest_probpage" value="<?php echo $admin["probpage"]; ?>">
+                    <td><input class="form-control" class="form-control" style="width:100%;" name="contest_probpage" value="<?php echo $admin["probpage"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of teams to be displayed on the Team Settings page at one time.">
                     <th>Team Settings (Page)</th>
-                    <td><input style="width:100%;" name="contest_teampage" value="<?php echo $admin["teampage"]; ?>">
+                    <td><input class="form-control" class="form-control" class="form-control" style="width:100%;" name="contest_teampage" value="<?php echo $admin["teampage"]; ?>">
                     </td>
                 </tr>
                 <tr title="Number of requests to be displayed on the Access Log page at one page.">
                     <th>Access Logs (Page)</th>
-                    <td><input style="width:100%;" name="contest_logpage" value="<?php echo $admin["logpage"]; ?>"></td>
+                    <td><input class="form-control" style="width:100%;" name="contest_logpage" value="<?php echo $admin["logpage"]; ?>"></td>
                 </tr>
             </table>
             <br>
-            <input type="submit" value="Update Style Settings">
+            <input class="btn btn-success" type="submit" value="Update Style Settings">
         </form>
     </div>
 </div>

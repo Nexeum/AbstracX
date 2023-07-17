@@ -237,7 +237,7 @@ function display_clarifications()
     echo "</table><br>$pagenav<br><br>";
 
     if ($_SESSION["status"] == "Admin") {
-        echo "<input type='button' value='Delete All Clarification Requests' onClick=\"if(confirm('Are you sure you wish to Delete All Clarification Requests?')){ f=document.forms['updateclar']; f.field.value='Clear'; f.submit(); }\"><br><br>";
+        echo "<input class='btn btn-danger' type='button' value='Delete All Clarification Requests' onClick=\"if(confirm('Are you sure you wish to Delete All Clarification Requests?')){ f=document.forms['updateclar']; f.field.value='Clear'; f.submit(); }\"><br><br>";
     }
     if ($_SESSION["tid"]) {
         echo "<script>
@@ -255,14 +255,14 @@ function display_clarifications()
             </script>";
         echo "<form action='?action=requestclar' method='post' onSubmit='return validate_clar();'>";
         echo "<table><tr><th>Team Name</th><td style='text-align:left;'>" . $_SESSION["teamname"] . "</td></tr>";
-        echo "<tr><th>Select Problem</th><td><select name='problem' style='width:300px;'><option value=0>General (No Specific Problem)</option>";
+        echo "<tr><th>Select Problem</th><td><select class='form-select' name='problem' style='width:300px;'><option value=0>General (No Specific Problem)</option>";
         $data = mysqli_query($link, "SELECT * FROM problems WHERE status='Active' ORDER BY pid");
         while ($problem = mysqli_fetch_array($data)) {
             echo "<option value='" . $problem["pid"] . "'>" . filter($problem["name"]) . "</option>";
         }
         echo "</select></td></tr>";
-        echo "<tr><th>Query</th><td><textarea name='query' placeholder=\"Type your query here\" style='width:300px; min-width:300px; max-width:300px; height:100px; min-height:100px;'></textarea></td></tr>";
-        echo "<tr><th></th><td><input type='submit' value='Submit' style='width:100%;'></td></tr></table></form>";
+        echo "<tr><th>Query</th><td><textarea class='form-control' name='query' placeholder=\"Type your query here\" style='width:300px; min-width:300px; max-width:300px; height:100px; min-height:100px;'></textarea></td></tr>";
+        echo "<tr><th></th><td><input class='btn btn-success' type='submit' value='Submit' style='width:100%;'></td></tr></table></form>";
     }
     echo "<div class='small'>This feature exists only to provide contestants a way to communicate with the judges in case of any ambiguity regarding problems or the contest itself.
 		<br>The Query Text cannot contain single or double quotes.
