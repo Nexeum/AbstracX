@@ -7,7 +7,7 @@ function display_submissions()
 
     if ($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") {
         $_SESSION["message"] = $currentmessage;
-        $_SESSION["message"][] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
+        $_SESSION["message"] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
         echo "<script>window.location='?display=faq';</script>";
         return;
     }
@@ -205,7 +205,7 @@ function display_submissions()
         if ($rejudge == "action=rejudge") {
             $rejudge .= "&all=1";
         }
-        echo "<input type='button' value='Rejudge Selected Submissions' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\"><br><br>";
+        echo "<input class='btn btn-warning' type='button' value='Rejudge Selected Submissions' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\"><br><br>";
     }
 
     $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC");
@@ -268,13 +268,13 @@ function display_submissions()
             echo "<tr class='$result'><td>$temp[rid]</td><td><a href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]'>$teamname</td><td><a href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]'>$probname</a></td><td><a href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td><td>$temp[time]</td><td class='$result'><a href='?$urlargs&res=$r'>$fresult</a></td>";
         }
         if ($_SESSION["status"] == "Admin") {
-            echo "<td><input type='button' value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">";
+            echo "<td><input class='btn btn-warning' type='button' value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">";
             if ($temp["access"] == "private") {
-                echo "<input type='button' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$temp[rid]';\">";
+                echo "<input class='btn btn-secondary' type='button' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$temp[rid]';\">";
             } else {
-                echo "<input type='button' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$temp[rid]';\">";
+                echo "<input class='btn btn-info' type='button' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$temp[rid]';\">";
             }
-            echo "<input type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">";
+            echo "<input class='btn btn-danger' type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">";
             echo "</td>";
         } else if ($_SESSION["status"] == "Admin" || $_SESSION["tid"] == $temp["tid"] || $temp["access"] == "public") {
             echo "<td><input type='button' value='Code' onClick=\"window.location='?display=code&rid=$temp[rid]';\"></td>";
@@ -296,7 +296,7 @@ function display_rankings(): void
 
     if ($admin["mode"] == "Lockdown" && $_SESSION["tid"] == 0) {
         $_SESSION["message"] = $currentmessage;
-        $_SESSION["message"][] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
+        $_SESSION["message"] = "Access Denied : The contest is currently in Lockdown Mode. Please try again later.";
         echo "<script>window.location='?display=faq';</script>";
         return;
     }
@@ -313,7 +313,7 @@ function display_rankings(): void
     echo "This page displays the current Team Scores and Ranking based on the current Teams and Problems. The information being displayed here shall be used to update the <a href='?display=scoreboard'>Main Team Scores and Rankings</a>.<br><br>";
 
     $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx<2");
-    echo "Filter for Group : <select onChange=\"document.location='?display=rankings&group='+this.value;\">";
+    echo "Filter for Group : <select class='form-select' onChange=\"document.location='?display=rankings&group='+this.value;\">";
     echo "<option value=0 " . ($row["gid"] == $group ? "selected='selected'" : "") . ">All Groups</option>";
     while ($row = mysqli_fetch_assoc($data)) {
         echo "<option value=$row[gid] " . ($row["gid"] == $group ? "selected='selected'" : "") . ">$row[groupname]</option>";

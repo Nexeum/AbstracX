@@ -110,7 +110,7 @@ function display_admingroup()
         return;
     }
     echo "<center><h2>Group Settings</h2>";
-    echo "<form action='?action=group-create' method='post'><table><tr><th>New Group Name</th><td><input type='text' name='groupname'></td><td><input type='submit' value='Create New Group'></td></tr></table></form><br>";
+    echo "<form action='?action=group-create' method='post'><table><tr><th>New Group Name</th><td><input class='form-control' type='text' name='groupname'></td><td><input class='form-control' type='submit' value='Create New Group'></td></tr></table></form><br>";
     $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx<3;");
 
     echo "<script>function group_status(gid,action){ document.location='?action=group-status&gid='+gid+'&status='+action; }</script>";
