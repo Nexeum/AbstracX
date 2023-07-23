@@ -1,17 +1,3 @@
-
-function getElementsByClassName( strClassName, obj ) {
-    var ar = arguments[2] || new Array();
-    var re = new RegExp("\\b" + strClassName + "\\b", "g");
-
-    if ( re.test(obj.className) ) {
-        ar.push( obj );
-    }
-    for ( var i = 0; i < obj.childNodes.length; i++ )
-        getElementsByClassName( strClassName, obj.childNodes[i], ar );
-    
-    return ar;
-}
-
 function selectElement(id)
 {
 	// Get ID of code block

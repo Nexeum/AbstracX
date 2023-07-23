@@ -39,44 +39,78 @@ function action_adminwork(): void
         mysqli_query($link, "UPDATE teams SET score=$score,penalty='$penalty' WHERE tid=$tid");
     }
 
-    $json = "<h3><a href='?display=rankings'>Current Rankings</a></h3>";
-    $json .= "<table><th>Rank</th><th>Team</th><th>Solved</th><th>Score</th></tr>";
+    $json = "
+        <table class='table table-borderless'>
+            <thead>
+                <tr class='table-primary'>
+                    <th colspan='4' class='text-center'>
+                        <h4><a class='list-group-item' href='?display=rankings'>Current Rankings</a></h4>
+                    </th>
+                </tr>
+                <tr class='table-info'>
+                    <th class='text-center'>Rank</th>
+                    <th class='text-center'>Team</th>
+                    <th class='text-center'>Solved</th>
+                    <th class='text-center'>Score</th>
+                </tr>
+            </thead><tbody>";
     if (isset($admin["ranklist"]) && $admin["ranklist"] >= 0) {
         $limit = $admin["ranklist"];
     } else {
         $limit = 10;
     }
     $data = mysqli_query($link, "SELECT * FROM teams WHERE status='Normal' ORDER BY score DESC, penalty ASC LIMIT 0,$limit");
-    for ($rank = 1; $temp = mysqli_fetch_array($data); $rank++) {
-        $solvednQuery = mysqli_query($link, "SELECT COUNT(DISTINCT(runs.pid)) AS solved_count FROM runs, problems WHERE runs.tid='$temp[tid]' AND runs.result='AC' AND runs.pid=problems.pid AND problems.status='Active'");
-        if (mysqli_num_rows($solvednQuery) == 1) {
-            $solvednResult = mysqli_fetch_array($solvednQuery);
-            $solvedn = $solvednResult["solved_count"];
-        } else {
-            $solvedn = 0;
-        }
+    if (mysqli_num_rows($data) === 0) {
+        $json .= "<tr><td colspan='4' class='text-center'>Not Available</td></tr>";
+    } else {
+        for ($rank = 1; $temp = mysqli_fetch_array($data); $rank++) {
+            $solvednQuery = mysqli_query($link, "SELECT COUNT(DISTINCT(runs.pid)) AS solved_count FROM runs, problems WHERE runs.tid='$temp[tid]' AND runs.result='AC' AND runs.pid=problems.pid AND problems.status='Active'");
+            if (mysqli_num_rows($solvednQuery) == 1) {
+                $solvednResult = mysqli_fetch_array($solvednQuery);
+                $solvedn = $solvednResult["solved_count"];
+            } else {
+                $solvedn = 0;
+            }
 
-        $json .= "<!--$temp[tid]--><tr><td>$rank</td><td><a href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</td><td>$solvedn</td><td>$temp[score]</td></tr><!--$temp[tid]-->";
+            $json .= "<!--$temp[tid]--><tr><td>$rank</td><td><a href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</td><td>$solvedn</td><td>$temp[score]</td></tr><!--$temp[tid]-->";
+        }
     }
-    $json .= "</table>";
+    $json .= "</tbody></table>";
     $admin["cache-rankings"] = $json;
 
-    $json = "<h3><a href='?display=submissions'>Latest Submissions</a></h3>";
-    $json .= "<table><th title='Run ID'>RID</th><th>Team</th><th>Problem</th><th>Result</th></tr>";
+    $json = "<table class='table table-borderless'>
+        <thead>
+            <tr class='table-primary'>
+                <th colspan='4' class='text-center'>
+                    <h4><a class='list-group-item' href='?display=submissions'>Latest Submissions</a></h4>
+                </th>
+            </tr>
+            <tr class='table-info'>
+                <th class='text-center' title='Run ID'>RID</th>
+                <th class='text-center'>Team</th>
+                <th class='text-center'>Problem</th>
+                <th class='text-center'>Result</th>
+            </tr>
+        </thead>
+        <tbody>";
     if (isset($admin["allsublist"]) && $admin["allsublist"] >= 0) {
         $limit = $admin["allsublist"];
     } else {
         $limit = 10;
     }
-    $data = mysqli_query($link, "SELECT runs.result as result,runs.rid as rid,runs.tid as tid,runs.pid as pid,teams.teamname as teamname,problems.name as probname,problems.code as probcode FROM runs,problems,teams WHERE runs.access!='deleted' AND runs.pid = problems.pid AND runs.tid = teams.tid AND runs.access!='deleted' AND teams.status='Normal' AND problems.status='Active' ORDER BY rid DESC LIMIT 0," . $limit); 
-    while ($temp = mysqli_fetch_array($data)) {
-        $result = $temp["result"];
-        if (isset($fullresult[$result])) {
-            $result = $fullresult[$result];
+    $data = mysqli_query($link, "SELECT runs.result as result,runs.rid as rid,runs.tid as tid,runs.pid as pid,teams.teamname as teamname,problems.name as probname,problems.code as probcode FROM runs,problems,teams WHERE runs.access!='deleted' AND runs.pid = problems.pid AND runs.tid = teams.tid AND runs.access!='deleted' AND teams.status='Normal' AND problems.status='Active' ORDER BY rid DESC LIMIT 0," . $limit);
+    if (mysqli_num_rows($data) === 0) {
+        $json .= "<tr><td colspan='4' class='text-center'>Not Available</td></tr>";
+    } else {
+        while ($temp = mysqli_fetch_array($data)) {
+            $result = $temp["result"];
+            if (isset($fullresult[$result])) {
+                $result = $fullresult[$result];
+            }
+            $json .= "<tr class='$temp[result]'><td>$temp[rid]</td><td><a href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td><td title=\"$temp[probname]\"><a href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td><td title='$result'>$temp[result]</td></tr>";
         }
-        $json .= "<tr class='$temp[result]'><td>$temp[rid]</td><td><a href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td><td title=\"$temp[probname]\"><a href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td><td title='$result'>$temp[result]</td></tr>";
     }
-    $json .= "</table>";
+    $json .= "</tbody></table>";
     $admin["cache-allsubmit"] = $json;
 
     $json = "";
@@ -87,21 +121,53 @@ function action_adminwork(): void
         }
         $g = $t;
         unset($t);
-        $json .= "<h3><a href='?display=problem'>Problems Index</a></h3><div class='problist'><table>";
+        $json .= "
+            <table class='table table-borderless'>";
         if (in_array("", $g)) {
             unset($g[array_search("", $g)]);
             $g[] = "";
         }
         foreach ($g as $gn) {
-            $json .= "<tr><th colspan=2>" . preg_replace("/^#[0-9]+ /", "", ($gn == "" ? "Unclassified" : $gn)) . "</th></tr><tr class='AC'><td><i>Problem Name</i></td><td><i>Points</i></td></tr>";
+            $json .= "
+            <thead>
+                <tr class='table-primary'>
+                    <th colspan='2' class='text-center'>
+                        <h4>
+                            <a class='list-group-item' href='?display=problem'>Problems Index</a>
+                        </h4>
+                    </th>
+                </tr>
+                <tr class='table-info'>
+                    <th class='text-center' colspan='2'>" . preg_replace("/^#[0-9]+ /", "", ($gn == "" ? "Unclassified" : $gn)) . "</th>
+                </tr>
+                <tr class='table-info'>
+                    <th class='text-center'>
+                        <i>Problem Name</i>
+                    </th>
+                    <th class='text-center'>
+                        <i>Points</i>
+                    </th>
+                </tr>
+            </thead>";
             $data = mysqli_query($link, "SELECT * FROM problems WHERE status='Active' AND pgroup='$gn'");
             while ($temp = mysqli_fetch_array($data)) {
-                $json .= "<tr><td><a href='?display=problem&pid=$temp[pid]' ";
-                if ($admin["mode"] == "Active" && $_SESSION["status"] != "Admin") ; else $json .= " title=\"" . stripslashes($temp["type"]) . "\"";
-                $json .= ">" . stripslashes($temp["name"]) . "</a></td><td>$temp[score]</td></tr>";
+                $json .= "
+            <tbody>
+                <tr>
+                    <td class='text-center'>
+                        <a class='list-group-item' href='?display=problem&pid=$temp[pid]' ";
+                if ($admin["mode"] == "Active" && $_SESSION["status"] != "Admin");
+                else $json .= " title=\"" . stripslashes($temp["type"]) . "\"";
+                $json .= ">" . stripslashes($temp["name"]) . "
+                    </a>
+                    </td>
+                    <td class='text-center'>$temp[score]</td>
+                </tr>
+            </tbody>";
             }
         }
-        $json .= "</table></div>";
+        $json .= "
+        </table>";
     }
     $admin["cache-problems"] = $json;
 
@@ -130,12 +196,11 @@ function action_ajaxrefresh($type): bool|string
     if ($_SESSION["tid"] == 0) {
         $ip = $_SERVER["REMOTE_ADDR"];
         $t = mysqli_query($link, "SELECT tid FROM teams WHERE (ip1='$ip' or ip2='$ip' or ip3='$ip')");
-        $json["ajax-mysubmit"] = "<div style='text-align: center;'><a href='?display=register'>New Team? Click here to Register.</a></div>";
+        $json["ajax-mysubmit"] = "<a class='list-group-item' href='?display=register'>New Team? Click here to Register.</a>";
     } else if ($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") {
         $json["ajax-mysubmit"] = "<h3>My Submissions</h3><table><tr><td>Not Available</td></tr></table>";
     } else {
-        $json["ajax-mysubmit"] = "<h3><a href='?display=submissions&tid=$_SESSION[tid]'>My Submissions</a></h3>";
-        $json["ajax-mysubmit"] .= "<table><th title='Run ID'>RID</th><th>Problem</th><th>Language</th><th>Result</th></tr>";
+        $json["ajax-mysubmit"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th colspan='4'><h4><a class='list-group-item' href='?display=submissions&tid=$_SESSION[tid]'>My Submissions</a></h4></th></tr><tr class='table-info'><th title='Run ID'>RID</th><th>Problem</th><th>Language</th><th>Result</th></tr></thead>";
         if (isset($admin["mysublist"]) && $admin["mysublist"] >= 0) {
             $limit = $admin["mysublist"];
         } else {
@@ -162,29 +227,50 @@ function action_ajaxrefresh($type): bool|string
             if ($temp["language"] == "Brain") {
                 $temp["language"] = "Brainf**k";
             }
-            $json["ajax-mysubmit"] .= "<tr class='$temp[result]'><td><a href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td><td title=\"Link to Problem : $probname\"><a href='?display=problem&pid=$temp[pid]'>$probcode</td><td>$temp[language]</td><td title='$result'>$temp[result]</td></tr>";
+
+            // Assign Bootstrap classes based on result
+            $rowClass = '';
+            if ($temp["result"] == "AC") {
+                $rowClass = 'table-success'; // Green row for AC
+            } elseif ($temp["result"] == "WA") {
+                $rowClass = 'table-danger'; // Red row for WA
+            } elseif ($temp["result"] == "TLE") {
+                $rowClass = 'table-secondary'; // Light blue row for Time Limit Exceeded
+            }  elseif ($temp["result"] == "CE") {
+                $rowClass = 'table-warning'; // Yellow row for CE
+            } elseif ($temp["result"] == "RTE") {
+                $rowClass = 'table-warning'; // Yellow row for RE
+            } elseif ($temp["result"] == "PE") {
+                $rowClass = 'table-warning'; // Yellow blue row for PE
+            } elseif ($temp["result"] == "SC") {
+                $rowClass = 'table-danger'; // Red row for Suspicious code
+            } else {
+                $rowClass = 'table-secondary'; // Gray row for other results
+            }          
+
+            $json["ajax-mysubmit"] .= "<tr class='$rowClass'><td><a class='list-group-item' href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td><td title=\"Link to Problem : $probname\"><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>$probcode</td><td>$temp[language]</td><td title='$result'>$temp[result]</td></tr>";
         }
         $json["ajax-mysubmit"] .= "</table>";
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-rankings"])) {
-        $json["ajax-rankings"] = "<h3>Current Rankings</h3><table><tr><td>Not Available</td></tr></table>";
+        $json["ajax-rankings"] = "<table class='table table-borderless'><tr><h4>Current Rankings</h4></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-rankings"] = $admin["cache-rankings"];
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-allsubmit"])) {
-        $json["ajax-allsubmit"] = "<h3>All Submissions</h3><table><tr><td>Not Available</td></tr></table>";
+        $json["ajax-allsubmit"] = "<table class='table table-borderless'><tr><h4>All Submissions</h4></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-allsubmit"] = $admin["cache-allsubmit"];
     }
 
     if (!isset($admin["cache-problems"]) || $admin["cache-problems"] == "") {
-        $admin["cache-problems"] = "<h3>Problems Index</h3><table><tr><td>Not Available</td></tr></table>";
+        $admin["cache-problems"] = "<table class='table table-borderless'><tr><h4>Problems Index</h4></tr><tr><td>Not Available</td></tr></table>";
     }
 
     if ($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") {
-        $json["ajax-problem"] = "<h3>Problems Index</h3><table><tr><td>Not Available</td></tr></table>";
+        $json["ajax-problem"] = "<table class='table table-borderless'><tr><h4>Problems Index</h4></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-problem"] = $admin["cache-problems"];
     }
@@ -201,33 +287,48 @@ function action_ajaxrefresh($type): bool|string
         } else {
             $solvedn = 0;
         }
-        $json["ajax-account"] = "<h3>Team Name : <a href='?display=submissions&tid=$tid'>$row[teamname]</a></h3>";
-        $json["ajax-account"] .= "<table><tr><th>Score</th><th>Solved</th><th><a href='?display=account'>Account</a></th></tr>";
-        $json["ajax-account"] .= "<tr><td>$row[score]</td><td>$solvedn</td><td><a href='?action=logout'>Logout</a></td></table>";
+        $json["ajax-account"] = "
+            <table class='table table-borderless'>
+                <thead><tr class='table-primary'><th colspan='3'><h4>Team Name :<a class='list-group-item' href='?display=submissions&tid=$tid'>$row[teamname]</a></h4></th></tr><tr class='table-info'><th>Score</th><th>Solved</th><th><a class='list-group-item'href='?display=account'>Account</a></th></tr></thead>";
+        $json["ajax-account"] .= "<tr><td>$row[score]</td><td>$solvedn</td><td><a class='list-group-item' href='?action=logout'>Logout</a></td></table>";
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-clarlatest"])) {
-        $json["ajax-publicclar"] = "<h3><a href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h3><table><tr><td>Not Available</td></tr></table>";
+        $json["ajax-publicclar"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h4></th></tr></thead><tr><td>Not Available</td></tr></table>";
     } else {
-        $json["ajax-publicclar"] = "<h3><a href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h3>" . $admin["cache-clarlatest"];
+        $json["ajax-publicclar"] = $admin["cache-clarlatest"];
     }
 
     if ($_SESSION["tid"] == 0) {
-        $json["ajax-privateclar"] = "<h3><a href='?display=clarifications'>Private Clarifications</a></h3><table><tr><td>Not Available</td></tr></table>";
+        $json["ajax-privateclar"] = "
+            <table class='table table-borderless'>
+            <thead>
+                <tr class='table-primary'>
+                    <th>
+                        <h4><a class='list-group-item' href='?display=clarifications'>Private Clarifications</a></h4>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Not Available</td>
+            </tr>
+            </tbody>
+            </table>";
     } else {
         if (isset($admin["clarprivate"]) && $admin["clarprivate"] >= 0) {
             $limit = $admin["clarprivate"];
         } else {
             $limit = 2;
         }
-        $json["ajax-privateclar"] = "<h3><a href='?display=clarifications' title='Link to Clarifications Page'>My Clarifications</a></h3>";
         if (($d = mysqli_getdata("SELECT * FROM clar WHERE tid=$_SESSION[tid] and access='Private' ORDER BY time DESC LIMIT 0,$limit")) != NULL) {
-            $json["ajax-privateclar"] .= "<table>";
+            $json["ajax-privateclar"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a class='list-group-item' href='?display=clarifications' title='Link to Clarifications Page'>My Clarifications</a></h4></th></tr></thead>";
             if (count($d) == 0) {
                 $json["ajax-privateclar"] .= "<tr><td>Not Available</td></tr>";
             } else {
                 foreach ($d as $c) {
-                    if ($c["pid"] == 0) $probname = "General"; else {
+                    if ($c["pid"] == 0) $probname = "General";
+                    else {
                         $probname = mysqli_getdata("SELECT name FROM problems WHERE status='Active' AND pid=$c[pid]");
                         $probname = "<a href='?display=problem&pid=$c[pid]'>" . $probname[0]["name"] . "</a>";
                     }
@@ -239,7 +340,7 @@ function action_ajaxrefresh($type): bool|string
             }
             $json["ajax-privateclar"] .= "</table>";
         } else {
-            $json["ajax-privateclar"] .= "<table><tr><td>Not Available</td></tr></table>";
+            $json["ajax-privateclar"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a class='list-group-item' href='?display=clarifications' title='Link to Clarifications Page'>My Clarifications</a></h4></th></tr></thead><tbody><tr><td>Not Available</td></tr></tbody></table>";
         }
     }
 
@@ -302,5 +403,3 @@ function action_ajaxrefresh($type): bool|string
     $_SESSION["time"] = time();
     return json_encode($json);
 }
-
-?>

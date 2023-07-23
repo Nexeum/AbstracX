@@ -246,26 +246,26 @@ try:
         if cursor.rowcount > 0:
             os.system("clear")
             print
-            "\nNexeum Online Judge : Execution Protocol\n";
+            "\nNexeum Online Judge : Execution Protocol\n"
 
             # Select an Unjudged Submission
             run = cursor.fetchone()
-            cursor.execute("UPDATE runs SET result='...' WHERE rid='%d'" % (run["rid"]));
+            cursor.execute("UPDATE runs SET result='...' WHERE rid='%d'" % (run["rid"]))
             print
-            "Selected Run ID %d for Evaluation." % (run["rid"]);
+            "Selected Run ID %d for Evaluation." % (run["rid"])
 
             # Clear Environment
             while len(os.listdir("env")) > 0:
                 try:
-                    for file in os.listdir("env"): os.unlink("env/" + file);
+                    for file in os.listdir("env"): os.unlink("env/" + file)
                 except:
                     pass
             print
             "Cleared Environment for Program Execution.";
 
             # Initialize Variables
-            result = None;
-            timetaken = 0;
+            result = None
+            timetaken = 0
             running = 0
 
             # Check for "#include<CON>" in case of C/C++
@@ -273,8 +273,8 @@ try:
                     r"#include\s*['\"<]\s*[cC][oO][nN]\s*['\">]", run["code"]):
                 print
                 "Language C/C++ : #include<CON> detected."
-                file_write("env/error.txt", "Error : Including CON is not allowed.");
-                result = "CE";
+                file_write("env/error.txt", "Error : Including CON is not allowed.")
+                result = "CE"
                 timetaken = 0
 
             if result == None and run["language"] == "C":
@@ -290,8 +290,8 @@ try:
                     re.match(r"hack", run["code"])):
                 print
                 "Suspicious Code."
-                file_write("env/error.txt", "Error : Suspicious code.");
-                result = "SC";
+                file_write("env/error.txt", "Error : Suspicious code.")
+                result = "SC"
                 timetaken = 0
 
             # Write Code & Input File
@@ -301,7 +301,7 @@ try:
                 elif run["language"] == "Text":
                     codefilename = "output"
                 else:
-                    codefilename = "code";
+                    codefilename = "code"
                 codefile = open("env/" + codefilename + "." + extension[run["language"]], "w")
                 if (run["language"] == "PHP"): codefile.write(php_prefix);  # append prefix for PHP
                 codefile.write(run["code"].replace("\r", ""));
@@ -377,7 +377,7 @@ try:
             # if "-cache" in sys.argv: output = "/// Output not saved. ///"
             cursor.execute("UPDATE runs SET time='%.3f',result='%s',error='%s',output='%s' WHERE rid=%d" % (
             float(timetaken), result, re.escape(error), re.escape(output), int(run["rid"])));
-            link.commit();
+            link.commit()
             print
             "Result (%s,%.3f) updated on Server.\n" % (result, timetaken)
             time.sleep(1)

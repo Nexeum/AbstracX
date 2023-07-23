@@ -3,7 +3,7 @@
 function display_account()
 {
     global $currentmessage;
-    $link = mysqli_connect("localhost", "root", "","nexeum");
+    $link = mysqli_connect("localhost", "root", "", "nexeum");
     if ($_SESSION["tid"] == 0) {
         $_SESSION["message"] = $currentmessage;
         $_SESSION["message"][] = "Account Data Access Error : You need to be logged in to access this page.";
@@ -51,31 +51,45 @@ function display_statusbox(): void
 {
     if ($_SESSION['tid'] == 0) {
         $teamsug = "";
-        echo "<h3>Login Box</h3>
-		<form action='?action=login' method='post'>
-            <table class='login' style='width=100%'>
+        echo "
+        <form action='?action=login' method='post'>
+            <table class='table table-borderless'>
+                <thead>
+                    <tr class='table-primary'>
+                        <td>
+                            <h4>Login</h4>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
                 <tr>
-                    <td style='width:50%;'>
-                        <input style='width:100%;' type='text' name='team' value='$teamsug' placeholder='Team Name'>
-                    </td>
-                    <td style='width:50%;'>
-                        <input style='width:100%;' name='pass' type='password' placeholder='Password' value=''>
+                    <td>
+                        <label for='inputname' class='form-label'>Team Name</label>
+                        <input type='text' id='inputname' name='team' value='$teamsug' class='form-control'>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=2>
-                        <input style='width:100%;' type='submit' value='Log In'>
+                    <td>
+                        <label for='inputpass' class='form-label'>Password</label>
+                        <input type='password' id='inputpass' name='pass' value='' class='form-control'>
                     </td>
                 </tr>
-                <input type='hidden' name='platform' id='platform'>
-                <script>document.getElementById('platform').value=BrowserDetect.OS+', '+BrowserDetect.browser+' '+BrowserDetect.version;</script>
-		    </table>
-		</form>
-		<span style='font-size:11px;'>If you have forgotten your Password, you may request an Administrator to reset it.</span>";
+                </tbody>
+                <tr>
+                    <td>
+                        <input type='submit' value='Log In' class='btn btn-outline-primary'>
+                    </td>
+                </tr>
+            </table>
+            <input type='hidden' name='platform' id='platform'>
+            <script>document.getElementById('platform').value=browserDetect().os+', '+browserDetect().name +' '+ browserDetect().version;</script>
+        </form>
+        <span style='font-size:11px;'>If you have forgotten your Password, you may request an Administrator to reset it.</span>";
     } else {
-        echo "<div id='ajax-account'></div>";
+        echo "<div class='mb-3' id='ajax-account'></div>";
     }
 }
+
 
 
 function display_register(): void
@@ -83,8 +97,7 @@ function display_register(): void
     global $currentmessage;
     if ($_SESSION["tid"] == 0 || $_SESSION["status"] == "Admin") {
         include("sys/register.php");
-    }
-    else {
+    } else {
         $_SESSION["message"] = $currentmessage;
         $_SESSION["message"][] = "Registeration Form Access Error : You cannot access the Registeration Form while being logged in. Please note that being a part of multiple teams is in violation of the rules.";
         echo "<script>window.location='?display=account';</script>";
@@ -95,7 +108,7 @@ function display_register(): void
 function action_register(): void
 {
     global $invalidchars;
-    $link = mysqli_connect("localhost", "root", "","nexeum");
+    $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     foreach ($_POST as $key => $value) {
         if (preg_match("/^reg_/i", $key) && !preg_match("/[23]$/i", $key) && empty($value)) {
@@ -124,7 +137,7 @@ function action_register(): void
         $_SESSION["message"][] = "Registeration Error : Team ID cannot be specified";
         return;
     }
-    $temp = mysqli_query($link,"SELECT tid FROM teams WHERE teamname='" . $_POST["reg_teamname"] . "'");
+    $temp = mysqli_query($link, "SELECT tid FROM teams WHERE teamname='" . $_POST["reg_teamname"] . "'");
     if (mysqli_num_rows($temp) > 0) {
         $_SESSION["message"][] = "Registeration Error : This Team Name has already been taken.";
         return;
@@ -144,7 +157,7 @@ function action_register(): void
     }
 
     if (true) {
-        mysqli_query($link,"INSERT INTO teams (gid," . implode(",", $temp1) . ",status,score) VALUES (1,\"" . implode("\",\"", $temp2) . "\",\"Normal\",0)");
+        mysqli_query($link, "INSERT INTO teams (gid," . implode(",", $temp1) . ",status,score) VALUES (1,\"" . implode("\",\"", $temp2) . "\",\"Normal\",0)");
     }
     $_SESSION["message"][] = "Registeration Successful";
 }
@@ -152,14 +165,13 @@ function action_register(): void
 
 function action_updatewaiting(): void
 {
-    $link = mysqli_connect("localhost", "root", "","nexeum");
+    $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     if ($_SESSION["status"] != "Admin") {
         $_SESSION["message"][] = "Team Data Updation Error : You are not authorized to perform this action.";
         return;
     }
-    mysqli_query($link,"UPDATE teams SET status='Normal' WHERE status='Waiting'");
-    {
+    mysqli_query($link, "UPDATE teams SET status='Normal' WHERE status='Waiting'"); {
         $_SESSION["message"][] = "Team Data Updation Successful";
         return;
     }
@@ -169,7 +181,7 @@ function action_updatewaiting(): void
 function action_updateteam(): void
 {
     global $invalidchars;
-    $link = mysqli_connect("localhost", "root", "","nexeum");
+    $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     if (empty($_POST["update_tid"])) {
         $_SESSION["message"][] = "Team Data Updation Error : Insufficient Data";
@@ -198,9 +210,8 @@ function action_updateteam(): void
         }
     }
     if (!empty($_POST["update_pass"])) {
-        mysqli_query($link,"UPDATE teams SET pass='" . _md5($_POST["update_pass"]) . "' WHERE tid=$tid");
-    }
-    {
+        mysqli_query($link, "UPDATE teams SET pass='" . _md5($_POST["update_pass"]) . "' WHERE tid=$tid");
+    } {
         $_SESSION["message"][] = "Team Data Updation Successful";
         return;
     }
@@ -255,8 +266,7 @@ function action_login(): void
     mysqli_query($link, "UPDATE teams SET ip=\"" . addslashes(json_encode(array_unique($data))) . "\" WHERE tid=" . $t["tid"]);
     $_SESSION["tid"] = $t["tid"];
     $_SESSION["teamname"] = $t["teamname"];
-    $_SESSION["status"] = $t["status"];
-    {
+    $_SESSION["status"] = $t["status"]; {
         $_SESSION["message"][] = "Login Successful";
         return;
     }
@@ -265,8 +275,7 @@ function action_login(): void
 
 function action_logout(): void
 {
-    $_SESSION = array("tid" => 0, "teamname" => "", "status" => "", "ghost" => 0);
-    {
+    $_SESSION = array("tid" => 0, "teamname" => "", "status" => "", "ghost" => 0); {
         $_SESSION["message"][] = "Logout Successful";
         return;
     }
@@ -286,7 +295,7 @@ function action_updatepass(): void
             return;
         }
     }
-    $t = mysqli_query($link,"SELECT pass FROM teams WHERE tid='$_SESSION[tid]'");
+    $t = mysqli_query($link, "SELECT pass FROM teams WHERE tid='$_SESSION[tid]'");
     if (mysqli_num_rows($t) != 1) {
         $_SESSION["message"][] = "Password Change Error : Account not found in Database";
         return;
@@ -296,12 +305,8 @@ function action_updatepass(): void
         $_SESSION["message"][] = "Password Change Error : New Password Mismatch";
         return;
     }
-    mysqli_query($link,"UPDATE teams SET pass='" . _md5($_POST["pass1"]) . "' WHERE tid=$_SESSION[tid]");
-    {
+    mysqli_query($link, "UPDATE teams SET pass='" . _md5($_POST["pass1"]) . "' WHERE tid=$_SESSION[tid]"); {
         $_SESSION["message"][] = "Password Change Successful";
         return;
     }
 }
-
-
-?>

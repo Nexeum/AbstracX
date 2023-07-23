@@ -47,17 +47,16 @@ function display_main(): void
 function display_notice(): void
 {
     global $admin;
-    echo "<h2 style='text-align: center;'>Important Notices</h2>";
+    echo "<h4>Important Notices</h4>";
     $edit = (isset($_GET["edit"]) && $_GET["edit"] == 1) ? 1 : 0;
     if ($edit) {
         echo "<form action='?action=noticeupdate' method='post'>
-              <textarea class='notice' name='notice'>";
+              <textarea class='form-control' name='notice'>";
         if (isset($admin["notice"])) {
             echo stripslashes($admin["notice"]);
         }
         echo "</textarea>
-                  <br><br>
-                  <div style='text-align: center;'>
+                  <div class='border rounded mb-3'>
                     <input type='submit' value='Update Notice' class='btn btn-primary' >
                     <input type='button' value='Clear Changes' class='btn btn-secondary' class='bi bi-trash3'  onClick='window.location.reload();'>
                     <input type='button' value='Cancel' class='btn btn-danger'  onClick=\"window.location='?display=notice';\">
@@ -72,7 +71,7 @@ function display_notice(): void
                 $line = trim($line);
                 if ($line != "") {
                     if ($isHeader) {
-                        echo "<br><table class='faq'><tr><th>" . stripslashes($line) . "</th></tr><tr><td>";
+                        echo "<table class='table table-borderless'><tr><th>" . stripslashes($line) . "</th></tr><tr><td>";
                     } else {
                         echo "<li>" . stripslashes($line) . "</li>";
                     }
@@ -90,9 +89,9 @@ function display_notice(): void
         }
     }
     if (!$edit && $_SESSION["status"] == "Admin") {
-        echo "<br>
-              <div style='text-align: center;'>
-                <input type='button'   class='btn btn-primary' value='Edit Notice' onClick=\"window.location='?display=notice&edit=1';\">
+        echo "
+              <div>
+                <input type='button' class='btn btn-primary' value='Edit Notice' onClick=\"window.location='?display=notice&edit=1';\">
               </div>";
     }
 }
