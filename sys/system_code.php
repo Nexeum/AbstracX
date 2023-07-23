@@ -77,15 +77,56 @@ function display_code(): void
             $options .= "<input type='button' style='width:100%;' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\"><br>";
         }
 
-
-        echo "<table style='width=100%;'><tr><th style='width=20%;'>Run ID</th><th style='width=20%;'>Team Name</th><th style='width=20%;'>Problem Name</th><th style='width=20%;'>Result</th><th style='width=20%;'>Options</th>";
-        echo "<tr><td>$rid</td><td><a href='?display=submissions&tid=$team[tid]'>$team[teamname]</a></td><td><a href='?display=problem&pid=$problem[pid]' title='$problem[code]'>$problem[name]</td><td>$result</td><td rowspan=3>$options</td></tr></tr>";
-        echo "<tr><th>Language</th><th>File Name</th><th>Submission Time</th><th>Run Time</th></tr>";
-        echo "<tr><td>" . ($run["language"] == "Brain" ? "Brainf**k" : $run["language"]) . "</td><td>$filename</td><td>" . fdate($run["submittime"]) . "</td><td>$run[time]</td></tr>";
-
-        echo "<tr><td colspan=10 style='text-align:left;'><div class='limit'><pre class='brush: " . $brush[$run["language"]] . "'><code class='language-".$run['language']."'>$code</code></pre></div></td></tr>";
+        echo "
+            <table style='margin: 0 auto;'>
+                <tr>
+                    <th>Run ID</th>
+                    <th>Team Name</th>
+                    <th>Problem Name</th>
+                    <th>Result</th>
+                    <th>Options</th>
+                </tr>
+                <tr>
+                    <td>$rid</td>
+                    <td><a href='?display=submissions&tid=$team[tid]'>$team[teamname]</a></td>
+                    <td><a href='?display=problem&pid=$problem[pid]' title='$problem[code]'>$problem[name]</td>
+                    <td>$result</td>
+                    <td rowspan=3>$options</td>
+                </tr>
+                <tr>
+                    <th>Language</th>
+                    <th>File Name</th>
+                    <th>Submission Time</th>
+                    <th>Run Time</th>
+                </tr>
+                <tr>
+                    <td>" . ($run["language"] == "Brain" ? "Brainf**k" : $run["language"]) . "</td>
+                    <td>$filename</td>
+                    <td>" . fdate($run["submittime"]) . "</td>
+                    <td>$run[time]</td>
+                </tr>
+                <tr>
+                    <td colspan=10 style='text-align:left;'>
+                        <div class='limit'>
+                            <pre class='brush: " . $brush[$run["language"]] . "'>
+                                <code class='language-".$run['language']."'>$code</code>
+                            </pre>
+                        </div>
+                    </td>
+                </tr>";
+        
         if (($run["result"] != "RTE" || $_SESSION["status"] == "Admin") && !empty($run["error"])) {
-            echo "<tr><th colspan=10>Error Message</th></tr><tr><td colspan=10 style='text-align:left;padding:0;'><div class='limit'><pre class='brush:text'>" . htmlentities(preg_replace("/<br>/i", "\n", filter($run["error"]))) . "</pre></div></td></tr>";
+            echo "
+                <tr>
+                    <th colspan=10>Error Message</th>
+                </tr>
+                <tr>
+                    <td colspan=10 style='text-align:left;padding:0;'>
+                        <div class='limit'>
+                            <pre class='brush:text'>" . htmlentities(preg_replace("/<br>/i", "\n", filter($run["error"]))) . "</pre>
+                        </div>
+                    </td>
+                </tr>";
         }
         if (($_SESSION["status"] == "Admin" || $run["access"] == "public") and isset($_GET["io"]) and $_GET["io"] == "yes") {
             $problem['input'] = filter($problem['input']);
@@ -164,15 +205,77 @@ function display_code(): void
             $problem['input'] = str_replace(" ", "&nbsp;", implode("<br>", $problem['input']));
             $problem['output'] = str_replace(" ", "&nbsp;", implode("<br>", $problem['output']));
             $run['output'] = str_replace(" ", "&nbsp;", implode("<br>", $run['output']));
-            echo "</table><br><table class='io'><tr><th><a href='?download=input&pid=$problem[pid]'>Program Input</a></th><th><a href='?download=output&pid=$problem[pid]'>Correct Output</a></th><th><a href='?download=output&rid=$rid'>Actual Output</a></th></tr><tr>";
-            echo "<td><div id='input'><table><tr><td><code><sno>$index1</sno></code></td><td><code>" . $problem['input'] . "</code></td></tr></table></div></td>";
-            echo "<td><div id='output'><table><tr><td><code><sno>$index2</sno></code></td><td><code>" . $problem['output'] . "</code></td></tr></table></div></td>";
-            echo "<td><div id='actual'><table><tr><td><code><sno>$index3</code></sno></td><td><code>" . $run['output'] . "</code></td></tr></table></div></td>";
-            echo "<tr><td><input type='button' value='Hide Input Output Files' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'');\"></td>";
-            echo "<td><input type='button' value='Disable Scroll Synchronization' onClick=\"if(scroll_lock) this.value='Enable'; else this.value='Disable'; this.value+=' Scroll Synchronization'; scroll_lock=!scroll_lock; \"></td><td>Matching Lines : " . ($k - $j) . "/" . $k . "<br>" . ($fm != -1 ? "First mismatch at line $fm." : "") . "</td>";
-            echo "</table>";
+            echo "
+                </table>
+                <br>
+                <table style='margin: 0 auto;' class='io'>
+                    <tr>
+                        <th><a href='?download=input&pid=$problem[pid]'>Program Input</a></th>
+                        <th><a href='?download=output&pid=$problem[pid]'>Correct Output</a></th>
+                        <th><a href='?download=output&rid=$rid'>Actual Output</a></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id='input'>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <code><sno>$index1</sno></code>
+                                        </td>
+                                        <td>
+                                            <code>" . $problem['input'] . "</code>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td>
+                            <div id='output'>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <code><sno>$index2</sno></code>
+                                        </td>
+                                        <td>
+                                            <code>" . $problem['output'] . "</code>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td>
+                            <div id='actual'>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <code><sno>$index3</sno></code>
+                                        </td>
+                                        <td>
+                                            <code>" . $run['output'] . "</code>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type='button' value='Hide Input Output Files' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'');\">
+                        </td>
+                        <td>
+                            <input type='button' value='Disable Scroll Synchronization' onClick=\"if(scroll_lock) this.value='Enable'; else this.value='Disable'; this.value+=' Scroll Synchronization'; scroll_lock=!scroll_lock; \">
+                        </td>
+                        <td>
+                            Matching Lines : " . ($k - $j) . "/" . $k . "<br>" . ($fm != -1 ? "First mismatch at line $fm." : "") . "
+                        </td>
+                    </tr>
+                </table>";
+    
         } else if (($_SESSION["status"] == "Admin" || $run["access"] == "public") and in_array($run["result"], array("AC", "WA", "PE", "RTE"))) {
-            echo "</table><br><center><input type='button' value='Display Input Output Files' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\"></center>";
+            echo "
+                </table>
+                <br>
+                <input type='button' value='Display Input Output Files' style='display: block; margin: 0 auto;' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\">";
         } else {
             echo "</table>";
         }
@@ -337,6 +440,3 @@ function action_makecodedeleted(): void
         return;
     }
 }
-
-
-?>

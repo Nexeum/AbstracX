@@ -26,7 +26,7 @@ function display_submissions()
         if (mysqli_num_rows($t)) {
             $filter["tid"] = $_GET["tid"];
             $teamdata = mysqli_fetch_array($t);
-            $filters[] = "<a href='?" . str_replace("&tid=$filter[tid]", "", $urlargs) . "'>$teamdata[teamname]</a>";
+            $filters[] = "<a class='list-group-item' href='?" . str_replace("&tid=$filter[tid]", "", $urlargs) . "'>$teamdata[teamname]</a>";
             $rejudge .= "&tid=$filter[tid]";
         }
     }
@@ -35,18 +35,18 @@ function display_submissions()
         if (mysqli_num_rows($t)) {
             $filter["pid"] = $_GET["pid"];
             $probdata = mysqli_fetch_array($t);
-            $filters[] = "<a href='?" . str_replace("&pid=$filter[pid]", "", $urlargs) . "'>$probdata[name]</a>";
+            $filters[] = "<a class='list-group-item' href='?" . str_replace("&pid=$filter[pid]", "", $urlargs) . "'>$probdata[name]</a>";
             $rejudge .= "&pid=$filter[pid]";
         }
     }
     if (!empty($_GET["lan"]) && key_exists($_GET["lan"], $extension)) {
         $filter["language"] = $_GET["lan"];
-        $filters[] = "<a href='?" . str_replace("&lan=" . urlencode($filter["language"]), "", $urlargs) . "'>" . ($filter["language"] == "Brain" ? "Brainf**k" : $filter["language"]) . "</a>";
+        $filters[] = "<a class='list-group-item' href='?" . str_replace("&lan=" . urlencode($filter["language"]), "", $urlargs) . "'>" . ($filter["language"] == "Brain" ? "Brainf**k" : $filter["language"]) . "</a>";
         $rejudge .= "&lan=" . urlencode($_GET["lan"]);
     }
     if (!empty($_GET["res"]) && key_exists($_GET["res"], $fullresult)) {
         $filter["result"] = $_GET["res"];
-        $filters[] = "<a href='?" . str_replace("&res=$filter[result]", "", $urlargs) . "'>" . $fullresult[$filter["result"]] . "</a>";
+        $filters[] = "<a class='list-group-item' href='?" . str_replace("&res=$filter[result]", "", $urlargs) . "'>" . $fullresult[$filter["result"]] . "</a>";
         $rejudge .= "&res=" . urlencode($_GET["res"]);
     }
     $condition = "";
@@ -72,13 +72,11 @@ function display_submissions()
         if (mysqli_num_rows($t)) {
             $filter["pgroup"] = $_GET["pgr"];
             $probdata = mysqli_fetch_array($t);
-            $filters[] = "<a href='?" . str_replace("&pgr=" . urlencode($filter["pgroup"]), "", $urlargs) . "'>" . filter(preg_replace('/^#[0-9]+ /', '', $filter["pgroup"])) . "</a>";
+            $filters[] = "<a class='list-group-item' href='?" . str_replace("&pgr=" . urlencode($filter["pgroup"]), "", $urlargs) . "'>" . filter(preg_replace('/^#[0-9]+ /', '', $filter["pgroup"])) . "</a>";
             $rejudge .= "&pgr=$filter[pgroup]";
             $condition .= " AND pid in (SELECT pid FROM problems WHERE pgroup='$filter[pgroup]')";
         }
     }
-
-    echo "<center>";
 
     if (count($filter)) {
         echo "<div class='filter'><b>Active Filter(s)</b> : " . implode(" , ", $filters) . " (Click to Remove)</div>";
@@ -126,7 +124,6 @@ function display_submissions()
         echo "<div id='team-information' style='display:none;'>";
         echo "<table width=80%><tr><th>Team Members</th><td>$members</td></tr><tr><th>Score</th><td>$teamdata[score]</td></tr><tr><th>Problems Solved</th><td>$solvedp ($solvedn)</td></tr>";
         echo "</table><br></div>";
-
     }
 
     if (isset($filter["pid"])) {
@@ -160,9 +157,9 @@ function display_submissions()
             }
         }
         if ($info != NULL) {
-            echo "<table class='substat'><tr><th>Total Submissions</th>";
+            echo "<table class='table table-borderless'><tr><th>Total Submissions</th>";
             foreach ($fullresult as $key => $value) {
-                echo "<th><a href='?" . ($urlargs) . "&res=$key'>" . ($value) . "</a></th>";
+                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&res=$key'>" . ($value) . "</a></th>";
             }
             echo "<th>Unjudged Submissions</th></tr><tr><td>" . $info["TOT"] . "</td>";
             foreach ($fullresult as $key => $value) {
@@ -185,9 +182,9 @@ function display_submissions()
             }
         }
         if ($info != NULL) {
-            echo "<table class='substat'><tr>";
+            echo "<table class='table table-borderless'><tr>";
             foreach ($extension as $key => $value) {
-                echo "<th><a href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key == "Brain" ? "Brainf**k" : $key) . "</a></th>";
+                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key == "Brain" ? "Brainf**k" : $key) . "</a></th>";
             }
             echo "</tr><tr>";
             foreach ($extension as $key => $value) {
@@ -215,14 +212,24 @@ function display_submissions()
     if (isset($admin["substatpage"]) && $admin["substatpage"] >= 0) {
         $perpage = $admin["substatpage"];
     } else {
-        $perpage = 25;
+        $perpage = 5;
     }
     $x = paginate($urlargs, $totalCount, $perpage);
     $page = $x[0];
-    $pagenav = $x[1];
-
-    echo $pagenav . "<br><br>";
-    echo "<table class='submission'><th>Run ID</th><th>Team</th><th>Problem</th><th>Language</th><th>Time</th><th>Result</th><th " . ($_SESSION["status"] == "Admin" ? "style='width:170px;'" : "") . ">Options</th></tr>";
+    echo "
+        <table class='table table-borderless'>
+            <thead>
+                <tr class='table table-info'>
+                    <th>Run ID</th>
+                    <th>Team</th>
+                    <th>Problem</th>
+                    <th>Language</th>
+                    <th>Time</th>
+                    <th>Result</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>";
     $data = mysqli_query($link, "SELECT * FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC LIMIT " . (($page - 1) * $perpage) . "," . $perpage);
     $n = mysqli_num_rows($data);
     for ($i = 0; $temp = mysqli_fetch_array($data); $i++) {
@@ -263,29 +270,69 @@ function display_submissions()
         } elseif ($result != "AC") $result = "NAC";
 
         if ($_SESSION["status"] == "Admin" || $_SESSION["tid"] == $temp["tid"] || $temp["access"] == "public") {
-            echo "<tr class='$result'><td><a href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td><td><a href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]' title='Link to Team'>$teamname</td><td><a href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]' title='Link to Problem'>$probname</a></td><td><a href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td><td>$temp[time]</td><td class='$result'><a href='?$urlargs&res=$r'>$fresult</a></td>";
+            echo "<tr class='$result'>
+                    <td><a class='list-group-item' href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]' title='Link to Team'>$teamname</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]' title='Link to Problem'>$probname</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td>
+                    <td>$temp[time]</td>
+                    <td class='$result'><a class='list-group-item' href='?$urlargs&res=$r'>$fresult</a></td>";
         } else {
-            echo "<tr class='$result'><td>$temp[rid]</td><td><a href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]'>$teamname</td><td><a href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]'>$probname</a></td><td><a href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td><td>$temp[time]</td><td class='$result'><a href='?$urlargs&res=$r'>$fresult</a></td>";
+            echo "<tr class='$result'>
+                    <td>$temp[rid]</td>
+                    <td><a href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]'>$teamname</a></td>
+                    <td><a href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]'>$probname</a></td>
+                    <td><a href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td>
+                    <td>$temp[time]</td>
+                    <td class='$result'><a href='?$urlargs&res=$r'>$fresult</a></td>";
         }
+        
         if ($_SESSION["status"] == "Admin") {
-            echo "<td><input class='btn btn-warning' type='button' value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">";
+            echo "<td>
+                    <input class='btn btn-warning' type='button' value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">";
             if ($temp["access"] == "private") {
                 echo "<input class='btn btn-secondary' type='button' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$temp[rid]';\">";
             } else {
                 echo "<input class='btn btn-info' type='button' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$temp[rid]';\">";
             }
-            echo "<input class='btn btn-danger' type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">";
-            echo "</td>";
+            echo "<input class='btn btn-danger' type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">
+                </td>";
         } else if ($_SESSION["status"] == "Admin" || $_SESSION["tid"] == $temp["tid"] || $temp["access"] == "public") {
-            echo "<td><input type='button' value='Code' onClick=\"window.location='?display=code&rid=$temp[rid]';\"></td>";
+            echo "<td>
+                    <input type='button' value='Code' onClick=\"window.location='?display=code&rid=$temp[rid]';\">
+                </td>";
         } else {
             echo "<td></td>";
         }
         echo "</tr>";
     }
-    echo "</table><br>";
-
-    echo $pagenav . "</center>";
+    echo "</tbody></table>";
+    $totalpages = max(1, ceil($totalCount / $perpage));
+    $currentPage = $x[0];
+    
+    echo "
+        <div class='d-flex justify-content-center'>
+            <nav aria-label='Page navigation example'>
+                <ul class='pagination'>
+                    <li class='page-item" . ($currentPage == 1 ? " disabled" : "") . "'>
+                        <a class='page-link' href='?$urlargs&" . ($currentPage == 1 ? "" : "page=" . ($currentPage - 1)) . "' aria-label='Previous'>
+                        <span aria-hidden='true'>&laquo;</span>
+                        </a>
+                    </li>";
+    
+    for ($page = max(1, $currentPage - 2); $page <= min($currentPage + 2, $totalpages); $page++) {
+        echo "<li class='page-item" . ($currentPage == $page ? " active" : "") . "'><a class='page-link' href='?$urlargs&page=$page'>$page</a></li>";
+    }
+    
+    echo "
+                    <li class='page-item" . ($currentPage == $totalpages ? " disabled" : "") . "'>
+                        <a class='page-link' href='?$urlargs&" . ($currentPage == $totalpages ? "" : "page=" . ($currentPage + 1)) . "' aria-label='Next'>
+                        <span aria-hidden='true'>&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>";
 }
 
 
@@ -309,7 +356,7 @@ function display_rankings(): void
     $x = paginate("display=rankings&group=$group", $totalCount, $perpage);
     $page = $x[0];
     $pagenav = $x[1];
-    echo "<center><h2>Current Rankings</h2>";
+    echo "<h2>Current Rankings</h2>";
     echo "This page displays the current Team Scores and Ranking based on the current Teams and Problems. The information being displayed here shall be used to update the <a href='?display=scoreboard'>Main Team Scores and Rankings</a>.<br><br>";
 
     $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx<2");
@@ -321,7 +368,7 @@ function display_rankings(): void
     echo "</select><br><br>";
 
     echo $pagenav . "<br><br>";
-    echo "<table><th>Rank</th><th>Team</th>" . ($group == 0 ? "<th>Team Group</th>" : "") . "<th>Problems Solved / Attempted</th><th>Score</th></tr>";
+    echo "<table class='table table-bordered'><th>Rank</th><th>Team</th>" . ($group == 0 ? "<th>Team Group</th>" : "") . "<th>Problems Solved / Attempted</th><th>Score</th></tr>";
     $data = mysqli_query($link, "SELECT * FROM teams WHERE status='Normal' " . ($group == 0 ? "" : " AND gid=$group ") . " ORDER BY score DESC, penalty ASC LIMIT " . (($page - 1) * $perpage) . "," . $perpage);
 
     while ($temp = mysqli_fetch_array($data)) {
@@ -346,7 +393,7 @@ function display_rankings(): void
 
         $rank++;
     }
-    echo "</table><br>$pagenav</center>";
+    echo "</table>$pagenav";
 }
 
 
@@ -354,7 +401,7 @@ function display_scoreboard(): void
 {
     $link = mysqli_connect("localhost", "root", "", "nexeum");
 
-    echo "<center><h2>Main Scoreboard</h2>";
+    echo "<h2>Main Scoreboard</h2>";
     echo "This page displays the Team Scores and Rank based on the results of past competitions, and do not have anything to do with the <a href='?display=rankings'>Current Team Scores and Rankings</a>.<br><br>";
     $tempQuery = mysqli_query($link, "SELECT value FROM admin WHERE variable='scoreboard'");
     if (mysqli_num_rows($tempQuery) == 1) {
@@ -363,8 +410,4 @@ function display_scoreboard(): void
     } else {
         echo "<table><tr><th>Rank</th><th>Team ID</th><th>Team Name</th><th>Total</th></table>";
     }
-    echo "</center>";
 }
-
-
-?>

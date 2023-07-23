@@ -53,7 +53,7 @@ function action_clarcache()
             $filedata .= "</td></tr></table>";
         }
     } else {
-        $filedata .= "<table><tr><td>Not Available</td></tr></table>";
+        $filedata .= "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a class='list-group-item' href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h4></th></tr></thead><tbody><tr><td>Not Available</td></tr></tbody></table>";
     }
     $admin["cache-clarlatest"] = $filedata;
 }

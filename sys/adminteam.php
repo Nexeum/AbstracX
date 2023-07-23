@@ -1,20 +1,25 @@
-<div style="text-align: center;">
-    <div style="text-align: center; justify-content: center;" id="teamlist">
-        <h2>Administrator Options: List of Teams</h2>
-        <input class="btn btn-info" type="button" value="Add New Team" onclick="window.location='?display=register'" />
-        <input class="btn btn-success" type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
-            onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');" /><br><br>
+<div>
+    <div id="teamlist">
+        <h2 style="text-align: center;">Administrator Options: List of Teams</h2>
+        <div style="display: flex; justify-content: center;">
+            <input class="btn btn-info" type="button" value="Add New Team" onclick="window.location='?display=register'" />
+            <input class="btn btn-success" type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
+                onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');" />
+        </div>
+        <hr>
         <?php
-        $link = mysqli_connect("localhost", "root", "", "nexeum");
+            $link = mysqli_connect("localhost", "root", "", "nexeum");
 
-        $totalQuery = mysqli_query($link, "SELECT COUNT(*) AS total FROM teams WHERE status != 'Delete'");
-        $totalResult = mysqli_fetch_array($totalQuery);
-        $totalCount = $totalResult["total"];
-        $limit = $admin["teampage"] ?? 25;
-        [$page, $pagenav] = paginate("display=adminteam", $totalCount, $limit);
-        echo $pagenav . "<br><br>";
+            $totalQuery = mysqli_query($link, "SELECT COUNT(*) AS total FROM teams WHERE status != 'Delete'");
+            $totalResult = mysqli_fetch_array($totalQuery);
+            $totalCount = $totalResult["total"];
+            $limit = $admin["teampage"] ?? 25;
+            [$page, $pagenav] = paginate("display=adminteam", $totalCount, $limit);
+            echo "<div style='display: flex; justify-content: center;'>";
+            echo $pagenav . "<hr>";
+            echo "</div>"
         ?>
-        <table style="width: 100%" class="adminteam">
+        <table style="margin: 0 auto;" class="adminteam">
             <tr>
                 <th>Team ID</th>
                 <th>Team Name</th>
@@ -25,42 +30,57 @@
                 <th>Update</th>
             </tr>
             <?php
-            $data = mysqli_query($link, "SELECT * FROM teams WHERE status!='Delete' ORDER BY tid DESC LIMIT " . (($page - 1) * $limit) . "," . ($limit));
-            while ($t = mysqli_fetch_array($data)) {
-                $script = "$('div#teamlist').slideUp(250); $('div#teamedit').slideDown(250); ";
-                foreach ($t as $key => $value) {
-                    if (preg_match("/[^0-9]/i", $key) && $key != "pass" && $key != "penalty" && $key != "platform" && $key != "ip" && $key != "session") {
-                        $script .= "document.getElementById('update_$key').value='$value'; ";
+                $data = mysqli_query($link, "SELECT * FROM teams WHERE status!='Delete' ORDER BY tid DESC LIMIT " . (($page - 1) * $limit) . "," . ($limit));
+                while ($t = mysqli_fetch_array($data)) {
+                    $script = "$('div#teamlist').slideUp(250); $('div#teamedit').slideDown(250); ";
+                    foreach ($t as $key => $value) {
+                        if (preg_match("/[^0-9]/i", $key) && $key != "pass" && $key != "penalty" && $key != "platform" && $key != "ip" && $key != "session") {
+                            $script .= "document.getElementById('update_$key').value='$value'; ";
+                        }
                     }
-                }
-                $members = array();
-                for ($i = 1; $i <= 3; $i++) {
-                    if (!empty($t["name" . $i])) {
-                        $members[] = $t["name" . $i];
+                    $members = array();
+                    for ($i = 1; $i <= 3; $i++) {
+                        if (!empty($t["name" . $i])) {
+                            $members[] = $t["name" . $i];
+                        }
                     }
+                    $members = implode(", ", $members);
+                    $ip = json_decode(stripslashes($t["ip"]));
+                    if (is_array($ip)) {
+                        $ip = implode(", ", $ip);
+                    }
+                    $platform = stripslashes($t["platform"]);
+                    if ($t["status"] == "Suspend") {
+                        $t["status"] = "Suspended";
+                    }
+                    $groupname = mysqli_query($link, "SELECT groupname FROM groups WHERE gid=$t[gid];");
+                    if (mysqli_num_rows($groupname) == 0) {
+                        $groupname = "";
+                    } else {
+                        $groupname = mysqli_fetch_assoc($groupname);
+                        $groupname = $groupname["groupname"];
+                    }
+                    echo "
+                        <tr>
+                            <td>$t[tid]</td>
+                            <td>
+                                <a href='?display=submissions&tid=$t[tid]'>$t[teamname]
+                            </td>
+                            <td>$groupname</td>
+                            <td>$t[status]</td>
+                            <td>$members</td>
+                            <td>$ip $platform</td>
+                            <td>
+                                <input class='btn btn-info' type='button' value='Edit' onClick=\"$script\" />
+                            </td>
+                        </tr>";
                 }
-                $members = implode(", ", $members);
-                $ip = json_decode(stripslashes($t["ip"]));
-                if (is_array($ip)) {
-                    $ip = implode(", ", $ip);
-                }
-                $platform = stripslashes($t["platform"]);
-                if ($t["status"] == "Suspend") {
-                    $t["status"] = "Suspended";
-                }
-                $groupname = mysqli_query($link, "SELECT groupname FROM groups WHERE gid=$t[gid];");
-                if (mysqli_num_rows($groupname) == 0) {
-                    $groupname = "";
-                } else {
-                    $groupname = mysqli_fetch_assoc($groupname);
-                    $groupname = $groupname["groupname"];
-                }
-                echo "<tr><td>$t[tid]</td><td><a href='?display=submissions&tid=$t[tid]'>$t[teamname]</td><td>$groupname</td><td>$t[status]</td><td>$members</td><td>$ip $platform</td><td><input class='btn btn-info' type='button' value='Edit' onClick=\"$script\" /></td></tr>";
-            }
             ?>
         </table>
-        <br>
-        <?php echo $pagenav; ?>
+        <hr>
+        <div style="display: flex; justify-content: center;">
+            <?php echo $pagenav; ?>
+        </div>
     </div>
 
     <script>
@@ -79,7 +99,7 @@
     <div id="teamedit" style="display:none;">
         <h2>Administrator Options: Update Team Data</h2>
         <form action="?action=updateteam" method="post">
-            <table>
+            <table style="margin: 0 auto;">
                 <tr>
                     <th colspan="2">Team Information (Compulsory)</th>
                     <td class="vdiv" rowspan="8"></td>
@@ -87,9 +107,13 @@
                 </tr>
                 <tr>
                     <td>Team Name</td>
-                    <td><input tabindex="1" id="update_teamname" name="update_teamname"></td>
+                    <td>
+                        <input tabindex="1" id="update_teamname" name="update_teamname">
+                    </td>
                     <td>Full Name</td>
-                    <td><input tabindex="7" id="update_name1" name="update_name1"></td>
+                    <td>
+                        <input tabindex="7" id="update_name1" name="update_name1">
+                    </td>
                 </tr>
                 <tr>
                     <td>Team Name</td>
@@ -99,22 +123,33 @@
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input tabindex="3" id="update_pass" name="update_pass" placeholder="**********"></td>
+                    <td>
+                        <input tabindex="3" id="update_pass" name="update_pass" placeholder="**********">
+                    </td>
                     <td>Branch</td>
-                    <td><input tabindex="9" id="update_branch1" name="update_branch1"></td>
+                    <td>
+                        <input tabindex="9" id="update_branch1" name="update_branch1">
+                    </td>
                 </tr>
                 <tr>
                     <td>Score</td>
-                    <td><input tabindex="4" id="update_score" name="update_score" disabled="disabled"></td>
+                    <td>
+                        <input tabindex="4" id="update_score" name="update_score" disabled="disabled">
+                    </td>
                     <td>Email Address</td>
-                    <td><input tabindex="10" id="update_email1" name="update_email1"></td>
+                    <td>
+                        <input tabindex="10" id="update_email1" name="update_email1">
+                    </td>
                 </tr>
                 <tr>
                     <td>Solved</td>
-                    <td><input tabindex="5" id="update_solved" name="update_solved"
-                            title="Solved Problem IDs separated by Commas"></td>
+                    <td>
+                        <input tabindex="5" id="update_solved" name="update_solved" title="Solved Problem IDs separated by Commas">
+                    </td>
                     <td>Phone Number</td>
-                    <td><input tabindex="11" id="update_phone1" name="update_phone1"></td>
+                    <td>
+                        <input tabindex="11" id="update_phone1" name="update_phone1">
+                    </td>
                 </tr>
                 <tr>
                     <td>Status</td>
@@ -142,9 +177,6 @@
                             ?>
                         </select>
                     </td>
-                </tr>
-                <tr>
-                    <td class="hdiv" colspan="5"></td>
                 </tr>
                 <tr>
                     <th colspan="2">Team Member 2 (Optional)</th>
@@ -181,14 +213,13 @@
                     <td>Phone Number</td>
                     <td><input tabindex="21" id="update_phone3" name="update_phone3"></td>
                 </tr>
-                <tr>
-                    <td colspan="5"></td>
-                </tr>
             </table>
-            <br>
-            <input type="hidden" id="update_tid" name="update_tid">
-            <input type="submit" value="Update Team Data">
-            <input type="button" value="Cancel" onclick="toggleSections('teamlist', 'teamedit');" />
+            <hr>
+            <div style="display: flex; justify-content: center;">
+                <input type="hidden" id="update_tid" name="update_tid">
+                <input type="submit" value="Update Team Data">
+                <input type="button" value="Cancel" onclick="toggleSections('teamlist', 'teamedit');" />
+            </div>
         </form>
     </div>
 

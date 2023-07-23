@@ -106,7 +106,7 @@ function mysql_initiate()
     $teamQuery = mysqli_query($link, "SELECT * FROM teams");
     if ($teamQuery) {
         if (mysqli_num_rows($teamQuery) == 0) {
-            mysqli_query($link, "INSERT INTO teams (teamname, pass, status) VALUES ('admin', 'admin', 'Admin')");
+            mysqli_query($link, "INSERT INTO teams (teamname, pass, status, gid) VALUES ('admin', 'admin', 'Admin', 1)");
         }
     } else {
         echo "Error en la consulta: " . mysqli_error($link);
