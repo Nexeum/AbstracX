@@ -95,7 +95,7 @@ include("sys/system_init.php");
         </nav>
 
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-2 col-md-4 col-12">
                 <div class="row">
                     <div class="col">
                         <div class="border rounded mb-3">
@@ -145,7 +145,7 @@ include("sys/system_init.php");
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8 col-md-4 col-12">
                 <div class="row">
                     <div class="col">
                         <?php display_message(); ?>
@@ -156,7 +156,7 @@ include("sys/system_init.php");
                 </div>
             </div>
 
-            <div class="col-lg-2">
+            <div class="col-lg-2 col-md-4 col-12">
                 <div class="row">
                     <div class="col">
                         <div class="border rounded mb-3">
