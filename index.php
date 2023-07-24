@@ -98,7 +98,7 @@ include("sys/system_init.php");
             <div class="col-lg-2 col-md-4 col-12">
                 <div class="row">
                     <div class="col">
-                        <div class="border rounded mb-3">
+                        <div class="table-responsive border rounded mb-3">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr class="table-primary">
@@ -131,17 +131,17 @@ include("sys/system_init.php");
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="border rounded mb-3" id='ajax-problem'></div>
+                        <div class="table-responsive border rounded mb-3" id='ajax-problem'></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="border rounded mb-3" id='ajax-allsubmit'></div>
+                        <div class="table-responsive border rounded mb-3" id='ajax-allsubmit'></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="border rounded mb-3" id='ajax-rankings'></div>
+                        <div class="table-responsive border rounded mb-3" id='ajax-rankings'></div>
                     </div>
                 </div>
             </div>
