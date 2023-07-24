@@ -47,18 +47,18 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
         $pagenav = $x[1];
         echo "<br><br>" . $pagenav . "<br><br>";
         ?>
-        <table style="width: 100%">
-            <tr>
-                <th>Problem ID</th>
-                <th>Problem Group</th>
-                <th>Problem Name</th>
-                <th>Problem Code</th>
-                <th>Problem Type</th>
-                <th>Time Limit</th>
-                <th>Score</th>
-                <th>Status</th>
-                <th>Update</th>
-            </tr>
+        <table>
+                <tr>
+                    <th>Problem ID</th>
+                    <th>Problem Group</th>
+                    <th>Problem Name</th>
+                    <th>Problem Code</th>
+                    <th>Problem Type</th>
+                    <th>Time Limit</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
             <?php
             $data = mysqli_query($link, "SELECT * FROM problems WHERE status!='Delete' ORDER BY pid DESC LIMIT " . (($page - 1) * $limit) . "," . ($limit));
             while ($temp = mysqli_fetch_array($data)) {

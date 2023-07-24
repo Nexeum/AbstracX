@@ -225,7 +225,7 @@ function display_problem()
 			<form action='?action=submitcode' method='post' name='submitcode' enctype='multipart/form-data' onSubmit=\"return code_validate();\"><input type='hidden' name='code_pid' value='$pid'>
 			<table width=100%><tr><th>Language</th><th><select id='code_lang' name='code_lang'>" . $languages . "</select></th><input type='hidden' name='MAX_FILE_SIZE' value='$maxcodesize' />";
         echo "<th>Code File</th><th><input type='file' name='code_file' style='width:200px;' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" /></th></tr>
-			<tr><td colspan=20 style='text-align:left;'><textarea id='code_text' name='code_text' style='width:100%; height: 300px;' class='code' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea></td></tr></table>
+			<tr><td colspan=20 style='text-align:left;'><div id='code_text' name='code_text' style='width:100%; height: 300px;' class='code' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</div></td></tr></table>
 			<table width=100%> <input type='hidden' name='code_name' id='code_name' value='code'>
 			<tr><th><div class='small'>If you submit both File and Text (copy-pasted in the above textarea), the Text will be ignored.</div></th><th><input type='submit' value='Submit Code'></th></tr>
 			</table></form></center>";
