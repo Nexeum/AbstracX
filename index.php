@@ -68,7 +68,7 @@ include("sys/system_init.php");
                         <li class="nav-item">
                             <a class="nav-link" href="?display=submissions">Submissions</a>
                         </li>
-                        <?php if ($_SESSION["status"] == "Admin") : ?>
+                        <?php if ($_SESSION["status"] == "Admin"): ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Administrador
@@ -96,53 +96,89 @@ include("sys/system_init.php");
 
         <div class="row">
             <div class="col-lg-2 col-md-4 col-12">
-                <div class="border rounded mb-3">
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr class="table-primary">
-                                <th colspan="3" class="text-center">
-                                    <h4>Contest Status</h4>
-                                </th>
-                            </tr>
-                            <tr class="table-info">
-                                <th class="text-center">Mode</th>
-                                <th class="text-center">Judgement</th>
-                                <th class="text-center">Timer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <div id='ajax-contest-status'></div>
-                                </td>
-                                <td class="text-center">
-                                    <div id='ajax-contest-judgement'></div>
-                                </td>
-                                <td class="text-center">
-                                    <div id='ajax-contest-time'></div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th colspan="3" class="text-center">
+                                            <h4>Contest Status</h4>
+                                        </th>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <th class="text-center">Mode</th>
+                                        <th class="text-center">Judgement</th>
+                                        <th class="text-center">Timer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                            <div id='ajax-contest-status'></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id='ajax-contest-judgement'></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div id='ajax-contest-time'></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="border rounded mb-3" id='ajax-problem'></div>
-                <div class="border rounded mb-3" id='ajax-allsubmit'></div>
-                <div class="border rounded mb-3" id='ajax-rankings'></div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-problem'></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-allsubmit'></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-rankings'></div>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-8 col-md-4 col-12">
-                <?php display_message(); ?>
-                <div class="border rounded mb-3">
-                    <?php display_main(); ?>
+                <div class="row">
+                    <div class="col">
+                        <?php display_message(); ?>
+                        <div class="border rounded mb-3">
+                            <?php display_main(); ?>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-lg-2 col-md-4 col-12">
-                <div class="border rounded mb-3">
-                    <?php display_statusbox(); ?>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3">
+                            <?php display_statusbox(); ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="border rounded mb-3" id='ajax-mysubmit'></div>
-                <div class="border rounded mb-3" id='ajax-privateclar'></div>
-                <div class="border rounded mb-3" id='ajax-publicclar'></div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-mysubmit'></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-privateclar'></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="border rounded mb-3" id='ajax-publicclar'></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
