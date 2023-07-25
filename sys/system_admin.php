@@ -70,8 +70,8 @@ function display_adminlogs()
         $page = $x[0];
         $pagenav = $x[1];
 
-        echo "<center><h2>Administrator Options : Access Logs</h2><style>table.adminlogs td { font-size:10px; padding:2px; }</style>";
-        echo "$pagenav<br><br><table class='adminlogs'><tr><th>Date & Time</th><th>IP Address</th><th>Team ID/Name</th><th>Request</th></tr>";
+        echo "<h3>Administrator Options : Access Logs</h3>";
+        echo "<table class='table table-borderless'><thead><tr class='table-primary'><th>Date & Time</th><th>IP Address</th><th>Team ID/Name</th><th>Request</th></tr></thead>";
         $teams = mysqli_query($link, "SELECT tid,teamname FROM teams");
         while ($team = mysqli_fetch_array($teams)) {
             $teamnames[$team["tid"]] = $team["teamname"];
