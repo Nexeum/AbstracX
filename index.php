@@ -68,7 +68,7 @@ include("sys/system_init.php");
                         <li class="nav-item">
                             <a class="nav-link" href="?display=submissions">Submissions</a>
                         </li>
-                        <?php if ($_SESSION["status"] == "Admin"): ?>
+                        <?php if ($_SESSION["status"] == "Admin") : ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Administrador
@@ -98,29 +98,35 @@ include("sys/system_init.php");
             <div class="col-lg-2 col-md-4 col-12">
                 <div class="row">
                     <div class="col">
-                        <div class="table-responsive border rounded mb-3">
+                        <div class="border rounded mb-3">
                             <table class="table table-borderless">
-                                <thead>
-                                    <tr class="table-primary">
-                                        <th colspan="3" class="text-center">
-                                            <h4>Contest Status</h4>
-                                        </th>
-                                    </tr>
-                                    <tr class="table-info">
-                                        <th class="text-center">Mode</th>
-                                        <th class="text-center">Judgement</th>
-                                        <th class="text-center">Timer</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center">
+                                        <td colspan="2" class="table-primary">
+                                            <h4>Contest Status</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-info">
+                                            <strong>Mode:</strong>
+                                        </td>
+                                        <td>
                                             <div id='ajax-contest-status'></div>
                                         </td>
-                                        <td class="text-center">
+                                    </tr>
+                                    <tr>
+                                        <td class="table-info">
+                                            <strong>Judgement:</strong>
+                                        </td>
+                                        <td>
                                             <div id='ajax-contest-judgement'></div>
                                         </td>
-                                        <td class="text-center">
+                                    </tr>
+                                    <tr>
+                                        <td class="table-info">
+                                            <strong>Timer:</strong>
+                                        </td>
+                                        <td>
                                             <div id='ajax-contest-time'></div>
                                         </td>
                                     </tr>

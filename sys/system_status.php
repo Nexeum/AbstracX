@@ -421,7 +421,7 @@ function display_rankings(): void
             $rank++;
         }
     }else{
-        echo "<tr><td colspan='4'>Not Available</td></tr>";
+        echo "<tr><th colspan='4'>Not Available</th></tr>";
     }
 
     echo "</tbody></table></div>";

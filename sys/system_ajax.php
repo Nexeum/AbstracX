@@ -289,8 +289,13 @@ function action_ajaxrefresh($type): bool|string
         }
         $json["ajax-account"] = "
             <table class='table table-borderless'>
-                <thead><tr class='table-primary'><th colspan='3'><h4>Team Name :<a class='list-group-item' href='?display=submissions&tid=$tid'>$row[teamname]</a></h4></th></tr><tr class='table-info'><th>Score</th><th>Solved</th><th><a class='list-group-item'href='?display=account'>Account</a></th></tr></thead>";
-        $json["ajax-account"] .= "<tr><td>$row[score]</td><td>$solvedn</td><td><a class='list-group-item' href='?action=logout'>Logout</a></td></table>";
+                <tbody>
+                <tr><td colspan='2' class='table-primary'><h4>Account</h4></td></tr>
+                <tr><td class='table-info'>Team</td><td><a class='list-group-item' href='?display=submissions&tid=$tid'>$row[teamname]</a></td></tr>
+                <tr><td class='table-info'>Score</td><td>$row[score]</td></tr>
+                <tr><td class='table-info'>Solved</td><td>$solvedn</td></tr>
+                <tr><td colspan='2'><a class='btn btn-outline-danger' href='?action=logout'>Logout</a></td></tr>
+                </tbody></table>";
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-clarlatest"])) {
