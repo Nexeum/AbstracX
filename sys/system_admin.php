@@ -223,19 +223,9 @@ function display_executionprotocol()
                 unlink("env/$file");
             }
         }
-        if ($run["language"] == "PHP") {
-            $prefix = "<?php ini_set('log_errors',1); ini_set('error_log','env/error.txt'); ?>";
-        } else {
-            $prefix = "";
-        }
+        $prefix = "";
         file_set("env/$run[name]." . $extension[$run["language"]], $prefix . stripslashes($run["code"]));
-        if ($run["language"] == "PHP") {
-            $problem["timelimit"] += 5;
-        }
         file_set("env/args.txt", "$run[language]\n$run[name]\n$problem[timelimit]\n");
-        if ($run["language"] == "PHP") {
-            $problem["timelimit"] -= 5;
-        }
         file_set("env/input.txt", stripslashes($problem["input"]));
 
         echo "<!--";
@@ -302,7 +292,7 @@ function display_executionprotocol()
         if ($run["language"] == "C" || $run["language"] == "C++" || $run["language"] == "Java") {
             $errormessage = preg_replace("/^[^ ]*" . preg_quote($filename, "/") . "/", $realname, $errormessage);
             $errormessage = preg_replace("/\n[^ ]*" . preg_quote($filename, "/") . "/", "\n$realname", $errormessage);
-        } else if ($run["language"] == "Perl" || $run["language"] == "PHP") {
+        } else if ($run["language"] == "Perl") {
             $errormessage = str_replace(" " . addslashes($filename) . " ", " $realname ", $errormessage);
         } else if ($run["language"] == "Python") {
             $errormessage = preg_replace("/\"[^ ]*" . preg_quote($filename, "/") . "\"/", "\"$realname\"", $errormessage);

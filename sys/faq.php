@@ -127,10 +127,6 @@
                     <li>C++ Compiler : g++ 4.4.5</li>
                     <li>C# Compiler : Mono Compiler Version 2.6.7 (gmcs)</li>
                     <li>Java Compiler : javac 1.6.0_20, java 1.6.0_20</li>
-                    <li>JavaScript Interpreter : rhino 1.7</li>
-                    <li>Pascal Interpreter : gpc version 20070904</li>
-                    <li>Perl Interpreter : perl v5.10.1</li>
-                    <li>PHP Interpreter : PHP 5.3.3</li>
                     <li>Python Interpreter : python 2.6.6</li>
                     <li>Ruby Interpreter : ruby 1.8.7</li>
                 </ul>
@@ -152,8 +148,8 @@
                     your choice of programming language. Accepted solutions to this problem have also been made Public for
                     educational reasons, and are available in the following languages : <a target='new' href='?display=code&rid=1'>C</a>,
                     <a target='new' href='?display=code&rid=2'>C++</a>, <a target='new' href='?display=code&rid=3'>C#</a>,
-                    <a target='new' href='?display=code&rid=4'>Java</a>, <a target='new' href='?display=code&rid=5'>JavaScript</a>,
-                    <a target='new' href='?display=code&rid=6'>Pascal</a>, <a target='new' href='?display=code&rid=7'>Perl</a>, <a target='new' href='?display=code&rid=8'>PHP</a>, <a target='new' href='?display=code&rid=9'>Python</a> and <a target='new' href='?display=code&rid=10'>Ruby</a>. Please remember that there is a 100KB limit on
+                    <a target='new' href='?display=code&rid=4'>Java</a>,
+                    <a target='new' href='?display=code&rid=9'>Python</a> and <a target='new' href='?display=code&rid=10'>Ruby</a>. Please remember that there is a 100KB limit on
                     the size of the code you can submit.
                 </p>
                 <p>Please do bother not submitting malicious programs that might harm the Execution Environment or the
