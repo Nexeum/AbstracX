@@ -66,7 +66,7 @@ function display_problem()
                 unset($t);
             }
             echo "<div id='probindex' class='probindex'>";
-            echo "<div class='probheaders2'><h2>Search Results</h2>";
+            echo "<div class='probheaders2' style='display:none;'><h2>Search Results</h2>";
             echo "<table><th>Problem ID</th><th>Problem Name</th><th>Problem Code</th><th>Problem Type</th><th>Score</th><th>Statistics</th></tr></table></div>";
             foreach ($g as $i => $gn) {
                 echo "<span id='group" . ($i + 1) . "' class='group'><div class='probheaders1'><h2><a id='aSubmissions' href='?display=submissions&pgr=" . urlencode($gn) . "'>Problem Group : " . preg_replace("/^#[0-9]+ /i", "", ($gn == "" ? "Unclassified" : $gn)) . "</a></h2>";

@@ -132,7 +132,7 @@ function display_submissions()
     }
 
     if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<div id='submission-statistics' style='display='display:none;''>";
+        echo "<div id='submission-statistics' style='display='display:none;'>";
     }
     if (!isset($filter["result"])) {
         $t1 = mysqli_query($link, "SELECT result,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by result;");
