@@ -17,11 +17,11 @@ To run this project, you will need to set the variables in `system_config` and `
 ## Available languages
 
 - C (Latest Version: C17)
-- C++ (Latest Version: C++17)
+- C++ (Latest Version: 4:12.2.0-3)
 - C# (Latest Version: C# 9.0)
-- Java (Latest Version: Java 16)
-- Python (Latest Version: Python 3.9)
-- Ruby (Latest Version: Ruby 3.0)
+- Java (Latest Version: 11.0.17+8-2)
+- Python (Latest Version: 3.11.2-1+b1)
+- Ruby (Latest Version: 3.1)
 
 ## Run Locally
 
