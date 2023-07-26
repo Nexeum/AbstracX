@@ -17,15 +17,15 @@ To run this project, you will need to set the variables in `system_config` and `
 ## Available languages
 
 - C (Latest Version: C17)
-- C++ (Latest Version: C++17)
+- C++ (Latest Version: 4:12.2.0-3)
 - C# (Latest Version: C# 9.0)
-- Java (Latest Version: Java 16)
+- Java (Latest Version: 11.0.17+8-2)
 - JavaScript (Latest Version: ECMAScript 2022)
-- Pascal (Latest Version: Free Pascal 3.2)
-- Perl (Latest Version: Perl 5.34)
-- PHP (Latest Version: PHP 8.0)
-- Python (Latest Version: Python 3.9)
-- Ruby (Latest Version: Ruby 3.0)
+- Pascal (Latest Version: 3.2.2+dfsg-21)
+- Perl (Latest Version: 5.36.0-7)
+- PHP (Latest Version: 2:8.2+93)
+- Python (Latest Version: 3.11.2-1+b1)
+- Ruby (Latest Version: 3.1)
 
 ## Run Locally
 
