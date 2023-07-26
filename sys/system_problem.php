@@ -132,23 +132,17 @@ function display_problem()
         echo $statement;
     }
     echo "</td></tr><tr><td colspan='6'><b>Language(s) Allowed</b> : ";
-    echo preg_replace("/Brain/i", "Brainf**k", preg_replace("/,/", ", ", $row["languages"]));
+    echo preg_replace("/,/", ", ", $row["languages"]);
     echo "</td></tr>";
 
     $languages = "";
     if (isset($row["languages"])){
         foreach (explode(",", $row["languages"]) as $l){
-            if ($l == "Brain") {
-                if ($l == $defaultlang) {
-                    $languages .= "<option value='Brain' selected='selected'>Brainf**k</option>";
-                } else {
-                    $languages .= "<option value='Brain'>Brainf**k</option>";
-                }
-            } else if ($l == $defaultlang) {
-                $languages .= "<option selected='selected'>" . $defaultlang . "</option>";
+            if ($l == $defaultlang) {
+                $languages .= "<option value='$l' selected='selected'>$l</option>";
             } else {
-                $languages .= "<option>$l</option>";
-            }
+                $languages .= "<option value='$l'>$l</option>";
+            }            
         }
     }
     $data = mysqli_query($link,"SELECT * FROM clar WHERE access='Public' and clar.pid=$pid ORDER BY time ASC");
@@ -191,9 +185,6 @@ function display_problem()
                 $run = mysqli_fetch_array($t);
                 if ($_SESSION["tid"] == $run["tid"] || $run["access"] == "public" || $_SESSION["status"] == "Admin") {
                     $editcode = preg_replace("/</i", "&lt;", $run["code"]);
-                }
-                if ($run["language"] == "Brain") {
-                    $run["language"] = "Brainf**k";
                 }
                 $languages = str_replace(">$run[language]</option>", " selected='selected'>$run[language]</option>", str_replace(" selected='selected'", "", $languages));
             }
