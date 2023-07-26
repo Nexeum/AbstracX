@@ -20,10 +20,6 @@ To run this project, you will need to set the variables in `system_config` and `
 - C++ (Latest Version: C++17)
 - C# (Latest Version: C# 9.0)
 - Java (Latest Version: Java 16)
-- JavaScript (Latest Version: ECMAScript 2022)
-- Pascal (Latest Version: Free Pascal 3.2)
-- Perl (Latest Version: Perl 5.34)
-- PHP (Latest Version: PHP 8.0)
 - Python (Latest Version: Python 3.9)
 - Ruby (Latest Version: Ruby 3.0)
 

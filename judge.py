@@ -3,7 +3,7 @@ import platform, re, os, shutil, sys, _thread, time, urllib
 
 # Ubuntu 22.04
 # sudo apt-get update
-# sudo apt-get install g++ fpc mono-mcs openjdk-11-jdk perl php python3 python3-pymysql rhino ruby
+# sudo apt-get install g++ fpc mono-mcs openjdk-11-jdk python3 python3-pymysql ruby
 
 
 if "-judge" not in sys.argv:
@@ -31,10 +31,6 @@ extension = {
     "C++": "cpp",
     "C#": "cs",
     "Java": "java",
-    "JavaScript": "js",
-    "Pascal": "pas",
-    "Perl": "pl",
-    "PHP": "php",
     "Python": "py",
     "Ruby": "rb"
 }
@@ -74,11 +70,7 @@ def system():
         "C": "gcc",
         "C++": "g++",
         "Java": "javac",
-        "JavaScript": "js",
         "C#": "mcs",
-        "Pascal": "fpc",
-        "Perl": "perl",
-        "PHP": "php",
         "Python": "python3",
         "Ruby": "ruby"
     }
@@ -92,24 +84,26 @@ def system():
 
 # Program Compilation
 def create(codefilename, language):
-    if language not in ('C', 'C++', 'C#', 'Java', 'Pascal'):
+    if language not in ('C', 'C++', 'C#', 'Java'):
         return
 
     print("Compiling Code File ...")
     result = None
-
+    print("prueba")
     compile_commands = {
         "C": f"gcc env/{codefilename}.c -lm -lcrypt -O2 -pipe -ansi -DONLINE_JUDGE -w -o env/{codefilename} {ioeredirect}",
         "C++": f"g++ env/{codefilename}.cpp -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o env/{codefilename} {ioeredirect}",
-        "C#": f"gmcs env/{codefilename}.cs -out:env/{codefilename}.exe {ioeredirect}",
-        "Java": f"javac -g:none -Xlint -d env env/{codefilename}.java {ioeredirect}",
-        "Pascal": f"fpc env/{codefilename}.pas -oenv/{codefilename} {ioeredirect}"
+        "C#": f"mcs env/{codefilename}.cs -out:env/{codefilename}.exe {ioeredirect}",
+        "Java": f"javac -g:none -Xlint -d env env/{codefilename}.java {ioeredirect}"
     }
-
+    print(language)
+    print("Revision de posible error")
     if language in compile_commands:
         compile_command = compile_commands[language]
         os.system(compile_command)
-        if not os.path.exists(f"env/{codefilename}"):
+        print(f"env/{codefilename}")
+        if not os.path.exists(f"env/{codefilename}.{get_extension(language)}"):
+            print("aqui")
             result = "CE"
 
     if result is not None:
@@ -119,6 +113,14 @@ def create(codefilename, language):
 
     return result
 
+def get_extension(language):
+    extensions = {
+        "C": "c",
+        "C++": "cpp",
+        "C#": "cs",
+        "Java": "java"
+    }
+    return extensions[language]
 
 # Program Execution
 def execute(exename, language):
@@ -131,10 +133,6 @@ def execute(exename, language):
         "C++": f"env/{exename} {ioeredirect}",
         "C#": f"mono env/{exename}.exe {ioeredirect}",
         "Java": f"java -client -classpath env {exename} {ioeredirect}",
-        "JavaScript": f"rhino -f env/{exename}.js {ioeredirect}",
-        "Pascal": f"env/{exename} {ioeredirect}",
-        "Perl": f"perl env/{exename}.pl {ioeredirect}",
-        "PHP": f"php -f env/{exename}.php {ioeredirect}",
         "Python": f"python env/{exename}.py {ioeredirect}",
         "Ruby": f"ruby env/{exename}.rb {ioeredirect}"
     }
@@ -156,10 +154,6 @@ def kill(exename, language):
         "C++": exename,
         "C#": "mono",
         "Java": "java",
-        "JavaScript": "rhino",
-        "Pascal": exename,
-        "Perl": "perl",
-        "PHP": "php",
         "Python": "python",
         "Ruby": "ruby"
     }
@@ -273,8 +267,6 @@ try:
                     codefilename = "code"
 
                 codefile = open("env/" + codefilename + "." + extension[run["language"]], "w")
-                if (run["language"] == "PHP"): 
-                    codefile.write(php_prefix) # append prefix for PHP
                 codefile.write(run["code"].replace("\r", ""))
                 codefile.close()
                 if "-cache" not in sys.argv:
@@ -287,10 +279,6 @@ try:
             # Compile, if required
             if result == None:
                 result = create(codefilename, run["language"]);  # Compile
-
-            # Increase Time Limit in case of JavaScript & PHP
-            if run["language"] in ('JavaScript', 'PHP'):
-                run["timelimit"] += 1
 
             # Run the program through a new thread, and kill it after some time
             if result == None:
@@ -366,6 +354,7 @@ try:
                 print("Press CTRL+C to terminate the Execution Protocol.")
                 time.sleep(1)
                 countdown -= 1
+            os.unlink("lock.txt")
             sys.exit(0)
         # Update admin.lastjudge time on server
         cursor.execute("SELECT * FROM admin WHERE variable='lastjudge'")

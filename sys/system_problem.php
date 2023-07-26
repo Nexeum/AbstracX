@@ -189,7 +189,7 @@ function display_problem()
                 $languages = str_replace(">$run[language]</option>", " selected='selected'>$run[language]</option>", str_replace(" selected='selected'", "", $languages));
             }
         }
-        global $extension, $codemirror;
+        global $extension;
         $extcompare = "";
         foreach ($extension as $lang => $ext) {
             $extcompare .= "if(ext=='$ext'){ $('select#code_lang').attr('value','" . ($lang) . "'); } ";
@@ -216,7 +216,7 @@ function display_problem()
 			<form action='?action=submitcode' method='post' name='submitcode' enctype='multipart/form-data' onSubmit=\"return code_validate();\"><input type='hidden' name='code_pid' value='$pid'>
 			<table width=100%><tr><th>Language</th><th><select id='code_lang' name='code_lang'>" . $languages . "</select></th><input type='hidden' name='MAX_FILE_SIZE' value='$maxcodesize' />";
         echo "<th>Code File</th><th><input type='file' name='code_file' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" /></th></tr>
-			<tr><td colspan=20><textarea id='code_text' name='code_text' class='code' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea></td></tr></table>
+			<tr><td colspan=20><textarea id='code_text' class='form-control' name='code_text' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea></td></tr></table>
 			<table width=100%> <input type='hidden' name='code_name' id='code_name' value='code'>
 			<tr><th><div class='small'>If you submit both File and Text (copy-pasted in the above textarea), the Text will be ignored.</div></th><th><input type='submit' value='Submit Code'></th></tr>
 			</table></form></center>";

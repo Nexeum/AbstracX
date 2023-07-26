@@ -126,7 +126,7 @@ function mysql_initiate()
             'output' => addslashes(file_get('data/example/output.txt')),
             'timelimit' => 1,
             'score' => 0,
-            'languages' => 'C,C++,C#,Java,JavaScript,Pascal,Perl,PHP,Python,Ruby'
+            'languages' => 'C,C++,C#,Java,Python,Ruby'
         ];
         $problemDataQuery = "INSERT INTO problems (" . implode(", ", array_keys($problemData)) . ") VALUES ('" . implode("', '", $problemData) . "')";
         mysqli_query($link, $problemDataQuery);
@@ -139,12 +139,8 @@ function mysql_initiate()
             ['rid' => 2, 'pid' => 1, 'tid' => 1, 'language' => 'C++', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.cpp')), 'access' => 'public'],
             ['rid' => 3, 'pid' => 1, 'tid' => 1, 'language' => 'C#', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.cs')), 'access' => 'public'],
             ['rid' => 4, 'pid' => 1, 'tid' => 1, 'language' => 'Java', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.java')), 'access' => 'public'],
-            ['rid' => 5, 'pid' => 1, 'tid' => 1, 'language' => 'JavaScript', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.js')), 'access' => 'public'],
-            ['rid' => 6, 'pid' => 1, 'tid' => 1, 'language' => 'Pascal', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.pas')), 'access' => 'public'],
-            ['rid' => 7, 'pid' => 1, 'tid' => 1, 'language' => 'Perl', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.pl')), 'access' => 'public'],
-            ['rid' => 8, 'pid' => 1, 'tid' => 1, 'language' => 'PHP', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.php')), 'access' => 'public'],
-            ['rid' => 9, 'pid' => 1, 'tid' => 1, 'language' => 'Python', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.py')), 'access' => 'public'],
-            ['rid' => 10, 'pid' => 1, 'tid' => 1, 'language' => 'Ruby', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.rb')), 'access' => 'public']
+            ['rid' => 5, 'pid' => 1, 'tid' => 1, 'language' => 'Python', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.py')), 'access' => 'public'],
+            ['rid' => 6, 'pid' => 1, 'tid' => 1, 'language' => 'Ruby', 'name' => 'code', 'code' => addslashes(file_get('data/example/code.rb')), 'access' => 'public']
         ];
         foreach ($runData as $run) {
             $runDataQuery = "INSERT INTO runs (" . implode(", ", array_keys($run)) . ") VALUES (" . implode(", ", array_map(function ($value) {
