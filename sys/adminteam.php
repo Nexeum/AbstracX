@@ -92,7 +92,7 @@
         }
     </script>
 
-    <div id="teamedit" style="display: none;">
+    <div id="teamedit" style="display:none;">
         <h2>Administrator Options: Update Team Data</h2>
         <form action="?action=updateteam" method="post">
             <table>
