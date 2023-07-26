@@ -3,6 +3,12 @@ name: Python End-to-End Test
 on:
   push:
     branches:
+      - '*'
+    paths:
+      - 'path/to/your_script.py'
+  pull_request:
+    types: [closed]
+    branches:
       - main
 
 jobs:
