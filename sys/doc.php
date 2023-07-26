@@ -1,4 +1,4 @@
-<div style="text-align: center;"><h2>Documentation</h2></div>
+<div><h2>Documentation</h2></div>
 
 <br>
 <table class='faq'>

@@ -40,11 +40,11 @@ function display_problem()
                 unset($g[array_search("", $g)]);
                 $g[] = "";
             }
-            echo "<div class='filter'><b>Select Group<b> : <select class='form-select' style='width:150px;' id='category-select' onChange=\"$('input#query').attr('value',''); problem_search(); if(this.value==0){ $('span.group').slideDown(250); } else { for(i=1;i<=" . count($g) . ";i++){ if(this.value=='group'+i) $('span#group'+i).slideDown(250); else $('span#group'+i).slideUp(250); } }\"><option value=0>All Groups</option>";
+            echo "<div class='filter'><b>Select Group<b> : <select class='form-select' id='category-select' onChange=\"$('input#query').attr('value',''); problem_search(); if(this.value==0){ $('span.group').slideDown(250); } else { for(i=1;i<=" . count($g) . ";i++){ if(this.value=='group'+i) $('span#group'+i).slideDown(250); else $('span#group'+i).slideUp(250); } }\"><option value=0>All Groups</option>";
             foreach ($g as $i => $gn) {
                 echo "<option value='group" . ($i + 1) . "'>" . preg_replace("/^#[0-9]+ /", "", ($gn == "" ? "Unclassified" : $gn)) . "</option>";
             }
-            echo "</select> <input class='form-control' placeholder='Enter Search Term Here' id='query' onKeyUp=\"$('#category-select').val(0); $('span.group').slideDown(250); problem_search();\" style='text-align:center;'> <input class='btn btn-danger' type='button' value='Clear' onClick=\"$('input#query').attr('value',''); problem_search();\"></div>";
+            echo "</select> <input class='form-control' placeholder='Enter Search Term Here' id='query' onKeyUp=\"$('#category-select').val(0); $('span.group').slideDown(250); problem_search();\"> <input class='btn btn-danger' type='button' value='Clear' onClick=\"$('input#query').attr('value',''); problem_search();\"></div>";
             if (($nac = mysqli_getdata("SELECT distinct pid FROM runs WHERE tid=$_SESSION[tid] AND result!='AC' AND access!='deleted'")) == NULL) {
                 $nac = array();
             } else {
@@ -66,7 +66,7 @@ function display_problem()
                 unset($t);
             }
             echo "<div id='probindex' class='probindex'>";
-            echo "<div class='probheaders2' style='display:none;'><h2>Search Results</h2>";
+            echo "<div class='probheaders2'><h2>Search Results</h2>";
             echo "<table><th>Problem ID</th><th>Problem Name</th><th>Problem Code</th><th>Problem Type</th><th>Score</th><th>Statistics</th></tr></table></div>";
             foreach ($g as $i => $gn) {
                 echo "<span id='group" . ($i + 1) . "' class='group'><div class='probheaders1'><h2><a id='aSubmissions' href='?display=submissions&pgr=" . urlencode($gn) . "'>Problem Group : " . preg_replace("/^#[0-9]+ /i", "", ($gn == "" ? "Unclassified" : $gn)) . "</a></h2>";
@@ -75,7 +75,7 @@ function display_problem()
                 while ($problem = mysqli_fetch_array($data)) {
                     $t = mysqli_query($link,"SELECT (SELECT count(*) FROM runs WHERE pid=$problem[pid] AND result='AC' AND access!='deleted') as ac, (SELECT count(*) FROM runs WHERE pid=$problem[pid] AND access!='deleted') as tot");
                     if (mysqli_num_rows($t) && $t = mysqli_fetch_array($t)) {
-                        $statistics = "<a title='Accepted Solutions / Total Submissions' href='?display=submissions&pid=$problem[pid]'>" . $t["ac"] . " / " . $t["tot"] . "</a>";
+                        $statistics = "<a class='list-group-item' title='Accepted Solutions / Total Submissions' class='list-group-item' href='?display=submissions&pid=$problem[pid]'>" . $t["ac"] . " / " . $t["tot"] . "</a>";
                     } else {
                         $statistics = "NA";
                     }
@@ -114,24 +114,24 @@ function display_problem()
     $statement = preg_replace("/<image\s*\/?>/i", "<img src='data:image/jpeg;base64," . $row['image'] . "' />", $statement);
     $tQuery = mysqli_query($link,"SELECT (SELECT count(*) FROM runs WHERE pid=$pid AND result='AC' AND access!='deleted') as ac, (SELECT count(*) FROM runs WHERE pid=$pid AND access!='deleted') as tot");
     if (mysqli_num_rows($tQuery) && $tResult = mysqli_fetch_array($tQuery)) {
-        $statistics = "<a title='Accepted Solutions / Total Submissions' href='?display=submissions&pid=$pid'>" . $tResult["ac"] . "/" . $tResult["tot"] . "</a>";
+        $statistics = "<a class='list-group-item' title='Accepted Solutions / Total Submissions' href='?display=submissions&pid=$pid'>" . $tResult["ac"] . "/" . $tResult["tot"] . "</a>";
     } else {
         $statistics = "NA";
     }
     $pgroup = preg_replace("/^#[0-9]+ /i", "", $row["pgroup"]);
-    echo "<center><h2>Problem : $row[name] (" . $pgroup . " Group)</h2><table width=100%>
-		<tr><th>Problem ID</th><th>$pid</th><th>Input File Size</th><th>" . display_filesize(strlen($row["input"])) . "</th><th><a href='?display=submissions&pid=$pid'>Submissions</a></th><th>$statistics</th></tr>
-		<tr><th>Problem Code</th><th>$row[code]</th><th>Time Limit</th><th>$row[timelimit] sec</th><th>Points</th><th>$row[score]</th></tr>";
+    echo "<table class='table table-borderless'><thead><tr class='table-primary'><th colspan='6'><h3>Problem : $row[name] (" . $pgroup . " Group)</h3></th></tr></thead><tbody>
+		<tr><th class='table-info'>Problem ID</th><th>$pid</th><th class='table-info'>Input File Size</th><th>" . display_filesize(strlen($row["input"])) . "</th><th class='table-info'><a class='list-group-item' href='?display=submissions&pid=$pid'>Submissions</a></th><th>$statistics</th></tr>
+		<tr><th class='table-info'>Problem Code</th><th>$row[code]</th><th class='table-info'>Time Limit</th><th>$row[timelimit] sec</th><th class='table-info'>Points</th><th>$row[score]</th></tr>";
     if ($_SESSION["status"] == "Admin") {
-        echo "<tr><th>Special Options</th><th colspan=3>" . $execoptions[$row["options"]] . "</th><th colspan=2><input type='button' value='" . ((isset($_GET["edit"]) and $_GET["edit"] == "0") ? "Reset" : "Edit") . " HTML Source' onClick=\"window.location=window.location.search.replace('&edit=0','')+'&edit=0';\"></th></tr>";
+        echo "<tr><th class='table-info'>Special Options</th><th colspan=3>" . $execoptions[$row["options"]] . "</th><th colspan=2><input class='btn btn-outline-info'type='button' value='" . ((isset($_GET["edit"]) and $_GET["edit"] == "0") ? "Reset" : "Edit") . " HTML Source' onClick=\"window.location=window.location.search.replace('&edit=0','')+'&edit=0';\"></th></tr>";
     }
-    echo "<tr><td colspan='20' style='text-align: left; padding: 20px;'>";
+    echo "<tr><td class='text-start' colspan='6'>";
     if ($_SESSION["status"] == "Admin" and isset($_GET["edit"]) and $_GET["edit"] == "0") {
-        echo "<form method='post' action='?action=updateproblemhtml&pid=$pid'><textarea name='statement' id='statement' class='code'>" . ($statement2) . "</textarea><br><br><center><input type='submit' value='Update Problem Statement'> <input type='button' value='Cancel' onClick=\"window.location=window.location.search.replace('&edit=0','');\"></center></form>";
+        echo "<form method='post' action='?action=updateproblemhtml&pid=$pid'><textarea name='statement' id='statement'>" . ($statement2) . "</textarea><input type='submit' value='Update Problem Statement'> <input type='button' value='Cancel' onClick=\"window.location=window.location.search.replace('&edit=0','');\"></form>";
     } else {
         echo $statement;
     }
-    echo "</td></tr><tr><td colspan='20' style='text-align: left; padding: 20px;'><b>Language(s) Allowed</b> : ";
+    echo "</td></tr><tr><td colspan='6'><b>Language(s) Allowed</b> : ";
     echo preg_replace("/Brain/i", "Brainf**k", preg_replace("/,/", ", ", $row["languages"]));
     echo "</td></tr>";
 
@@ -154,7 +154,7 @@ function display_problem()
     $data = mysqli_query($link,"SELECT * FROM clar WHERE access='Public' and clar.pid=$pid ORDER BY time ASC");
     if (mysqli_num_rows($data) > 0) {
         if (mysqli_num_rows($data)) {
-            echo "<tr><th colspan='20'><a href='?display=clarifications'>Clarifications</a></th></tr><tr><td colspan='20' style='text-align: left; padding: 20px;'>";
+            echo "<tr><th colspan='20'><a href='?display=clarifications'>Clarifications</a></th></tr><tr><td colspan='20'>";
             while ($temp = mysqli_fetch_array($data)) {
                 $teamnameQuery = mysqli_query($link,"SELECT teamname FROM teams WHERE tid=" . $temp["tid"]);
                 if (mysqli_num_rows($teamnameQuery) == 1) {
@@ -172,13 +172,13 @@ function display_problem()
             echo "</td></tr>";
         }
     }
-    echo "</table><br></center>";
+    echo "</tbody></table>";
     if ($_SESSION["tid"] == 0) {
-        echo "<p style='text-align: center;'>Please login to submit solutions.</p>";
+        echo "<p>Please login to submit solutions.</p>";
     } else if ($admin["mode"] != "Active" && $admin["mode"] != "Passive" && $_SESSION["status"] != "Admin") {
-        echo "<p style='text-align: center;'>You cannot submit solutions at the moment as the contest is not running. Please try again later.</p>";
+        echo "<p>You cannot submit solutions at the moment as the contest is not running. Please try again later.</p>";
     } else if ($admin["mode"] == "Passive" && $_SESSION["status"] != "Admin" && preg_match("/^CQM\-[0-9]+$/i", $pgroup)) {
-        echo "<p style='text-align: center;'>You can no longer submit solutions to this problem.</p>";
+        echo "<p>You can no longer submit solutions to this problem.</p>";
     } else {
         $editcode = "";
         if (isset($_GET["edit"])) {
@@ -224,8 +224,8 @@ function display_problem()
             </script>
 			<form action='?action=submitcode' method='post' name='submitcode' enctype='multipart/form-data' onSubmit=\"return code_validate();\"><input type='hidden' name='code_pid' value='$pid'>
 			<table width=100%><tr><th>Language</th><th><select id='code_lang' name='code_lang'>" . $languages . "</select></th><input type='hidden' name='MAX_FILE_SIZE' value='$maxcodesize' />";
-        echo "<th>Code File</th><th><input type='file' name='code_file' style='width:200px;' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" /></th></tr>
-			<tr><td colspan=20 style='text-align:left;'><textarea id='code_text' name='code_text' style='width:100%; height: 300px;' class='code' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea></td></tr></table>
+        echo "<th>Code File</th><th><input type='file' name='code_file' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" /></th></tr>
+			<tr><td colspan=20><textarea id='code_text' name='code_text' class='code' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea></td></tr></table>
 			<table width=100%> <input type='hidden' name='code_name' id='code_name' value='code'>
 			<tr><th><div class='small'>If you submit both File and Text (copy-pasted in the above textarea), the Text will be ignored.</div></th><th><input type='submit' value='Submit Code'></th></tr>
 			</table></form></center>";

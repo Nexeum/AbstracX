@@ -5,7 +5,7 @@ function _md5($str)
 }
 function mysql_initiate()
 {
-    global $mysql_database, $admin, $ajaxlogout, $sessionid, $admin_teamname, $admin_password;
+    global $admin, $ajaxlogout, $sessionid;
 
     $link = mysqli_connect("localhost", "root", "", "nexeum");
     if (!$link) {
@@ -126,7 +126,7 @@ function mysql_initiate()
             'output' => addslashes(file_get('data/example/output.txt')),
             'timelimit' => 1,
             'score' => 0,
-            'languages' => 'Brain,C,C++,C#,Java,JavaScript,Pascal,Perl,PHP,Python,Ruby,Text'
+            'languages' => 'Brain,C,C++,C#,Java,JavaScript,Pascal,Perl,PHP,Python,Ruby'
         ];
         $problemDataQuery = "INSERT INTO problems (" . implode(", ", array_keys($problemData)) . ") VALUES ('" . implode("', '", $problemData) . "')";
         mysqli_query($link, $problemDataQuery);
@@ -256,7 +256,4 @@ function mysqli_getdata($query)
 
     return $data;
 }
-
-
-
 ?>

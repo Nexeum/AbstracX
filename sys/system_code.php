@@ -5,7 +5,7 @@ function display_code(): void
     global $fullresult, $extension, $brush;
     $link = mysqli_connect("localhost", "root", "","nexeum");
 
-    echo "<h2 style='text-align: center;''>Source Code</h2>";
+    echo "<h2>Source Code</h2>";
     if (empty($_GET["rid"])) {
         $rid = 0;
     } else {
@@ -43,16 +43,16 @@ function display_code(): void
         echo "<tr><th>Language</th><td>NA</td><th>Problem Name</th><td>NA</td><th>Run Time</th><td>NA</td><th>Submission Time</th><td>NA</td></tr>";
     }
     if ($error == 1) {
-        echo "<tr><td colspan=10 style='padding:30px;'>Code you requested does not exist in the Database.</td></tr>";
+        echo "<tr><td colspan=10>Code you requested does not exist in the Database.</td></tr>";
     }
     if ($error == 2) {
-        echo "<tr><td colspan=10 style='padding:30px;'>The problem for which this code is a solution does not exist.</td></tr>";
+        echo "<tr><td colspan=10>The problem for which this code is a solution does not exist.</td></tr>";
     }
     if ($error == 3) {
-        echo "<tr><td colspan=10 style='padding:30px;'>The team which submitted this code does not exist.</td></tr>";
+        echo "<tr><td colspan=10>The team which submitted this code does not exist.</td></tr>";
     }
     if ($error == 4) {
-        echo "<tr><td colspan=10 style='padding:30px;'>You are not authorized to access this code.</td></tr>";
+        echo "<tr><td colspan=10>You are not authorized to access this code.</td></tr>";
     } else if (!$error) {
         $filename = $run["name"] . "." . $extension[$run["language"]];
         $result = $run["result"];
@@ -63,22 +63,22 @@ function display_code(): void
 
         $options = "";
         if ($_SESSION["tid"] || $run["access"] == "public") {
-            $options .= "<input type='button' style='width:100%;' value='Edit' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\"><br>";
-            $options .= "<input type='button' style='width:100%;' value='Download' onClick=\"window.location='?download=code&rid=$rid';\"><br>";
+            $options .= "<input type='button' value='Edit' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\"><br>";
+            $options .= "<input type='button' value='Download' onClick=\"window.location='?download=code&rid=$rid';\"><br>";
         }
         if ($_SESSION["status"] == "Admin") {
-            $options .= "<input type='button' style='width:100%;' value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\"><br>";
+            $options .= "<input type='button'value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\"><br>";
             if ($run["access"] == "private") {
-                $options .= " <input type='button' style='width:100%;' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\"><br>";
+                $options .= " <input type='button' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\"><br>";
             } else {
-                $options .= " <input type='button' style='width:100%;' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\"><br>";
+                $options .= " <input type='button' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\"><br>";
             }
-            $options .= "<input type='button' style='width:100%;' value='Disqualify' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\"><br>";
-            $options .= "<input type='button' style='width:100%;' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\"><br>";
+            $options .= "<input type='button' value='Disqualify' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\"><br>";
+            $options .= "<input type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\"><br>";
         }
 
         echo "
-            <table style='margin: 0 auto;'>
+            <table>
                 <tr>
                     <th>Run ID</th>
                     <th>Team Name</th>
@@ -106,7 +106,7 @@ function display_code(): void
                     <td>$run[time]</td>
                 </tr>
                 <tr>
-                    <td colspan=10 style='text-align:left;'>
+                    <td colspan=10 >
                         <div class='limit'>
                             <pre class='brush: " . $brush[$run["language"]] . "'>
                                 <code class='language-".$run['language']."'>$code</code>
@@ -121,7 +121,7 @@ function display_code(): void
                     <th colspan=10>Error Message</th>
                 </tr>
                 <tr>
-                    <td colspan=10 style='text-align:left;padding:0;'>
+                    <td colspan='10'>
                         <div class='limit'>
                             <pre class='brush:text'>" . htmlentities(preg_replace("/<br>/i", "\n", filter($run["error"]))) . "</pre>
                         </div>
@@ -208,7 +208,7 @@ function display_code(): void
             echo "
                 </table>
                 <br>
-                <table style='margin: 0 auto;' class='io'>
+                <table class='io'>
                     <tr>
                         <th><a href='?download=input&pid=$problem[pid]'>Program Input</a></th>
                         <th><a href='?download=output&pid=$problem[pid]'>Correct Output</a></th>
@@ -275,7 +275,7 @@ function display_code(): void
             echo "
                 </table>
                 <br>
-                <input type='button' value='Display Input Output Files' style='display: block; margin: 0 auto;' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\">";
+                <input type='button' value='Display Input Output Files' style='display: block;' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\">";
         } else {
             echo "</table>";
         }
