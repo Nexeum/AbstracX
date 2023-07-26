@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center;">
+<div>
     <h2>Administrator Options : Data Commitment</h2>
     <table class='warn'>
         <tr>

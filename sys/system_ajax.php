@@ -337,9 +337,9 @@ function action_ajaxrefresh($type): bool|string
                         $probname = mysqli_getdata("SELECT name FROM problems WHERE status='Active' AND pid=$c[pid]");
                         $probname = "<a href='?display=problem&pid=$c[pid]'>" . $probname[0]["name"] . "</a>";
                     }
-                    $json["ajax-privateclar"] .= "<tr><td style='text-align:left;'><b><a href='?display=submissions&tid=$_SESSION[tid]'>$_SESSION[teamname]</a> ($probname)</b> : $c[query]</td></tr>";
+                    $json["ajax-privateclar"] .= "<tr><td><b><a href='?display=submissions&tid=$_SESSION[tid]'>$_SESSION[teamname]</a> ($probname)</b> : $c[query]</td></tr>";
                     if (!empty($c["reply"])) {
-                        $json["ajax-privateclar"] .= "<tr><td style='text-align:left;'><i><b>Judge's Response</b> : $c[reply]</i></td></tr>";
+                        $json["ajax-privateclar"] .= "<tr><td><i><b>Judge's Response</b> : $c[reply]</i></td></tr>";
                     }
                 }
             }

@@ -101,7 +101,7 @@ function display_statusbox(): void
             <input type='hidden' name='platform' id='platform'>
             <script>document.getElementById('platform').value=browserDetect().os+', '+browserDetect().name +' '+ browserDetect().version;</script>
         </form>
-        <span style='font-size:11px;'>If you have forgotten your Password, you may request an Administrator to reset it.</span>";
+        <span>If you have forgotten your Password, you may request an Administrator to reset it.</span>";
     } else {
         echo "<div class='mb-3' id='ajax-account'></div>";
     }

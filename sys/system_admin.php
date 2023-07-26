@@ -278,7 +278,7 @@ function display_executionprotocol()
 
     if ($invalid) {
         echo "<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>";
-        echo "<tr><td colspan=10 style='padding:30px;'>Waiting For Submissions</td></tr>";
+        echo "<tr><td colspan=10>Waiting For Submissions</td></tr>";
         echo "</table><br><center><input id='terminate' type='button' value='Terminate Execution Protocol' onClick=\"window.location='?display=admincontest'\"></center>";
         echo "<script>window.setTimeout(\"$('input#terminate').css('display','none'); window.location = window.location;\",3000);</script>";
         unlink("env/lock.txt");
@@ -295,7 +295,7 @@ function display_executionprotocol()
         $result = $fullresult[$result];
     }
     echo "<tr><td>$run[rid]</td><td>$problem[name]</td><td>$run[language]</td><td>$teamname</td><td>$realname</td><td>$run[time]</td><td>$result</td></tr>";
-    echo "<tr><td colspan='10' style='text-align:left;padding:30px;'><code>$code</code></td></tr>";
+    echo "<tr><td colspan='10'><code>$code</code></td></tr>";
 
     if (file_exists("env/error.txt") && ($errormessage = file_get("env/error.txt")) != "") {
         $filename = "$run[name]." . $extension[$run["language"]];
@@ -307,7 +307,7 @@ function display_executionprotocol()
         } else if ($run["language"] == "Python") {
             $errormessage = preg_replace("/\"[^ ]*" . preg_quote($filename, "/") . "\"/", "\"$realname\"", $errormessage);
         }
-        echo "<tr><th colspan=10>Error Message</th></tr><tr><td colspan=10 style='text-align:left;padding:30px;'><code>" . filter($errormessage) . "</code></td></tr>";
+        echo "<tr><th colspan=10>Error Message</th></tr><tr><td colspan=10><code>" . filter($errormessage) . "</code></td></tr>";
         mysqli_query($link,"UPDATE runs SET error='" . addslashes(addslashes($errormessage)) . "' WHERE rid='$run[rid]'");
     }
     echo "</table>";

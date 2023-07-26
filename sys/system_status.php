@@ -79,9 +79,9 @@ function display_submissions()
     }
 
     if (count($filter)) {
-        echo "<div class='filter'><b>Active Filter(s)</b> : " . implode(" , ", $filters) . " (Click to Remove)</div>";
+        echo "<b>Active Filter(s)</b> : " . implode(" , ", $filters) . " (Click to Remove)";
     } else {
-        echo "<div class='filter'><b>Active Filter(s)</b> : None</div>";
+        echo "<b>Active Filter(s)</b> : None";
     }
 
     if (isset($filter["tid"]) || isset($filter["pid"]) || !isset($filter["result"]) || !isset($filter["language"])) echo "<h3>";
@@ -119,7 +119,7 @@ function display_submissions()
         $solvedp = implode(", ", $solvedp);
 
         echo "<div id='team-information' style='display:none;'>";
-        echo "<table width=80%><tr><th>Team Members</th><td>$members</td></tr><tr><th>Score</th><td>$teamdata[score]</td></tr><tr><th>Problems Solved</th><td>$solvedp ($solvedn)</td></tr>";
+        echo "<table><tr><th>Team Members</th><td>$members</td></tr><tr><th>Score</th><td>$teamdata[score]</td></tr><tr><th>Problems Solved</th><td>$solvedp ($solvedn)</td></tr>";
         echo "</table></div>";
     }
 
@@ -132,7 +132,7 @@ function display_submissions()
     }
 
     if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<div id='submission-statistics' style='display:none;'>";
+        echo "<div id='submission-statistics' style='display='display:none;''>";
     }
     if (!isset($filter["result"])) {
         $t1 = mysqli_query($link, "SELECT result,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by result;");

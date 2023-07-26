@@ -38,7 +38,7 @@ include("sys/system_init.php");
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <form class="me-3">
-                        <div class="form-white input-group" style="width: 250px;">
+                        <div class="form-white input-group">
                             <input type="search" class="form-control rounded" placeholder="Search or jump to... ( / )" aria-label="Search" aria-describedby="search-addon" />
                         </div>
                     </form>

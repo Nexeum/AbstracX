@@ -1,7 +1,7 @@
 <div>
     <div id="teamlist">
-        <h2 style="text-align: center;">Administrator Options: List of Teams</h2>
-        <div style="display: flex; justify-content: center;">
+        <h2>Administrator Options: List of Teams</h2>
+        <div>
             <input class="btn btn-info" type="button" value="Add New Team" onclick="window.location='?display=register'" />
             <input class="btn btn-success" type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
                 onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');" />
@@ -15,11 +15,9 @@
             $totalCount = $totalResult["total"];
             $limit = $admin["teampage"] ?? 25;
             [$page, $pagenav] = paginate("display=adminteam", $totalCount, $limit);
-            echo "<div style='display: flex; justify-content: center;'>";
             echo $pagenav . "<hr>";
-            echo "</div>"
         ?>
-        <table style="margin: 0 auto;" class="adminteam">
+        <table class="adminteam">
             <tr>
                 <th>Team ID</th>
                 <th>Team Name</th>
@@ -78,9 +76,7 @@
             ?>
         </table>
         <hr>
-        <div style="display: flex; justify-content: center;">
-            <?php echo $pagenav; ?>
-        </div>
+        <?php echo $pagenav; ?>
     </div>
 
     <script>
@@ -96,10 +92,10 @@
         }
     </script>
 
-    <div id="teamedit" style="display:none;">
+    <div id="teamedit" style="display: none;">
         <h2>Administrator Options: Update Team Data</h2>
         <form action="?action=updateteam" method="post">
-            <table style="margin: 0 auto;">
+            <table>
                 <tr>
                     <th colspan="2">Team Information (Compulsory)</th>
                     <td class="vdiv" rowspan="8"></td>
@@ -154,7 +150,7 @@
                 <tr>
                     <td>Status</td>
                     <td>
-                        <select tabindex="6" style="width:100%;" id="update_status" name="update_status">
+                        <select tabindex="6" id="update_status" name="update_status">
                             <option>Waiting</option>
                             <option>Normal</option>
                             <option>Admin</option>
@@ -167,7 +163,7 @@
                 <tr>
                     <td>Group Name</td>
                     <td>
-                        <select style="width:100%;" id="update_gid" name="update_gid">
+                        <select id="update_gid" name="update_gid">
                             <option value="0">Unknown Group</option>
                             <?php
                             $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx < 3;");
@@ -215,7 +211,7 @@
                 </tr>
             </table>
             <hr>
-            <div style="display: flex; justify-content: center;">
+            <div>
                 <input type="hidden" id="update_tid" name="update_tid">
                 <input type="submit" value="Update Team Data">
                 <input type="button" value="Cancel" onclick="toggleSections('teamlist', 'teamedit');" />

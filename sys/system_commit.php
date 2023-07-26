@@ -2,7 +2,7 @@
 
 function action_commitdata(): void
 {
-    global $currentmessage, $mysql_database;
+    global $currentmessage;
     $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     if ($_SESSION["status"] != "Admin") {
@@ -57,14 +57,14 @@ function action_commitdata(): void
 
     $pids = array();
     while ($problem = mysqli_fetch_array($problems)) {
-        $stat1 = mysqil_query($link,"SELECT count( DISTINCT tid ) FROM runs WHERE result='AC' AND pid=" . $problem["pid"]);
+        $stat1 = mysqli_query($link,"SELECT count( DISTINCT tid ) FROM runs WHERE result='AC' AND pid=" . $problem["pid"]);
         if (!mysqli_num_rows($stat1)) {
-            echo mysqli_error();
+            echo mysqli_error($link);
         }
         $stat1 = mysqli_fetch_array($stat1);
         $stat2 = mysqli_query($link,"SELECT count( DISTINCT tid ) FROM runs WHERE pid=" . $problem["pid"]);
         if (!mysqli_num_rows($stat2)) {
-            echo mysqli_error();
+            echo mysqli_error($link);
         }
         $stat2 = mysqli_fetch_array($stat2);
         $statistics = $stat1[0] . "/" . $stat2[0];
@@ -134,7 +134,7 @@ function action_commitdata(): void
 
 function action_commitupdate(): void
 {
-    global $currentmessage, $mysql_database;
+    global $currentmessage;
     $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     if ($_SESSION["status"] != "Admin") {
@@ -195,7 +195,7 @@ function action_scoreboard(): void
     }
 
     $names = array();
-    $data = mysqli_list_tables($mysql_database);
+    $data = mysqli_query($link, "SHOW TABLES");
     $tables = array();
     while ($temp = mysqli_fetch_row($data)) {
         $tables[] = $temp[0];

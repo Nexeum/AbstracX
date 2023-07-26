@@ -37,8 +37,7 @@ extension = {
     "Perl": "pl",
     "PHP": "php",
     "Python": "py",
-    "Ruby": "rb",
-    "Text": "txt"
+    "Ruby": "rb"
 }
 php_prefix = "<?php ini_set('log_errors',1); ini_set('error_log','env/error.txt'); ?>"
 ioeredirect = " 0<env/input.txt 1>env/output.txt 2>env/error.txt"
@@ -205,8 +204,7 @@ system()
 if len(languages) == 0:
     print("Error : No Languages supported on this System.")
     sys.exit(1)
-else:
-    languages.append('Text')
+
 print("Supported Languages : " + str(languages) + "\n")
 
 # Error Detection
@@ -275,8 +273,6 @@ try:
             if result == None:
                 if run["language"] == "Java":
                     codefilename = run["name"]
-                elif run["language"] == "Text":
-                    codefilename = "output"
                 else:
                     codefilename = "code"
 
@@ -301,7 +297,7 @@ try:
                 run["timelimit"] += 1
 
             # Run the program through a new thread, and kill it after some time
-            if result == None and run["language"] != "Text":
+            if result == None:
                 running = 0
                 _thread.start_new_thread(execute, (codefilename, run["language"]))
 
@@ -325,7 +321,7 @@ try:
 
             # Compare the output
             output = ""
-            if result == None and run["language"] != "Text" and file_read("env/error.txt") != "":
+            if result == None and file_read("env/error.txt") != "":
                 output = file_read("env/output.txt")
                 result = "RTE"
             if result == None:

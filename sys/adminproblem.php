@@ -13,8 +13,6 @@ foreach ($extension as $lang => $ext) {
 foreach ($extension as $lang => $ext) {
     if ($lang == "Brain") {
         $langlist2 .= "<option value='Brain' selected='selected'>Brainf**k</option>";
-    } else if ($lang == "Text") {
-        $langlist2 .= "<option>Text</option>";
     } else {
         $langlist2 .= "<option selected='selected'>$lang</option>";
     }
@@ -28,7 +26,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
 
 ?>
 
-<div style="text-align: center;">
+<div>
     <div id='problist' style='display:block;'>
         <h2>Administrator Options : List of Problems</h2>
         <input class="btn btn-info" type='button' value='Add New Problem'
@@ -91,12 +89,12 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
         <form action='?action=updateproblem' method='post' enctype='multipart/form-data'>
             <table>
                 <tr>
-                    <th style="width: 23%">Problem Name</th>
-                    <td style="width: 23%"><input tabindex=1 id='update_name' name='update_name'></td>
-                    <td rowspan=8></td>
-                    <th style="width: 23%">Problem Status</th>
-                    <td style='text-align:left;'>
-                        <select class="form-select" tabindex=7 id='update_status' name='update_status' style='width:100%;'>
+                    <th>Problem Name</th>
+                    <td><input tabindex=1 id='update_name' name='update_name'></td>
+                    <td rowspan='8'></td>
+                    <th>Problem Status</th>
+                    <td>
+                        <select class="form-select" tabindex=7 id='update_status' name='update_status'>
                             <option value='Active'>Active</option>
                             <option value='Inactive'>Inactive</option>
                             <option>Delete</option>
@@ -107,37 +105,37 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                     <th>Problem Code</th>
                     <td><input class="form-control" tabindex=2 id='update_code' name='update_code'></td>
                     <th><a id='download_statement'>Problem Statement</a></th>
-                    <td><input class="form-control" tabindex=8 type='file' name='update_file_statement' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=8 type='file' name='update_file_statement'></td>
                 </tr>
                 <tr>
                     <th>Points</th>
                     <td><input class="form-control" tabindex=3 id='update_score' name='update_score'></td>
                     <th><a id='download_image'>Problem Image</a></th>
-                    <td><input class="form-control" tabindex=9 type='file' name='update_file_image' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=9 type='file' name='update_file_image'></td>
                 </tr>
                 <tr>
                     <th>Problem Type</th>
                     <td><input class="form-control" tabindex=4 id='update_type' name='update_type'></td>
                     <th><a id='download_input'>Problem Input</a></th>
-                    <td><input class="form-control" tabindex=10 type='file' name='update_file_input' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=10 type='file' name='update_file_input'></td>
                 </tr>
                 <tr>
                     <th>Problem Group</th>
                     <td><input class="form-control" tabindex=5 id='update_pgroup' name='update_pgroup'></td>
                     <th><a id='download_output'>Problem Output</a></th>
-                    <td><input class="form-control" tabindex=11 type='file' name='update_file_output' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=11 type='file' name='update_file_output'></td>
                 </tr>
                 <tr>
                     <th rowspan=3>Languages Allowed</th>
                     <td rowspan=3>
                         <input type='hidden' name='update_languages' value='' id='update_languages'>
                         <select class="form-select" multiple tabindex=6 onChange="updateLangSelect(this.options)" id='update_langselect'
-                            style='width:100%;' title='Use CTRL or SHIFT to select multiple items.'>
+                            title='Use CTRL or SHIFT to select multiple items.'>
                             <?php echo $langlist1; ?>
                         </select>
                     </td>
                     <th>Time Limit (sec)</th>
-                    <td><input tabindex=12 id='update_timelimit' name='update_timelimit' style='width:100%;'></td>
+                    <td><input tabindex=12 id='update_timelimit' name='update_timelimit'></td>
                 </tr>
                 <tr>
                     <th>Special Options</th>
@@ -153,7 +151,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                 </tr>
                 <tr>
                     <td colspan=5>
-                        <span style='font-size:11px'>
+                        <span>
                             In case any of the File Input Fields are left empty, it will cause the original files to be
                             retained. However, the Text Input Fields, if left empty, will actually be set to NULL.
                         </span>
@@ -262,48 +260,48 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
             onsubmit="return validate_makeproblem()">
             <table>
                 <tr>
-                    <th style="width=23%">Problem Name</th>
-                    <td style="width=23%"><input class="form-control" tabindex=1 name='make_name'></td>
+                    <th>Problem Name</th>
+                    <td><input class="form-control" tabindex=1 name='make_name'></td>
                     <td rowspan=8></td>
-                    <th style="width=23%">Problem Status</th>
-                    <td style="width=30%"><input disabled='disabled' value='Inactive' style='width:100%;'></td>
+                    <th>Problem Status</th>
+                    <td><input disabled='disabled' value='Inactive'></td>
                 </tr>
                 <tr>
                     <th>Problem Code</th>
                     <td><input class="form-control" tabindex=2 name='make_code'></td>
                     <th>Problem Statement</th>
-                    <td><input class="form-control" tabindex=7 type='file' name='make_file_statement' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=7 type='file' name='make_file_statement'></td>
                 </tr>
                 <tr>
                     <th>Points</th>
                     <td><input class="form-control" tabindex=3 name='make_score'></td>
                     <th>Problem Image</th>
-                    <td><input class="form-control" tabindex=8 type='file' name='make_file_image' style='width:100%;' id="imagen"></td>
+                    <td><input class="form-control" tabindex=8 type='file' name='make_file_image' id="imagen"></td>
                 </tr>
                 <tr>
                     <th>Problem Type</th>
                     <td><input class="form-control" tabindex=4 name='make_type'></td>
                     <th>Problem Input</th>
-                    <td><input class="form-control" tabindex=9 type='file' name='make_file_input' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=9 type='file' name='make_file_input'></td>
                 </tr>
                 <tr>
                     <th>Problem Group</th>
                     <td><input class="form-control" tabindex=5 name='make_pgroup'></td>
                     <th>Problem Output</th>
-                    <td><input class="form-control" tabindex=10 type='file' name='make_file_output' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=10 type='file' name='make_file_output'></td>
                 </tr>
                 <tr>
                     <th rowspan=3>Languages Allowe</th>
                     <td rowspan=3>
                         <input type='hidden' name='make_languages' value='<?php echo $langlist3; ?>'
                             id='make_languages'>
-                        <select class="form-select" multiple tabindex=6 onchange="updateLanguages()" multiple='multiple' style='width:100%;'
+                        <select class="form-select" multiple tabindex=6 onchange="updateLanguages()" multiple='multiple'
                             title='Use CTRL or SHIFT to select multiple items.'>
                             <?php echo $langlist2; ?>
                         </select>
                     </td>
                     <th>Time Limit (sec)</th>
-                    <td><input class="form-control" tabindex=11 name='make_timelimit' style='width:100%;'></td>
+                    <td><input class="form-control" tabindex=11 name='make_timelimit'></td>
                 </tr>
                 <tr>
                     <th>Special Options</th>
@@ -316,7 +314,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                 </tr>
                 <tr>
                     <td colspan=2>
-                        <span style='font-size:11px;'>By default, all languages except for Text are enabled. Use CTRL or
+                        <span>By default, all languages except for Text are enabled. Use CTRL or
                             SHIFT to select multiple languages.</span>
                     </td>
                 </tr>
