@@ -5,11 +5,12 @@ on:
     branches:
       - '*'
     paths:
-      - 'path/to/your_script.py'
+      - 'judge.py'
   pull_request:
     types: [closed]
     branches:
       - main
+  workflow_dispatch:  # Habilita el disparador manual
 
 jobs:
   e2e_test:
