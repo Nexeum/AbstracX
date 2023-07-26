@@ -41,7 +41,7 @@ function display_submissions()
     }
     if (!empty($_GET["lan"]) && key_exists($_GET["lan"], $extension)) {
         $filter["language"] = $_GET["lan"];
-        $filters[] = "<a class='list-group-item' href='?" . str_replace("&lan=" . urlencode($filter["language"]), "", $urlargs) . "'>" . ($filter["language"] == "Brain" ? "Brainf**k" : $filter["language"]) . "</a>";
+        $filters[] = "<a class='list-group-item' href='?" . str_replace("&lan=" . urlencode($filter["language"]), "", $urlargs) . "'>" . ($filter["language"]) . "</a>";
         $rejudge .= "&lan=" . urlencode($_GET["lan"]);
     }
     if (!empty($_GET["res"]) && key_exists($_GET["res"], $fullresult)) {
@@ -181,7 +181,7 @@ function display_submissions()
         if ($info != NULL) {
             echo "<table class='table table-borderless'><tr class='table-primary'>";
             foreach ($extension as $key => $value) {
-                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key == "Brain" ? "Brainf**k" : $key) . "</a></th>";
+                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key) . "</a></th>";
             }
             echo "</tr><tr>";
             foreach ($extension as $key => $value) {
@@ -235,11 +235,7 @@ function display_submissions()
         if ($i == $perpage) {
             break;
         }
-        if ($temp["language"] == "Brain") {
-            $temp["lan"] = "Brainf**k";
-        } else {
-            $temp["lan"] = $temp["language"];
-        }
+        $temp["lan"] = $temp["language"];
         $t = mysqli_query($link, "SELECT teamname FROM teams WHERE tid=$temp[tid] and (status='Normal' or status='Admin')");
         if (mysqli_num_rows($t) == 1) {
             $tResult = mysqli_fetch_array($t);

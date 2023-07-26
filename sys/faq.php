@@ -123,7 +123,6 @@
                     is given below :</p>
                 <ul>
                     <li>Operating System : Ubuntu 10.10 (Maverick); Harddisk : 20GB ; RAM : 512MB</li>
-                    <li>Brainf**k Interpreter : bf (version 20041219)</li>
                     <li>C Compiler : gcc 4.4.5</li>
                     <li>C++ Compiler : g++ 4.4.5</li>
                     <li>C# Compiler : Mono Compiler Version 2.6.7 (gmcs)</li>

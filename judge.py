@@ -3,7 +3,7 @@ import platform, re, os, shutil, sys, _thread, time, urllib
 
 # Ubuntu 22.04
 # sudo apt-get update
-# sudo apt-get install bf g++ fpc mono-mcs openjdk-11-jdk perl php python3 python3-pymysql rhino ruby
+# sudo apt-get install g++ fpc mono-mcs openjdk-11-jdk perl php python3 python3-pymysql rhino ruby
 
 
 if "-judge" not in sys.argv:
@@ -27,7 +27,6 @@ sql_database = 'nexeum'
 
 # Initialize Language Constants
 extension = {
-    "Brain": "b",
     "C": "c",
     "C++": "cpp",
     "C#": "cs",
@@ -72,7 +71,6 @@ def system():
         os.mkdir("env")
 
     languages_to_check = {
-        "Brain": "bf",
         "C": "gcc",
         "C++": "g++",
         "Java": "javac",
@@ -129,7 +127,6 @@ def execute(exename, language):
     running = 1
 
     command_mapping = {
-        "Brain": f"bf env/{exename}.b {ioeredirect}",
         "C": f"env/{exename} {ioeredirect}",
         "C++": f"env/{exename} {ioeredirect}",
         "C#": f"mono env/{exename}.exe {ioeredirect}",
@@ -155,7 +152,6 @@ def kill(exename, language):
     global mypid
 
     process_mapping = {
-        "Brain": "bf",
         "C": exename,
         "C++": exename,
         "C#": "mono",

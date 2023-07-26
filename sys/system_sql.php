@@ -126,7 +126,7 @@ function mysql_initiate()
             'output' => addslashes(file_get('data/example/output.txt')),
             'timelimit' => 1,
             'score' => 0,
-            'languages' => 'Brain,C,C++,C#,Java,JavaScript,Pascal,Perl,PHP,Python,Ruby'
+            'languages' => 'C,C++,C#,Java,JavaScript,Pascal,Perl,PHP,Python,Ruby'
         ];
         $problemDataQuery = "INSERT INTO problems (" . implode(", ", array_keys($problemData)) . ") VALUES ('" . implode("', '", $problemData) . "')";
         mysqli_query($link, $problemDataQuery);

@@ -4,23 +4,13 @@ $langlist1 = "";
 $langlist2 = "";
 $langlist3 = "";
 foreach ($extension as $lang => $ext) {
-    if ($lang == "Brain") {
-        $langlist1 .= "<option value='Brain'>Brainf**k</option>";
-    } else {
-        $langlist1 .= "<option>$lang</option>";
-    }
+    $langlist1 .= "<option>$lang</option>";
 }
 foreach ($extension as $lang => $ext) {
-    if ($lang == "Brain") {
-        $langlist2 .= "<option value='Brain' selected='selected'>Brainf**k</option>";
-    } else {
-        $langlist2 .= "<option selected='selected'>$lang</option>";
-    }
+    $langlist2 .= "<option selected='selected'>$lang</option>";
 }
 foreach ($extension as $lang => $ext) {
-    if ($lang != "Brain") {
-        $langlist3 = ($langlist3 == "" ? $lang : $langlist3 . "," . $lang);
-    }
+    $langlist3 = ($langlist3 == "" ? $lang : $langlist3 . "," . $lang);
 }
 $link = mysqli_connect("localhost", "root", "", "nexeum");
 

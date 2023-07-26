@@ -224,9 +224,6 @@ function action_ajaxrefresh($type): bool|string
             if (isset($fullresult[$result])) {
                 $result = $fullresult[$result];
             }
-            if ($temp["language"] == "Brain") {
-                $temp["language"] = "Brainf**k";
-            }
 
             // Assign Bootstrap classes based on result
             $rowClass = '';

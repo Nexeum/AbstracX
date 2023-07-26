@@ -100,7 +100,7 @@ function display_code(): void
                     <th>Run Time</th>
                 </tr>
                 <tr>
-                    <td>" . ($run["language"] == "Brain" ? "Brainf**k" : $run["language"]) . "</td>
+                    <td>" . ($run["language"]) . "</td>
                     <td>$filename</td>
                     <td>" . fdate($run["submittime"]) . "</td>
                     <td>$run[time]</td>
