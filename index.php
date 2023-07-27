@@ -14,7 +14,6 @@ include("sys/system_init.php");
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' type='text/css' href='assets/style.css' />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/editor/editor.main.min.css" integrity="sha512-MOoQ02h80hklccfLrXFYkCzG+WVjORflOp9Zp8dltiaRP+35LYnO4LKOklR64oMGfGgJDLO8WJpkM1o5gZXYZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -189,28 +188,6 @@ include("sys/system_init.php");
         </div>
     </div>
     <a id="bottom"></a>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/loader.min.js" integrity="sha512-QzMpXeCPciAHP4wbYlV2PYgrQcaEkDQUjzkPU4xnjyVSD9T36/udamxtNBqb4qK4/bMQMPZ8ayrBe9hrGdBFjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--
-<script>
-    require.config({
-        paths: {
-            vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs'
-        }
-    });
-
-    require(['vs/editor/editor.main'], function() {
-        var code = document.getElementById('code_text').textContent;
-
-        language = "javascript";
-
-        var editor = monaco.editor.create(document.getElementById('code_text'), {
-            value: code,
-            language: language,
-        });
-    });
-</script>
--->
-
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
     <script>
         hljs.highlightAll();
