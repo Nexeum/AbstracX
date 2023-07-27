@@ -89,21 +89,16 @@ def create(codefilename, language):
 
     print("Compiling Code File ...")
     result = None
-    print("prueba")
     compile_commands = {
         "C": f"gcc env/{codefilename}.c -lm -lcrypt -O2 -pipe -ansi -DONLINE_JUDGE -w -o env/{codefilename} {ioeredirect}",
         "C++": f"g++ env/{codefilename}.cpp -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o env/{codefilename} {ioeredirect}",
         "C#": f"mcs env/{codefilename}.cs -out:env/{codefilename}.exe {ioeredirect}",
         "Java": f"javac -g:none -Xlint -d env env/{codefilename}.java {ioeredirect}"
     }
-    print(language)
-    print("Revision de posible error")
     if language in compile_commands:
         compile_command = compile_commands[language]
         os.system(compile_command)
-        print(f"env/{codefilename}")
-        if not os.path.exists(f"env/{codefilename}.{get_extension(language)}"):
-            print("aqui")
+        if not os.path.exists(f"env/{codefilename}.{extension[language]}"):
             result = "CE"
 
     if result is not None:
@@ -112,15 +107,6 @@ def create(codefilename, language):
         print("Compilation Error")
 
     return result
-
-def get_extension(language):
-    extensions = {
-        "C": "c",
-        "C++": "cpp",
-        "C#": "cs",
-        "Java": "java"
-    }
-    return extensions[language]
 
 # Program Execution
 def execute(exename, language):

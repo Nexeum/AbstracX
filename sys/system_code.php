@@ -5,7 +5,6 @@ function display_code(): void
     global $fullresult, $extension, $brush;
     $link = mysqli_connect("localhost", "root", "","nexeum");
 
-    echo "<h2>Source Code</h2>";
     if (empty($_GET["rid"])) {
         $rid = 0;
     } else {
@@ -39,7 +38,7 @@ function display_code(): void
     }
 
     if ($error) {
-        echo "<table width=100%><tr><th>Run ID</th><td>NA</td><th>Team Name</th><td>NA</td><th>Result</th><td>NA</td><th>File Name</th><td>NA</td><th rowspan=2>Options</th><td rowspan=2>NA</td></tr>";
+        echo "<table><tr><th>Run ID</th><td>NA</td><th>Team Name</th><td>NA</td><th>Result</th><td>NA</td><th>File Name</th><td>NA</td><th rowspan=2>Options</th><td rowspan=2>NA</td></tr>";
         echo "<tr><th>Language</th><td>NA</td><th>Problem Name</th><td>NA</td><th>Run Time</th><td>NA</td><th>Submission Time</th><td>NA</td></tr>";
     }
     if ($error == 1) {
@@ -61,57 +60,72 @@ function display_code(): void
         }
         $code = preg_replace("/</", "&lt;", $run["code"]);
 
-        $options = "";
+        $optionsrowone = "";
+        $optionsrowtwo = "";
+
         if ($_SESSION["tid"] || $run["access"] == "public") {
-            $options .= "<input type='button' value='Edit' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\"><br>";
-            $options .= "<input type='button' value='Download' onClick=\"window.location='?download=code&rid=$rid';\"><br>";
+            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-primary' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\">Edit</button></div>";
+            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-info' onClick=\"window.location='?download=code&rid=$rid';\">Download</button></div>";
         }
         if ($_SESSION["status"] == "Admin") {
-            $options .= "<input type='button'value='Rejudge' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\"><br>";
+            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-warning' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\">Rejudge</button></div>";
+        
             if ($run["access"] == "private") {
-                $options .= " <input type='button' value='Private' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\"><br>";
+                $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-secondary' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\">Private</button></div>";
             } else {
-                $options .= " <input type='button' value='Public' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\"><br>";
+                $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-success' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\">Public</button></div>";
             }
-            $options .= "<input type='button' value='Disqualify' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\"><br>";
-            $options .= "<input type='button' value='Delete' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\"><br>";
+        
+            $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-danger' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\">Disqualify</button></div>";
+            $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-danger' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\">Delete</button></div>";
         }
+              
 
         echo "
-            <table>
-                <tr>
-                    <th>Run ID</th>
-                    <th>Team Name</th>
-                    <th>Problem Name</th>
-                    <th>Result</th>
-                    <th>Options</th>
-                </tr>
+            <table class='table table-borderless'>
+                <thead>
+                    <tr class='table-primary'>
+                        <th colspan='5'>
+                            <h3>Source Code</h3>
+                        </th>
+                    </tr>  
+                    <tr class='table-info'>
+                        <th>Run ID</th>
+                        <th>Team Name</th>
+                        <th>Problem Name</th>
+                        <th>Result</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
                 <tr>
                     <td>$rid</td>
-                    <td><a href='?display=submissions&tid=$team[tid]'>$team[teamname]</a></td>
-                    <td><a href='?display=problem&pid=$problem[pid]' title='$problem[code]'>$problem[name]</td>
+                    <td><a class='list-group-item' href='?display=submissions&tid=$team[tid]'>$team[teamname]</a></td>
+                    <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]' title='$problem[code]'>$problem[name]</td>
                     <td>$result</td>
-                    <td rowspan=3>$options</td>
+                    <td>$optionsrowone</td>
                 </tr>
-                <tr>
+                <tr class='table-info'>
                     <th>Language</th>
                     <th>File Name</th>
                     <th>Submission Time</th>
                     <th>Run Time</th>
+                    <th>Advanced</th>
                 </tr>
                 <tr>
                     <td>" . ($run["language"]) . "</td>
                     <td>$filename</td>
                     <td>" . fdate($run["submittime"]) . "</td>
                     <td>$run[time]</td>
+                    <td>$optionsrowtwo</td>
                 </tr>
                 <tr>
-                    <td colspan=10 >
-                        <div class='limit'>
-                            <pre class='brush: " . $brush[$run["language"]] . "'>
-                                <code class='language-".$run['language']."'>$code</code>
-                            </pre>
-                        </div>
+                    <th class='table-info' colspan='5'>Code</th>
+                </tr>
+                <tr>
+                    <td class='text-start' colspan='5'>
+                        <pre>
+                            <code class='language-".$run['language']."'>$code</code>
+                        </pre>
                     </td>
                 </tr>";
         
@@ -121,7 +135,7 @@ function display_code(): void
                     <th colspan=10>Error Message</th>
                 </tr>
                 <tr>
-                    <td colspan='10'>
+                    <td colspan='5'>
                         <div class='limit'>
                             <pre class='brush:text'>" . htmlentities(preg_replace("/<br>/i", "\n", filter($run["error"]))) . "</pre>
                         </div>
@@ -139,19 +153,7 @@ function display_code(): void
             $problem['input'] = explode("<br>", $problem['input']);
             $problem['output'] = explode("<br>", $problem['output']);
             $run['output'] = explode("<br>", $run['output']);
-            $index1 = $index2 = $index3 = "";
             $k = count($problem["input"]);
-            for ($i = 0; $i < $k; ++$i) {
-                $index1 .= ($i + 1) . ($i == 0 ? "<br>" : "") . "<br>";
-            }
-            $k = count($problem["output"]);
-            for ($i = 0; $i < $k; ++$i) {
-                $index2 .= ($i + 1) . ($i == 0 ? "<br>" : "") . "<br>";
-            }
-            $k = count($run["output"]);
-            for ($i = 0; $i < $k; ++$i) {
-                $index3 .= ($i + 1) . ($i == 0 ? "<br>" : "") . "<br>";
-            }
             $k = max(count($problem['output']), count($run['output']));
             $l = strlen("" . $k);
             $fm = -1;
@@ -208,21 +210,23 @@ function display_code(): void
             echo "
                 </table>
                 <br>
-                <table class='io'>
-                    <tr>
-                        <th><a href='?download=input&pid=$problem[pid]'>Program Input</a></th>
-                        <th><a href='?download=output&pid=$problem[pid]'>Correct Output</a></th>
-                        <th><a href='?download=output&rid=$rid'>Actual Output</a></th>
-                    </tr>
+                <table class='table table-borderless io'>
+                    <thead>
+                        <tr class='table-primary'>
+                            <th colspan='3'>Input/Output Info</th>
+                        </tr>
+                        <tr class='table-info'>
+                            <th><a class='list-group-item' href='?download=input&pid=$problem[pid]'>Program Input</a></th>
+                            <th><a class='list-group-item' href='?download=output&pid=$problem[pid]'>Correct Output</a></th>
+                            <th><a class='list-group-item' href='?download=output&rid=$rid'>Actual Output</a></th>
+                        </tr>
+                    </thead>
                     <tr>
                         <td>
                             <div id='input'>
-                                <table>
+                                <table class='table table-borderless'>
                                     <tr>
-                                        <td>
-                                            <code><sno>$index1</sno></code>
-                                        </td>
-                                        <td>
+                                        <td class='text-start'>
                                             <code>" . $problem['input'] . "</code>
                                         </td>
                                     </tr>
@@ -231,12 +235,9 @@ function display_code(): void
                         </td>
                         <td>
                             <div id='output'>
-                                <table>
+                                <table class='table table-borderless'>
                                     <tr>
-                                        <td>
-                                            <code><sno>$index2</sno></code>
-                                        </td>
-                                        <td>
+                                        <td class='text-start'>
                                             <code>" . $problem['output'] . "</code>
                                         </td>
                                     </tr>
@@ -245,12 +246,9 @@ function display_code(): void
                         </td>
                         <td>
                             <div id='actual'>
-                                <table>
+                                <table class='table table-borderless'>
                                     <tr>
-                                        <td>
-                                            <code><sno>$index3</sno></code>
-                                        </td>
-                                        <td>
+                                        <td class='text-start'>
                                             <code>" . $run['output'] . "</code>
                                         </td>
                                     </tr>
@@ -260,12 +258,9 @@ function display_code(): void
                     </tr>
                     <tr>
                         <td>
-                            <input type='button' value='Hide Input Output Files' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'');\">
+                            <button class='btn btn-outline-primary' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'');\">Hide Input Output Files</button>
                         </td>
-                        <td>
-                            <input type='button' value='Disable Scroll Synchronization' onClick=\"if(scroll_lock) this.value='Enable'; else this.value='Disable'; this.value+=' Scroll Synchronization'; scroll_lock=!scroll_lock; \">
-                        </td>
-                        <td>
+                        <td colspan='2'>
                             Matching Lines : " . ($k - $j) . "/" . $k . "<br>" . ($fm != -1 ? "First mismatch at line $fm." : "") . "
                         </td>
                     </tr>
@@ -274,8 +269,9 @@ function display_code(): void
         } else if (($_SESSION["status"] == "Admin" || $run["access"] == "public") and in_array($run["result"], array("AC", "WA", "PE", "RTE"))) {
             echo "
                 </table>
-                <br>
-                <input type='button' value='Display Input Output Files' style='display: block;' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\">";
+                <div class='d-flex justify-content-center'>
+                    <button class='btn btn-outline-primary' style='display: block;' onClick=\"window.location=window.location.search.replace(/[\?\&]io\=[^&]*/,'')+'&io=yes';\">Display Input Output Files</button>
+                </div>";
         } else {
             echo "</table>";
         }
