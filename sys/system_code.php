@@ -64,20 +64,20 @@ function display_code(): void
         $optionsrowtwo = "";
 
         if ($_SESSION["tid"] || $run["access"] == "public") {
-            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-primary' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\">Edit</button></div>";
-            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-info' onClick=\"window.location='?download=code&rid=$rid';\">Download</button></div>";
+            $optionsrowone .= "<button class='btn btn-outline-primary mx-1' onClick=\"window.location='?display=problem&pid=$run[pid]&edit=$rid#bottom';\">Edit</button>";
+            $optionsrowone .= "<button class='btn btn-outline-info mx-1' onClick=\"window.location='?download=code&rid=$rid';\">Download</button>";
         }
         if ($_SESSION["status"] == "Admin") {
-            $optionsrowone .= "<div class='mb-3'><button class='btn btn-outline-warning' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\">Rejudge</button></div>";
+            $optionsrowone .= "<button class='btn btn-outline-warning mx-1' onClick=\"window.location='?action=rejudge&rid=$run[rid]';\">Rejudge</button>";
         
             if ($run["access"] == "private") {
-                $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-secondary' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\">Private</button></div>";
+                $optionsrowtwo .= "<button class='btn btn-outline-secondary mx-1' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$rid';\">Private</button>";
             } else {
-                $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-success' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\">Public</button></div>";
+                $optionsrowtwo .= "<button class='btn btn-outline-success mx-1' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$rid';\">Public</button>";
             }
         
-            $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-danger' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\">Disqualify</button></div>";
-            $optionsrowtwo .= "<div class='mb-3'><button class='btn btn-outline-danger' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\">Delete</button></div>";
+            $optionsrowtwo .= "<button class='btn btn-outline-danger mx-1' onClick=\"if(confirm('Are you sure you wish to disqualify Run ID $run[rid]?')) window.location='?action=makecodedisqualified&rid=$run[rid]';\">Disqualify</button>";
+            $optionsrowtwo .= "<button class='btn btn-outline-danger mx-1' onClick=\"if(confirm('Are you sure you wish to delete Run ID $run[rid]?'))window.location='?action=makecodedeleted&rid=$run[rid]';\">Delete</button>";
         }
               
 

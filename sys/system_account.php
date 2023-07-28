@@ -15,33 +15,14 @@ function display_account()
         return -1;
     }
     $dataRow = mysqli_fetch_array($data);
-    echo "<h3> Account Details : $_SESSION[teamname]</h3>";
-    echo "<div class='mb-3'>
-          <form class='updatepass' action='?action=updatepass' method='post'>
-            <table class='table table-borderless'>
-                <tr>
-                    <td>
-                        <input type='password' class='form-control' id='floatingInputValue' name='pass0' placeholder='Original Password'>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    <input type='password' class='form-control' id='floatingInputValue' name='pass1' placeholder='New Password'>
-                    </td>
-                </tr>
-                <tr>
-                    <td> 
-                        <input type='password' class='form-control' id='floatingInputValue' name='pass2' placeholder='Retype New Password'> 
-                    </td>
-                </tr>
-            </table>
-            <input type='submit' class='btn btn-primary' id='ChangePasswordButton'  value='Change Password'>
-          </form>
-          </div>";
-    echo "The details about the members of the team as mentioned at the time of registeration are as follows:<br><br>";
     echo "<table class='table table-borderless'>
           <thead>
           <tr class='table-primary'>
+            <td colspan='6'>
+                <h3> Account Details : $_SESSION[teamname]</h3>
+            </td>
+          </tr>
+          <tr class='table-info'>
             <th>Team</th>
             <th>Full Name</th>
             <th>Roll Number</th>
@@ -50,8 +31,7 @@ function display_account()
             <th>Phone Number</th>
           </tr>
           </thead>
-          <tbody>
-          ";
+          <tbody>";
     for ($i = 1; $i <= 3; $i++) {
         echo "<tr><th class='table-info'>Member $i</th>";
         foreach (array("name", "roll", "branch", "email", "phone") as $item) {
@@ -60,7 +40,33 @@ function display_account()
         echo "</tr>";
     }
     echo "</tbody></table>";
-    echo "<br>If you wish to modify any of the above details, please contact an Administrator.";
+    echo "If you wish to modify any of the above details, please contact an Administrator.";
+    echo "
+    <form class='updatepass' action='?action=updatepass' method='post'>
+      <table class='table table-borderless'>
+          <tr class='table-primary'>
+              <td>
+                  <h3> Account Details : $_SESSION[teamname]</h3>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <input type='password' class='form-control' id='floatingInputValue' name='pass0' placeholder='Original Password'>
+              </td>
+          </tr>
+          <tr>
+              <td>
+              <input type='password' class='form-control' id='floatingInputValue' name='pass1' placeholder='New Password'>
+              </td>
+          </tr>
+          <tr>
+              <td> 
+                  <input type='password' class='form-control' id='floatingInputValue' name='pass2' placeholder='Retype New Password'> 
+              </td>
+          </tr>
+      </table>
+      <button type='submit' class='btn btn-outline-primary' id='ChangePasswordButton'>Change Password</button>
+    </form>";
 }
 
 

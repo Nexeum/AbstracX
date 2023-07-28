@@ -1,6 +1,3 @@
-<div class="mb3">
-    <h4>Frequently Asked Questions</h4>
-</div>
 <div class="accordion accordion-flush mb-3" id="accordionFlush">
     <!-- Pregunta 1 -->
     <div class="accordion-item">

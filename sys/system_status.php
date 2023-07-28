@@ -199,9 +199,9 @@ function display_submissions()
         if ($rejudge == "action=rejudge") {
             $rejudge .= "&all=1";
         }
-        echo "<div class='mb-3'><input type='button' class='btn btn-warning' value='Rejudge Submissions' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\"></div>";    }
+        echo "<div class='mb-3'><button class='btn btn-warning' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\">Rejudge Submissions</button></div>";    }
     if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<div class='mb-3'><button type='button' class='btn btn-success' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button></div>";
+        echo "<div class='mb-3'><button class='btn btn-success' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button></div>";
     }
 
     $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC");
@@ -453,14 +453,12 @@ function display_rankings(): void
 function display_scoreboard(): void
 {
     $link = mysqli_connect("localhost", "root", "", "nexeum");
-
-    echo "<div class='mb-3'><h3>Main Scoreboard</h3></div>";
-    echo "<div class='mb-3'>This page displays the Team Scores and Rank based on the results of past competitions, and do not have anything to do with the <a class='list-group-item' href='?display=rankings'>Current Team Scores and Rankings</a></div>";
     $tempQuery = mysqli_query($link, "SELECT value FROM admin WHERE variable='scoreboard'");
     if (mysqli_num_rows($tempQuery) == 1) {
         $tempResult = mysqli_fetch_array($tempQuery);
         echo $tempResult["value"];
     } else {
-        echo "<div class='mb-3'><table class='table table-borderless'><thead><tr class='table-primary'><th>Rank</th><th>Team ID</th><th>Team Name</th><th>Total</th></tr></thead><tbody><tr><th colspan='4'>Not Available</th></tr></tbody></table></div>";
+        echo "<div class='mb-3'><table class='table table-borderless'><thead><tr><td colspan='4' class='table-primary'><h3>Main Scoreboard</h3></td></tr><tr class='table-info'><th>Rank</th><th>Team ID</th><th>Team Name</th><th>Total</th></tr></thead><tbody><tr><th colspan='4'>Not Available</th></tr></tbody></table></div>";
     }
+    echo "<div class='mb-3'>This page displays the Team Scores and Rank based on the results of past competitions, and do not have anything to do with the <a class='list-group-item' href='?display=rankings'>Current Team Scores and Rankings</a></div>";
 }

@@ -129,8 +129,6 @@ function display_clarifications()
     global $admin, $invalidchars;
     $link = mysqli_connect("localhost", "root", "", "nexeum");
 
-    echo "<center>";
-
     if (isset($_GET["type"]) and in_array($_GET["type"], array("public", "private"))) {
         $type = $_GET["type"];
     } else {

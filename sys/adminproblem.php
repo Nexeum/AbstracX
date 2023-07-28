@@ -18,13 +18,6 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
 
 <div>
     <div id='problist' style='display:block;'>
-        <h2>Administrator Options : List of Problems</h2>
-        <input class="btn btn-info" type='button' value='Add New Problem'
-            onClick="$('div#problist').slideUp(250); $('div#probupdate').slideUp(250); $('div#probadd').slideDown(250);" />
-        <input class="btn btn-danger" type='button' value='Make all Inactive'
-            onClick="document.location='?action=problem-status&type=Inactive';" />
-        <input class="btn btn-success" type='button' value='Make all Active'
-            onClick="document.location='?action=problem-status&type=Active';" />
         <?php
         $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM problems WHERE status!='Delete'");
         $totalResult = mysqli_fetch_array($totalQuery);
@@ -33,28 +26,45 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
         $x = paginate("display=adminproblem", $totalCount, $limit);
         $page = $x[0];
         $pagenav = $x[1];
-        echo "<br><br>" . $pagenav . "<br><br>";
         ?>
-        <table>
-                <tr>
-                    <th>Problem ID</th>
-                    <th>Problem Group</th>
-                    <th>Problem Name</th>
-                    <th>Problem Code</th>
-                    <th>Problem Type</th>
-                    <th>Time Limit</th>
-                    <th>Score</th>
-                    <th>Status</th>
-                    <th>Update</th>
-                </tr>
+        <table class="table table-borderless">
+                <thead>
+                    <tr class="table-primary">
+                        <th colspan='9'>
+                            <h3>Administrator Options : List of Problems</h3>
+                        </th>
+                    </tr>
+                    <tr class="table-info">
+                        <th>Problem ID</th>
+                        <th>Problem Group</th>
+                        <th>Problem Name</th>
+                        <th>Problem Code</th>
+                        <th>Problem Type</th>
+                        <th>Time Limit</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
             <?php
             $data = mysqli_query($link, "SELECT * FROM problems WHERE status!='Delete' ORDER BY pid DESC LIMIT " . (($page - 1) * $limit) . "," . ($limit));
             while ($temp = mysqli_fetch_array($data)) {
-                echo "<tr><td>$temp[pid]</td><td>" . ($temp["pgroup"]) . "</td><td><a href='?display=problem&pid=$temp[pid]'>" . stripslashes($temp["name"]) . "</a></td><td><a href='?display=problem&pid=$temp[pid]'>" . stripslashes($temp["code"]) . "</a></td><td>" . stripslashes($temp["type"]) . "</td><td>$temp[timelimit] sec</td><td>$temp[score]</td>";
+                echo "<tr>
+                <td>$temp[pid]</td>
+                <td>" . ($temp["pgroup"]) . "</td>
+                <td><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>" . stripslashes($temp["name"]) . "</a></td>
+                <td><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>" . stripslashes($temp["code"]) . "</a></td>
+                <td>" . stripslashes($temp["type"]) . "</td>
+                <td>$temp[timelimit] sec</td>
+                <td>$temp[score]</td>";
                 if ($temp["status"] == "Active") {
-                    echo "<td><input class='btn btn-success' type='button' value='Active' title='Click here to make this problem Inactive.' onClick=\"window.location='?action=makeinactive&pid=$temp[pid]';\"></td>";
+                    echo "
+                    <td>
+                        <button class='btn btn-outline-success' title='Click here to make this problem Inactive.' onClick=\"window.location='?action=makeinactive&pid=$temp[pid]';\">Active</button></td>";
                 } else {
-                    echo "<td><input class='btn btn-danger' type='button' value='Inactive' title='Click here to make this problem Active.' onClick=\"window.location='?action=makeactive&pid=$temp[pid]';\"></td>";
+                    echo "
+                    <td>
+                        <button class='btn btn-outline-danger' title='Click here to make this problem Active.' onClick=\"window.location='?action=makeactive&pid=$temp[pid]';\">Inactive</button></td>";
                 }
                 $script = "$('div#problist').slideUp(250); $('div#probupdate').slideDown(250); $('div#probadd').slideUp(250); ";
                 $reset = "";
@@ -67,24 +77,33 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                 }
                 $reset .= "$('a#download_statement').attr('href','?download=statement&pid=$temp[pid]'); $('a#download_image').attr('href','?image=$temp[pid]'); $('a#download_input').attr('href','?download=input&pid=$temp[pid]'); $('a#download_output').attr('href','?download=output&pid=$temp[pid]');";
                 $script .= "$('input#update_reset').attr('onClick','" . addslashes($reset) . "');";
-                echo "<td><input class='btn btn-info' type='button' value='Edit' onClick=\"$script $reset\"></td></tr>\n";
+                echo "<td><button class='btn btn-outline-info' onClick=\"$script $reset\">Edit</button></td></tr>\n";
             }
             ?>
         </table>
-        <?php echo "<br>" . $pagenav; ?>
+        <button class="btn btn-outline-info mx-1"
+            onClick="$('div#problist').slideUp(250); $('div#probupdate').slideUp(250); $('div#probadd').slideDown(250);">Add New Problem</button>
+        <button class="btn btn-outline-danger mx-1"
+            onClick="document.location='?action=problem-status&type=Inactive';">Make all Inactive</button>
+        <button class="btn btn-outline-success mx-1"
+            onClick="document.location='?action=problem-status&type=Active';">Make all Active</button>
+        <?php echo $pagenav; ?>
     </div>
 
     <div id='probupdate' style='display:none;'>
-        <h2>Administrator Options: Update Problem Data</h2>
         <form action='?action=updateproblem' method='post' enctype='multipart/form-data'>
-            <table>
+            <table class="table table-borderless">
+                <tr class="table-primary">
+                    <th colspan="5">
+                        <h3>Administrator Options: Update Problem Data</h3>
+                    </th>
+                </tr>
                 <tr>
-                    <th>Problem Name</th>
-                    <td><input tabindex=1 id='update_name' name='update_name'></td>
-                    <td rowspan='8'></td>
-                    <th>Problem Status</th>
+                    <th class="table-info">Problem Name</th>
+                    <td><input class="form-control" id='update_name' name='update_name'></td>
+                    <th class="table-info">Problem Status</th>
                     <td>
-                        <select class="form-select" tabindex=7 id='update_status' name='update_status'>
+                        <select class="form-select" id='update_status' name='update_status'>
                             <option value='Active'>Active</option>
                             <option value='Inactive'>Inactive</option>
                             <option>Delete</option>
@@ -92,43 +111,43 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                     </td>
                 </tr>
                 <tr>
-                    <th>Problem Code</th>
-                    <td><input class="form-control" tabindex=2 id='update_code' name='update_code'></td>
-                    <th><a id='download_statement'>Problem Statement</a></th>
-                    <td><input class="form-control" tabindex=8 type='file' name='update_file_statement'></td>
+                    <th class="table-info">Problem Code</th>
+                    <td><input class="form-control" id='update_code' name='update_code'></td>
+                    <th class="table-info"><a class='list-group-item' id='download_statement'>Problem Statement</a></th>
+                    <td><input class="form-control" type='file' name='update_file_statement'></td>
                 </tr>
                 <tr>
-                    <th>Points</th>
-                    <td><input class="form-control" tabindex=3 id='update_score' name='update_score'></td>
-                    <th><a id='download_image'>Problem Image</a></th>
-                    <td><input class="form-control" tabindex=9 type='file' name='update_file_image'></td>
+                    <th class="table-info">Points</th>
+                    <td><input class="form-control" id='update_score' name='update_score'></td>
+                    <th class="table-info"><a class='list-group-item' id='download_image'>Problem Image</a></th>
+                    <td><input class="form-control" type='file' name='update_file_image'></td>
                 </tr>
                 <tr>
-                    <th>Problem Type</th>
-                    <td><input class="form-control" tabindex=4 id='update_type' name='update_type'></td>
-                    <th><a id='download_input'>Problem Input</a></th>
-                    <td><input class="form-control" tabindex=10 type='file' name='update_file_input'></td>
+                    <th class="table-info">Problem Type</th>
+                    <td><input class="form-control" id='update_type' name='update_type'></td>
+                    <th class="table-info"><a class='list-group-item' id='download_input'>Problem Input</a></th>
+                    <td><input class="form-control" type='file' name='update_file_input'></td>
                 </tr>
                 <tr>
-                    <th>Problem Group</th>
-                    <td><input class="form-control" tabindex=5 id='update_pgroup' name='update_pgroup'></td>
-                    <th><a id='download_output'>Problem Output</a></th>
-                    <td><input class="form-control" tabindex=11 type='file' name='update_file_output'></td>
+                    <th class="table-info">Problem Group</th>
+                    <td><input class="form-control" id='update_pgroup' name='update_pgroup'></td>
+                    <th class="table-info"><a class='list-group-item' id='download_output'>Problem Output</a></th>
+                    <td><input class="form-control" type='file' name='update_file_output'></td>
                 </tr>
                 <tr>
-                    <th rowspan=3>Languages Allowed</th>
+                    <th rowspan='3'>Languages Allowed</th>
                     <td rowspan=3>
                         <input type='hidden' name='update_languages' value='' id='update_languages'>
-                        <select class="form-select" multiple tabindex=6 onChange="updateLangSelect(this.options)" id='update_langselect'
+                        <select class="form-select" multiple onChange="updateLangSelect(this.options)" id='update_langselect'
                             title='Use CTRL or SHIFT to select multiple items.'>
                             <?php echo $langlist1; ?>
                         </select>
                     </td>
-                    <th>Time Limit (sec)</th>
-                    <td><input tabindex=12 id='update_timelimit' name='update_timelimit'></td>
+                    <th class="table-info">Time Limit (sec)</th>
+                    <td><input class="form-control" id='update_timelimit' name='update_timelimit'></td>
                 </tr>
                 <tr>
-                    <th>Special Options</th>
+                    <th class="table-info">Special Options</th>
                     <td>
                         <select class="form-select" name='update_options' id='update_options' tabindex=13>
                             <?php
@@ -140,19 +159,17 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=5>
-                        <span>
-                            In case any of the File Input Fields are left empty, it will cause the original files to be
-                            retained. However, the Text Input Fields, if left empty, will actually be set to NULL.
-                        </span>
-                    </td>
+                    <th colspan="5">
+                        In case any of the File Input Fields are left empty, it will cause the original files to be
+                        retained. However, the Text Input Fields, if left empty, will actually be set to NULL.
+                    </th>
                 </tr>
             </table>
             <br>
-            <input type='submit' value='Update Problem Data' />
-            <input type='button' value='Reset' id='update_reset' onclick="resetUpdateForm()" />
-            <input type='button' value='Cancel' onclick="cancelUpdate()" />
-            <input type='hidden' name='update_pid' id='update_pid'>
+            <button class="btn btn-outline-success mx-1" type='submit'>Update Problem Data</button>
+            <button class="btn btn-outline-warning mx-1" id='update_reset' onclick="resetUpdateForm()">Reset</button>
+            <button class="btn btn-outline-danger mx-1" onclick="cancelUpdate()">Cancel</button>
+            <input type='hidden' name='update_pid' id='update_pid'/>
         </form>
     </div>
 
