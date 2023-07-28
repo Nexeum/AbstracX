@@ -66,18 +66,14 @@ function display_main(): void
 
 function display_notice(): void
 {
-    echo "<div class='mb-3'><h4>Important Notices</h4></div>";
+    echo "<table class='table table-borderless'><thead><tr class='table-primary'><th><h3>Important Notices</h3></th></tr></thead></table>";
 
     $edit = (isset($_GET["edit"]) && $_GET["edit"] == 1) ? 1 : 0;
 
     if ($edit) {
-        echo "<div class='mb-3'>";
         display_edit_notice();
-        echo "</div>";
     } else {
-        echo "<div class='mb-3'>";
         display_read_notice();
-        echo "</div>";
     }
 
     if (!$edit && $_SESSION["status"] == "Admin") {
@@ -119,26 +115,24 @@ function display_read_notice(): void
         $data = $admin["notice"];
         $lines = explode("\n", $data);
         $isHeader = true;
-
         foreach ($lines as $line) {
             $line = trim($line);
             if ($line != "") {
                 if ($isHeader) {
-                    echo "<div class='mb-3'><table class='table table-borderless'><thead><tr class='table-primary'><th>" . stripslashes($line) . "</th></tr></thead><tr><td>";
+                    echo "<table class='table table-borderless'><thead><tr class='table-info'><th>" . stripslashes($line) . "</th></tr><tr></thead><td>";
                 } else {
                     echo stripslashes($line);
                 }
                 $isHeader = false;
             } else {
                 if (!$isHeader) {
-                    echo "</td></tr></table></div>";
+                    echo "</td></tr></table>";
                 }
                 $isHeader = true;
             }
         }
-
         if (!$isHeader) {
-            echo "</td></tr></table></div>";
+            echo "</td></tr></table>";
         }
     }
 }

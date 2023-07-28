@@ -271,29 +271,6 @@ include("sys/system_init.php");
         }
 
 
-        function problem_search() {
-            let query = $('input#query').attr('value').toLowerCase();
-            if (query.length > 0) {
-                $('div.probindex div.probheaders1').slideUp(250);
-                $('div.probindex div.probheaders2').slideDown(250);
-            } else {
-                $('div.probindex div.probheaders1').slideDown(250);
-                $('div.probindex div.probheaders2').slideUp(250);
-            }
-            $('div.probindex div.problem').each(function() {
-                let match = 0;
-                $(this).find('td').each(function() {
-                    if ($(this).text().toLowerCase().indexOf(query) !== -1) match++;
-                });
-                if (match === 0) {
-                    $(this).slideUp(250);
-                } else {
-                    $(this).slideDown(250);
-                }
-            });
-        }
-
-
         function addslashes(str) {
             return str;
         }

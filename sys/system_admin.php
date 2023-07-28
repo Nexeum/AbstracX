@@ -70,8 +70,19 @@ function display_adminlogs()
         $page = $x[0];
         $pagenav = $x[1];
 
-        echo "<h3>Administrator Options : Access Logs</h3>";
-        echo "<table class='table table-borderless'><thead><tr class='table-primary'><th>Date & Time</th><th>IP Address</th><th>Team ID/Name</th><th>Request</th></tr></thead>";
+        echo "
+        <table class='table table-borderless'>
+        <thead>
+        <tr class='table-primary'>
+            <th colspan='4'><h4>Administrator Options : Access Logs</h4><th>
+        </tr>
+        <tr class='table-info'>
+            <th>Date & Time</th>
+            <th>IP Address</th>
+            <th>Team ID/Name</th>
+            <th>Request</th>
+        </tr>
+        </thead>";
         $teams = mysqli_query($link, "SELECT tid,teamname FROM teams");
         while ($team = mysqli_fetch_array($teams)) {
             $teamnames[$team["tid"]] = $team["teamname"];
@@ -85,7 +96,7 @@ function display_adminlogs()
             }
             echo "<tr><td>" . date("d M Y, H:i:s", intval($log["time"])) . "</td><td>$log[ip]</td><td>" . $teamname . "</td><td>" . str_replace(",", ", ", $log["request"]) . "</td></tr>";
         }
-        echo "</table><br>$pagenav</center>";
+        echo "</table>$pagenav";
     } else {
         $_SESSION["message"] = $currentmessage;
         $_SESSION["message"][] = "Access Denied : You need to be an Administrator to access that page.";
@@ -179,7 +190,7 @@ function display_executionprotocol()
     }
 
     if (file_exists("env/lock.txt")) {
-        echo "<center><h2>Execution Protocol</h2>Could not obtain a lock on Execution Protocol.<br><br><input type='button' id='gobackbutton' onClick='gobackin(0);'></center>";
+        echo "<h2>Execution Protocol</h2>Could not obtain a lock on Execution Protocol.<br><br><input type='button' id='gobackbutton' onClick='gobackin(0);'>";
         echo "<script>gobackin(5); function gobackin(sec){ document.getElementById(\"gobackbutton\").value=\"Going back in \"+sec+\" seconds ...\"; if(sec<=0) window.location = '?display=admincontest'; else window.setTimeout('gobackin('+(sec-1)+');',1000); }</script>";
         return;
     } else {
@@ -188,7 +199,7 @@ function display_executionprotocol()
 
     $admin["lastjudge"] = time();
 
-    echo "<center><h2>Execution Protocol</h2></center>";
+    echo "<h2>Execution Protocol</h2>";
     echo "<table width=100%><tr><th>Run ID</th><th>Problem</th><th>Language</th><th>Team</th><th>File Name</th><th>Time</th><th>Result</th></tr>";
 
     $invalid = 0;
@@ -269,7 +280,7 @@ function display_executionprotocol()
     if ($invalid) {
         echo "<tr><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>";
         echo "<tr><td colspan=10>Waiting For Submissions</td></tr>";
-        echo "</table><br><center><input id='terminate' type='button' value='Terminate Execution Protocol' onClick=\"window.location='?display=admincontest'\"></center>";
+        echo "</table><input id='terminate' type='button' value='Terminate Execution Protocol' onClick=\"window.location='?display=admincontest'\">";
         echo "<script>window.setTimeout(\"$('input#terminate').css('display','none'); window.location = window.location;\",3000);</script>";
         unlink("env/lock.txt");
         return;
