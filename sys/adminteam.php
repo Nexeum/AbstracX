@@ -104,53 +104,53 @@
                 <tr>
                     <td>Team Name</td>
                     <td>
-                        <input tabindex="1" id="update_teamname" name="update_teamname">
+                        <input id="update_teamname" name="update_teamname">
                     </td>
                     <td>Full Name</td>
                     <td>
-                        <input tabindex="7" id="update_name1" name="update_name1">
+                        <input id="update_name1" name="update_name1">
                     </td>
                 </tr>
                 <tr>
                     <td>Team Name</td>
-                    <td><input tabindex="2" id="update_teamname2" name="update_teamname2"></td>
+                    <td><input id="update_teamname2" name="update_teamname2"></td>
                     <td>Roll Number</td>
-                    <td><input tabindex="8" id="update_roll1" name="update_roll1"></td>
+                    <td><input id="update_roll1" name="update_roll1"></td>
                 </tr>
                 <tr>
                     <td>Password</td>
                     <td>
-                        <input tabindex="3" id="update_pass" name="update_pass" placeholder="**********">
+                        <input id="update_pass" name="update_pass" placeholder="**********">
                     </td>
                     <td>Branch</td>
                     <td>
-                        <input tabindex="9" id="update_branch1" name="update_branch1">
+                        <input id="update_branch1" name="update_branch1">
                     </td>
                 </tr>
                 <tr>
                     <td>Score</td>
                     <td>
-                        <input tabindex="4" id="update_score" name="update_score" disabled="disabled">
+                        <input id="update_score" name="update_score" disabled="disabled">
                     </td>
                     <td>Email Address</td>
                     <td>
-                        <input tabindex="10" id="update_email1" name="update_email1">
+                        <input id="update_email1" name="update_email1">
                     </td>
                 </tr>
                 <tr>
                     <td>Solved</td>
                     <td>
-                        <input tabindex="5" id="update_solved" name="update_solved" title="Solved Problem IDs separated by Commas">
+                        <input id="update_solved" name="update_solved" title="Solved Problem IDs separated by Commas">
                     </td>
                     <td>Phone Number</td>
                     <td>
-                        <input tabindex="11" id="update_phone1" name="update_phone1">
+                        <input id="update_phone1" name="update_phone1">
                     </td>
                 </tr>
                 <tr>
                     <td>Status</td>
                     <td>
-                        <select tabindex="6" id="update_status" name="update_status">
+                        <select id="update_status" name="update_status">
                             <option>Waiting</option>
                             <option>Normal</option>
                             <option>Admin</option>
@@ -181,33 +181,33 @@
                 </tr>
                 <tr>
                     <td>Full Name</td>
-                    <td><input tabindex="12" id="update_name2" name="update_name2"></td>
+                    <td><input id="update_name2" name="update_name2"></td>
                     <td>Full Name</td>
-                    <td><input tabindex="17" id="update_name3" name="update_name3"></td>
+                    <td><input id="update_name3" name="update_name3"></td>
                 </tr>
                 <tr>
                     <td>Roll Number</td>
-                    <td><input tabindex="13" id="update_roll2" name="update_roll2"></td>
+                    <td><input id="update_roll2" name="update_roll2"></td>
                     <td>Roll Number</td>
-                    <td><input tabindex="18" id="update_roll3" name="update_roll3"></td>
+                    <td><input id="update_roll3" name="update_roll3"></td>
                 </tr>
                 <tr>
                     <td>Branch</td>
-                    <td><input tabindex="14" id="update_branch2" name="update_branch2"></td>
+                    <td><input id="update_branch2" name="update_branch2"></td>
                     <td>Branch</td>
-                    <td><input tabindex="19" id="update_branch3" name="update_branch3"></td>
+                    <td><input id="update_branch3" name="update_branch3"></td>
                 </tr>
                 <tr>
                     <td>Email Address</td>
-                    <td><input tabindex="15" id="update_email2" name="update_email2"></td>
+                    <td><input id="update_email2" name="update_email2"></td>
                     <td>Email Address</td>
-                    <td><input tabindex="20" id="update_email3" name="update_email3"></td>
+                    <td><input id="update_email3" name="update_email3"></td>
                 </tr>
                 <tr>
                     <td>Phone Number</td>
-                    <td><input tabindex="16" id="update_phone2" name="update_phone2"></td>
+                    <td><input id="update_phone2" name="update_phone2"></td>
                     <td>Phone Number</td>
-                    <td><input tabindex="21" id="update_phone3" name="update_phone3"></td>
+                    <td><input id="update_phone3" name="update_phone3"></td>
                 </tr>
             </table>
             <hr>

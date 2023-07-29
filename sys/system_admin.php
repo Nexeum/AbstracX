@@ -69,12 +69,13 @@ function display_adminlogs()
         $x = paginate("display=adminlogs", $totalCount, $limit);
         $page = $x[0];
         $pagenav = $x[1];
+        $urlargs = "display=adminlogs";
 
         echo "
         <table class='table table-borderless'>
         <thead>
         <tr class='table-primary'>
-            <th colspan='4'><h4>Administrator Options : Access Logs</h4><th>
+            <td colspan='4'><h4>Administrator Options : Access Logs</h4></td>
         </tr>
         <tr class='table-info'>
             <th>Date & Time</th>
@@ -96,7 +97,33 @@ function display_adminlogs()
             }
             echo "<tr><td>" . date("d M Y, H:i:s", intval($log["time"])) . "</td><td>$log[ip]</td><td>" . $teamname . "</td><td>" . str_replace(",", ", ", $log["request"]) . "</td></tr>";
         }
-        echo "</table>$pagenav";
+        echo "</table>";
+        $totalpages = max(1, ceil($totalCount / $limit));
+        $currentPage = $x[0];
+    
+        echo "
+            <div class='mb-3 d-flex justify-content-center'>
+                <nav aria-label='Page navigation example'>
+                    <ul class='pagination'>
+                        <li class='page-item" . ($currentPage == 1 ? " disabled" : "") . "'>
+                            <a class='page-link' href='?$urlargs&" . ($currentPage == 1 ? "" : "page=" . ($currentPage - 1)) . "' aria-label='Previous'>
+                            <span aria-hidden='true'>&laquo;</span>
+                            </a>
+                        </li>";
+    
+        for ($page = max(1, $currentPage - 2); $page <= min($currentPage + 2, $totalpages); $page++) {
+            echo "<li class='page-item" . ($currentPage == $page ? " active" : "") . "'><a class='page-link' href='?$urlargs&page=$page'>$page</a></li>";
+        }
+    
+        echo "
+                        <li class='page-item" . ($currentPage == $totalpages ? " disabled" : "") . "'>
+                            <a class='page-link' href='?$urlargs&" . ($currentPage == $totalpages ? "" : "page=" . ($currentPage + 1)) . "' aria-label='Next'>
+                            <span aria-hidden='true'>&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>";
     } else {
         $_SESSION["message"] = $currentmessage;
         $_SESSION["message"][] = "Access Denied : You need to be an Administrator to access that page.";
@@ -200,7 +227,7 @@ function display_executionprotocol()
     $admin["lastjudge"] = time();
 
     echo "<h2>Execution Protocol</h2>";
-    echo "<table width=100%><tr><th>Run ID</th><th>Problem</th><th>Language</th><th>Team</th><th>File Name</th><th>Time</th><th>Result</th></tr>";
+    echo "<table><tr><th>Run ID</th><th>Problem</th><th>Language</th><th>Team</th><th>File Name</th><th>Time</th><th>Result</th></tr>";
 
     $invalid = 0;
     $temp = mysqli_query($link,"SELECT * FROM runs WHERE result is NULL ORDER BY rid ASC");

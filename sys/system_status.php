@@ -84,22 +84,10 @@ function display_submissions()
         echo "<b>Active Filter(s)</b> : None";
     }
 
-    if (isset($filter["tid"]) || isset($filter["pid"]) || !isset($filter["result"]) || !isset($filter["language"])) echo "<h3>";
     if (isset($filter["tid"])) {
         echo "<a onClick=\"$('#team-information').slideToggle();$('#problem-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide team information.'>$teamdata[teamname] : Team Information</a>";
-        if (isset($filter["pid"]) || !isset($filter["result"]) || !isset($filter["language"])) {
-            echo " | ";
-        }
     }
-    if (isset($filter["pid"])) {
-        echo "<a onClick=\"$('#problem-information').slideToggle();$('#team-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide problem information.'>$probdata[name] : Problem Information</a>";
-        if (!isset($filter["result"]) || !isset($filter["language"])) {
-            echo " | ";
-        }
-    }
-    if (isset($filter["tid"]) || isset($filter["pid"]) || !isset($filter["result"]) || !isset($filter["language"])) {
-        echo "</h3>";
-    }
+
 
     if (isset($filter["tid"])) {
         $members = array();
@@ -124,11 +112,28 @@ function display_submissions()
     }
 
     if (isset($filter["pid"])) {
-        echo "<div id='problem-information' style='display:none;'><table>
-			<tr><th>Problem ID</th><td>$probdata[pid]</td><th>Problem Type</th><td>$probdata[type]</td><th>Time Limit</th><td>$probdata[timelimit] sec</td></tr>
-			<tr><th>Problem Code</th><td>$probdata[code]</td><th>Input File Size</th><td>" . display_filesize(strlen($probdata["input"])) . "</td><th>Score</th><td>$probdata[score]</td></tr>";
-        echo "</table>";
-        echo "<a href='?display=problem&pid=$probdata[pid]'>Link to Problem</a></div>";
+        echo "<div id='problem-information' style='display:none;'>
+            <table class='table table-borderless'>
+            <tr class='table-primary'>
+                <th colspan='6'>Information</th>
+            </tr>
+			<tr>
+                <th class='table-info'>Problem ID</th>
+                <td>$probdata[pid]</td>
+                <th class='table-info'>Problem Type</th>
+                <td>$probdata[type]</td>
+                <th class='table-info'>Time Limit</th>
+                <td>$probdata[timelimit] sec</td>
+            </tr>
+			<tr>
+                <th class='table-info'>Problem Code</th>
+                <td>$probdata[code]</td>
+                <th class='table-info'>Input File Size</th>
+                <td>" . display_filesize(strlen($probdata["input"])) . "</td>
+                <th class='table-info'>Score</th>
+                <td>$probdata[score]</td>
+            </tr>";
+        echo "</table></div>";
     }
 
     if (!isset($filter["result"]) || !isset($filter["language"])) {
@@ -195,6 +200,9 @@ function display_submissions()
     }
 
     echo "<h2>Submission Status</h2>";
+    if (isset($filter["pid"])) {
+        echo "<div class='mb-3'><button class=\"btn btn-primary\" onClick=\"$('#problem-information').slideToggle();$('#team-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide problem information.'>$probdata[name] : Problem Information</button></div>";
+    }
     if ($_SESSION["status"] == "Admin") {
         if ($rejudge == "action=rejudge") {
             $rejudge .= "&all=1";
@@ -230,7 +238,6 @@ function display_submissions()
             </thead>
             <tbody>";
     $data = mysqli_query($link, "SELECT * FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC LIMIT " . (($page - 1) * $perpage) . "," . $perpage);
-    $n = mysqli_num_rows($data);
     for ($i = 0; $temp = mysqli_fetch_array($data); $i++) {
         if ($i == $perpage) {
             break;
