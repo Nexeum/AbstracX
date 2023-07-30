@@ -252,7 +252,6 @@ function display_problem()
             $extcompare .= "if(ext=='$ext'){ $('select#code_lang').attr('value','" . ($lang) . "'); } ";
         }
         echo "
-            <h2>Submit Solution : $row[name]</h2>
 			<script>
 			    function code_validate(){ 
                     if(document.forms['submitcode'].code_file.value=='' && document.forms['submitcode'].code_text.value==''){ 
@@ -273,29 +272,38 @@ function display_problem()
             </script>
 			<form action='?action=submitcode' method='post' name='submitcode' enctype='multipart/form-data' onSubmit=\"return code_validate();\">
                 <input type='hidden' name='code_pid' value='$pid'>
-			<table>
+			<table class='table table-borderless'>
+                <tr class='table-primary'>
+                    <th colspan='4'>
+                        <h3>Submit Solution : $row[name]</h3>
+                    </th>                
+                </tr>
                 <tr>
-                    <th>Language</th>
-                    <th><select id='code_lang' name='code_lang'>" . $languages . "</select></th>
+                    <th class='table-info'>Language</th>
+                    <th><select class='form-select' id='code_lang' name='code_lang'>" . $languages . "</select></th>
                     <input type='hidden' name='MAX_FILE_SIZE' value='$maxcodesize' />
-                    <th>Code File</th>
+                    <th class='table-info'>Code File</th>
                     <th>
-                        <input type='file' name='code_file' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" />
+                        <input class='form-control' type='file' name='code_file' onChange=\"if(this.value!=''){ filename = this.value.split('.'); ext = filename[filename.length-1]; $extcompare }\" />
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        <textarea id='code_text' class='form-control' name='code_text' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea>
+                    <td colspan='4'>
+                        <textarea class='form-control' id='code_text' name='code_text' placeholder='Insert your code here' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea>
                     </td>
                 </tr>
             </table>
-            <table> 
+            <table class='table table-borderless'> 
                 <input type='hidden' name='code_name' id='code_name' value='code'>
                 <tr>
                     <th>
-                        <div class='small'>If you submit both File and Text (copy-pasted in the above textarea), the Text will be ignored.</div>
+                        <div>If you submit both File and Text (copy-pasted in the above textarea), the Text will be ignored.</div>
                     </th>
-                    <th><input type='submit' value='Submit Code'></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div><button class='btn btn-outline-info' type='submit'>Submit Code</button></div>
+                    </th>
                 </tr>
             </table>
         </form>";

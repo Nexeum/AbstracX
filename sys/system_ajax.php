@@ -81,15 +81,15 @@ function action_adminwork(): void
     $json = "<table class='table table-borderless'>
         <thead>
             <tr class='table-primary'>
-                <th colspan='4' class='text-center'>
+                <th colspan='4'>
                     <h4><a class='list-group-item' href='?display=submissions'>Latest Submissions</a></h4>
                 </th>
             </tr>
             <tr class='table-info'>
-                <th class='text-center' title='Run ID'>RID</th>
-                <th class='text-center'>Team</th>
-                <th class='text-center'>Problem</th>
-                <th class='text-center'>Result</th>
+                <th>RID</th>
+                <th>Team</th>
+                <th>Problem</th>
+                <th>Result</th>
             </tr>
         </thead>
         <tbody>";
@@ -107,7 +107,31 @@ function action_adminwork(): void
             if (isset($fullresult[$result])) {
                 $result = $fullresult[$result];
             }
-            $json .= "<tr class='$temp[result]'><td>$temp[rid]</td><td><a href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td><td title=\"$temp[probname]\"><a href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td><td title='$result'>$temp[result]</td></tr>";
+            $rowClass = '';
+            if ($temp["result"] == "AC") {
+                $rowClass = 'table-success'; // Green row for AC
+            } elseif ($temp["result"] == "WA") {
+                $rowClass = 'table-danger'; // Red row for WA
+            } elseif ($temp["result"] == "TLE") {
+                $rowClass = 'table-secondary'; // Light blue row for Time Limit Exceeded
+            }  elseif ($temp["result"] == "CE") {
+                $rowClass = 'table-warning'; // Yellow row for CE
+            } elseif ($temp["result"] == "RTE") {
+                $rowClass = 'table-warning'; // Yellow row for RE
+            } elseif ($temp["result"] == "PE") {
+                $rowClass = 'table-warning'; // Yellow blue row for PE
+            } elseif ($temp["result"] == "SC") {
+                $rowClass = 'table-danger'; // Red row for Suspicious code
+            } else {
+                $rowClass = 'table-secondary'; // Gray row for other results
+            }          
+            $json .= "
+                <tr class='$rowClass'>
+                <td>$temp[rid]</td>
+                <td><a href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td>
+                <td title=\"$temp[probname]\"><a href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td>
+                <td title='$result'>$temp[result]</td>
+                </tr>";
         }
     }
     $json .= "</tbody></table>";
