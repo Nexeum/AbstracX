@@ -46,22 +46,25 @@ function display_account()
       <table class='table table-borderless'>
           <tr class='table-primary'>
               <td>
-                  <h3> Account Details : $_SESSION[teamname]</h3>
+                  <h3>Set Password : $_SESSION[teamname]</h3>
               </td>
           </tr>
           <tr>
               <td>
-                  <input type='password' class='form-control' id='floatingInputValue' name='pass0' placeholder='Original Password'>
+                  <label for='inputpasso' class='form-label'>Original Password</label>
+                  <input type='password' class='form-control' id='inputpasso' name='pass0'>
               </td>
           </tr>
           <tr>
               <td>
-              <input type='password' class='form-control' id='floatingInputValue' name='pass1' placeholder='New Password'>
+                  <label for='inputpassn' class='form-label'>New Password</label>
+                  <input type='password' class='form-control' id='inputpassn' name='pass1'>
               </td>
           </tr>
           <tr>
-              <td> 
-                  <input type='password' class='form-control' id='floatingInputValue' name='pass2' placeholder='Retype New Password'> 
+              <td>
+                  <label for='inputpassr' class='form-label'>Retype New Password</label>
+                  <input type='password' class='form-control' id='inputpassr' name='pass2'> 
               </td>
           </tr>
       </table>
@@ -94,13 +97,13 @@ function display_statusbox(): void
                 <tr>
                     <td>
                         <label for='inputpass' class='form-label'>Password</label>
-                        <input type='password' id='inputpass' name='pass' value='' class='form-control'>
+                        <input type='password' id='inputpass' name='pass' class='form-control'>
                     </td>
                 </tr>
                 </tbody>
                 <tr>
                     <td>
-                        <input type='submit' value='Log In' class='btn btn-outline-primary'>
+                        <button type='submit' class='btn btn-outline-primary'>Log In</button>
                     </td>
                 </tr>
             </table>

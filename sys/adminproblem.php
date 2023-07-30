@@ -17,7 +17,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
 ?>
 
 <div>
-    <div id='problist' style='display:block;'>
+    <div id='problist'>
         <?php
         $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM problems WHERE status!='Delete'");
         $totalResult = mysqli_fetch_array($totalQuery);
@@ -28,24 +28,24 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
         $pagenav = $x[1];
         ?>
         <table class="table table-borderless">
-                <thead>
-                    <tr class="table-primary">
-                        <th colspan='9'>
-                            <h3>Administrator Options : List of Problems</h3>
-                        </th>
-                    </tr>
-                    <tr class="table-info">
-                        <th>Problem ID</th>
-                        <th>Problem Group</th>
-                        <th>Problem Name</th>
-                        <th>Problem Code</th>
-                        <th>Problem Type</th>
-                        <th>Time Limit</th>
-                        <th>Score</th>
-                        <th>Status</th>
-                        <th>Update</th>
-                    </tr>
-                </thead>
+            <thead>
+                <tr class="table-primary">
+                    <th colspan='9'>
+                        <h3>Administrator Options : List of Problems</h3>
+                    </th>
+                </tr>
+                <tr class="table-info">
+                    <th>Problem ID</th>
+                    <th>Problem Group</th>
+                    <th>Problem Name</th>
+                    <th>Problem Code</th>
+                    <th>Problem Type</th>
+                    <th>Time Limit</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
             <?php
             $data = mysqli_query($link, "SELECT * FROM problems WHERE status!='Delete' ORDER BY pid DESC LIMIT " . (($page - 1) * $limit) . "," . ($limit));
             while ($temp = mysqli_fetch_array($data)) {
@@ -81,13 +81,40 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
             }
             ?>
         </table>
-        <button class="btn btn-outline-info mx-1"
-            onClick="$('div#problist').slideUp(250); $('div#probupdate').slideUp(250); $('div#probadd').slideDown(250);">Add New Problem</button>
-        <button class="btn btn-outline-danger mx-1"
-            onClick="document.location='?action=problem-status&type=Inactive';">Make all Inactive</button>
-        <button class="btn btn-outline-success mx-1"
-            onClick="document.location='?action=problem-status&type=Active';">Make all Active</button>
-        <?php echo $pagenav; ?>
+        <div class="mb-3">
+            <button class="btn btn-outline-info mx-1" onClick="$('div#problist').slideUp(250); $('div#probupdate').slideUp(250); $('div#probadd').slideDown(250);">Add New Problem</button>
+            <button class="btn btn-outline-danger mx-1" onClick="document.location='?action=problem-status&type=Inactive';">Make all Inactive</button>
+            <button class="btn btn-outline-success mx-1" onClick="document.location='?action=problem-status&type=Active';">Make all Active</button>
+        </div>
+        <?php
+        $urlargs = "display=adminproblem";
+        $totalpages = max(1, ceil($totalCount / $limit));
+        $currentPage = $x[0];
+
+        echo "
+                <div class='mb-3 d-flex justify-content-center'>
+                    <nav aria-label='Page navigation example'>
+                        <ul class='pagination'>
+                            <li class='page-item" . ($currentPage == 1 ? " disabled" : "") . "'>
+                                <a class='page-link' href='?$urlargs&" . ($currentPage == 1 ? "" : "page=" . ($currentPage - 1)) . "' aria-label='Previous'>
+                                <span aria-hidden='true'>&laquo;</span>
+                                </a>
+                            </li>";
+
+        for ($page = max(1, $currentPage - 2); $page <= min($currentPage + 2, $totalpages); $page++) {
+            echo "<li class='page-item" . ($currentPage == $page ? " active" : "") . "'><a class='page-link' href='?$urlargs&page=$page'>$page</a></li>";
+        }
+
+        echo "
+                            <li class='page-item" . ($currentPage == $totalpages ? " disabled" : "") . "'>
+                                <a class='page-link' href='?$urlargs&" . ($currentPage == $totalpages ? "" : "page=" . ($currentPage + 1)) . "' aria-label='Next'>
+                                <span aria-hidden='true'>&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>";
+        ?>
     </div>
 
     <div id='probupdate' style='display:none;'>
@@ -138,8 +165,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                     <th rowspan='3'>Languages Allowed</th>
                     <td rowspan=3>
                         <input type='hidden' name='update_languages' value='' id='update_languages'>
-                        <select class="form-select" multiple onChange="updateLangSelect(this.options)" id='update_langselect'
-                            title='Use CTRL or SHIFT to select multiple items.'>
+                        <select class="form-select" multiple onChange="updateLangSelect(this.options)" id='update_langselect' title='Use CTRL or SHIFT to select multiple items.'>
                             <?php echo $langlist1; ?>
                         </select>
                     </td>
@@ -149,7 +175,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                 <tr>
                     <th class="table-info">Special Options</th>
                     <td>
-                        <select class="form-select" name='update_options' id='update_options' tabindex=13>
+                        <select class="form-select" name='update_options' id='update_options'>
                             <?php
                             foreach ($execoptions as $key => $value) {
                                 echo "<option value='$key'>$value</option>";
@@ -169,7 +195,7 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
             <button class="btn btn-outline-success mx-1" type='submit'>Update Problem Data</button>
             <button class="btn btn-outline-warning mx-1" id='update_reset' onclick="resetUpdateForm()">Reset</button>
             <button class="btn btn-outline-danger mx-1" onclick="cancelUpdate()">Cancel</button>
-            <input type='hidden' name='update_pid' id='update_pid'/>
+            <input type='hidden' name='update_pid' id='update_pid' />
         </form>
     </div>
 
@@ -214,16 +240,42 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
 
     <script>
         function validate_makeproblem() {
-            const fields = [
-                { name: "make_name", message: "Problem name not provided." },
-                { name: "make_code", message: "Problem code not provided." },
-                { name: "make_score", message: "Problem points not provided." },
-                { name: "make_pgroup", message: "Problem group not provided." },
-                { name: "make_timelimit", message: "Problem timelimit not provided." },
-                { name: "make_languages", message: "No Languages selected for this problem." },
-                { name: "make_file_statement", message: "Problem statement file not provided." },
-                { name: "make_file_input", message: "Problem input file not provided." },
-                { name: "make_file_output", message: "Problem output file not provided." }
+            const fields = [{
+                    name: "make_name",
+                    message: "Problem name not provided."
+                },
+                {
+                    name: "make_code",
+                    message: "Problem code not provided."
+                },
+                {
+                    name: "make_score",
+                    message: "Problem points not provided."
+                },
+                {
+                    name: "make_pgroup",
+                    message: "Problem group not provided."
+                },
+                {
+                    name: "make_timelimit",
+                    message: "Problem timelimit not provided."
+                },
+                {
+                    name: "make_languages",
+                    message: "No Languages selected for this problem."
+                },
+                {
+                    name: "make_file_statement",
+                    message: "Problem statement file not provided."
+                },
+                {
+                    name: "make_file_input",
+                    message: "Problem input file not provided."
+                },
+                {
+                    name: "make_file_output",
+                    message: "Problem output file not provided."
+                }
             ];
 
             let invalidCharsRegex = new RegExp(<?php echo $invalidchars_js; ?>);
@@ -262,71 +314,71 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
     </script>
 
     <div id='probadd' style='display:none;'>
-        <h2>Administrator Options: Add New Problem</h2>
-        <form action='?action=makeproblem' method='post' enctype='multipart/form-data'
-            onsubmit="return validate_makeproblem()">
-            <table>
-                <tr>
-                    <th>Problem Name</th>
-                    <td><input class="form-control" tabindex=1 name='make_name'></td>
-                    <td rowspan=8></td>
-                    <th>Problem Status</th>
-                    <td><input disabled='disabled' value='Inactive'></td>
+        <form action='?action=makeproblem' method='post' enctype='multipart/form-data' onsubmit="return validate_makeproblem()">
+            <table class="table table-borderless">
+                <tr class="table-primary">
+                    <th colspan="5">
+                        <h3>Administrator Options: Add New Problem</h3>
+                    </th>
                 </tr>
                 <tr>
-                    <th>Problem Code</th>
-                    <td><input class="form-control" tabindex=2 name='make_code'></td>
-                    <th>Problem Statement</th>
-                    <td><input class="form-control" tabindex=7 type='file' name='make_file_statement'></td>
+                    <th class="table-info">Problem Name</th>
+                    <td><input class="form-control" name='make_name'></td>
+                    <th class="table-info">Problem Status</th>
+                    <td><input class="form-control" disabled='disabled' value='Inactive'></td>
                 </tr>
                 <tr>
-                    <th>Points</th>
-                    <td><input class="form-control" tabindex=3 name='make_score'></td>
-                    <th>Problem Image</th>
-                    <td><input class="form-control" tabindex=8 type='file' name='make_file_image' id="imagen"></td>
+                    <th class="table-info">Problem Code</th>
+                    <td><input class="form-control" name='make_code'></td>
+                    <th class="table-info">Problem Statement</th>
+                    <td><input class="form-control" type='file' name='make_file_statement'></td>
                 </tr>
                 <tr>
-                    <th>Problem Type</th>
-                    <td><input class="form-control" tabindex=4 name='make_type'></td>
-                    <th>Problem Input</th>
-                    <td><input class="form-control" tabindex=9 type='file' name='make_file_input'></td>
+                    <th class="table-info">Points</th>
+                    <td><input class="form-control" name='make_score'></td>
+                    <th class="table-info">Problem Image</th>
+                    <td><input class="form-control" type='file' name='make_file_image' id="imagen"></td>
                 </tr>
                 <tr>
-                    <th>Problem Group</th>
-                    <td><input class="form-control" tabindex=5 name='make_pgroup'></td>
-                    <th>Problem Output</th>
-                    <td><input class="form-control" tabindex=10 type='file' name='make_file_output'></td>
+                    <th class="table-info">Problem Type</th>
+                    <td><input class="form-control" name='make_type'></td>
+                    <th class="table-info">Problem Input</th>
+                    <td><input class="form-control" type='file' name='make_file_input'></td>
                 </tr>
                 <tr>
-                    <th rowspan=3>Languages Allowe</th>
-                    <td rowspan=3>
-                        <input type='hidden' name='make_languages' value='<?php echo $langlist3; ?>'
-                            id='make_languages'>
-                        <select class="form-select" multiple tabindex=6 onchange="updateLanguages()" multiple='multiple'
-                            title='Use CTRL or SHIFT to select multiple items.'>
+                    <th class="table-info">Problem Group</th>
+                    <td><input class="form-control" name='make_pgroup'></td>
+                    <th class="table-info">Problem Output</th>
+                    <td><input class="form-control" type='file' name='make_file_output'></td>
+                </tr>
+                <tr>
+                    <th class="table-info" rowspan="3">Languages Allowe</th>
+                    <td rowspan="3">
+                        <input type='hidden' name='make_languages' value='<?php echo $langlist3; ?>' id='make_languages'>
+                        <select class="form-select" multiple onchange="updateLanguages()" multiple='multiple' title='Use CTRL or SHIFT to select multiple items.'>
                             <?php echo $langlist2; ?>
                         </select>
                     </td>
-                    <th>Time Limit (sec)</th>
-                    <td><input class="form-control" tabindex=11 name='make_timelimit'></td>
+                    <th class="table-info">Time Limit (sec)</th>
+                    <td><input class="form-control" name='make_timelimit'></td>
                 </tr>
                 <tr>
-                    <th>Special Options</th>
+                    <th class="table-info">Special Options</th>
                     <td>
-                        <select class="form-select" name='make_options' tabindex=12>
+                        <select class="form-select" name='make_options'>
                             <?php foreach ($execoptions as $key => $value)
                                 echo "<option value='$key'>$value</option>"; ?>
                         </select>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=2>
+                    <td colspan="2">
                         <span>By default, all languages except for Text are enabled. Use CTRL or
                             SHIFT to select multiple languages.</span>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan=5>
+                    <td colspan="5">
                         <div class="small">
                             The values of all text fields must be a combination of up to 30 characters (single and
                             double quotes are not allowed).
