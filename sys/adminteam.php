@@ -1,12 +1,5 @@
 <div>
     <div id="teamlist">
-        <h2>Administrator Options: List of Teams</h2>
-        <div>
-            <input class="btn btn-info" type="button" value="Add New Team" onclick="window.location='?display=register'" />
-            <input class="btn btn-success" type="button" value="Set Status to 'Normal' for all 'Waiting' Teams"
-                onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');" />
-        </div>
-        <hr>
         <?php
             $link = mysqli_connect("localhost", "root", "", "nexeum");
 
@@ -15,10 +8,14 @@
             $totalCount = $totalResult["total"];
             $limit = $admin["teampage"] ?? 25;
             [$page, $pagenav] = paginate("display=adminteam", $totalCount, $limit);
-            echo $pagenav . "<hr>";
         ?>
-        <table class="adminteam">
-            <tr>
+        <table class="table table-borderless">
+            <tr class="table-primary">
+                <th colspan="7">
+                    <h3>Administrator Options: List of Teams</h3>
+                </th>
+            </tr>
+            <tr class="table-info">
                 <th>Team ID</th>
                 <th>Team Name</th>
                 <th>Group Name</th>
@@ -62,21 +59,53 @@
                         <tr>
                             <td>$t[tid]</td>
                             <td>
-                                <a href='?display=submissions&tid=$t[tid]'>$t[teamname]
+                                <a class='list-group-item' href='?display=submissions&tid=$t[tid]'>$t[teamname]
                             </td>
                             <td>$groupname</td>
                             <td>$t[status]</td>
                             <td>$members</td>
                             <td>$ip $platform</td>
                             <td>
-                                <input class='btn btn-info' type='button' value='Edit' onClick=\"$script\" />
+                                <button class='btn btn-info' onClick=\"$script\">Edit</button>
                             </td>
                         </tr>";
                 }
             ?>
         </table>
-        <hr>
-        <?php echo $pagenav; ?>
+        <div class="mb-3">
+            <button class="btn btn-info" onclick="window.location='?display=register'">Add New Team</button>
+            <button class="btn btn-success"
+                onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');">Set Status to 'Normal' for all 'Waiting' Teams</button>
+        </div>
+        <?php
+        $urlargs = "display=adminteam";
+        $totalpages = max(1, ceil($totalCount / $limit));
+        $currentPage = $page;
+
+        echo "
+                <div class='mb-3 d-flex justify-content-center'>
+                    <nav aria-label='Page navigation example'>
+                        <ul class='pagination'>
+                            <li class='page-item" . ($currentPage == 1 ? " disabled" : "") . "'>
+                                <a class='page-link' href='?$urlargs&" . ($currentPage == 1 ? "" : "page=" . ($currentPage - 1)) . "' aria-label='Previous'>
+                                <span aria-hidden='true'>&laquo;</span>
+                                </a>
+                            </li>";
+
+        for ($page = max(1, $currentPage - 2); $page <= min($currentPage + 2, $totalpages); $page++) {
+            echo "<li class='page-item" . ($currentPage == $page ? " active" : "") . "'><a class='page-link' href='?$urlargs&page=$page'>$page</a></li>";
+        }
+
+        echo "
+                            <li class='page-item" . ($currentPage == $totalpages ? " disabled" : "") . "'>
+                                <a class='page-link' href='?$urlargs&" . ($currentPage == $totalpages ? "" : "page=" . ($currentPage + 1)) . "' aria-label='Next'>
+                                <span aria-hidden='true'>&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>";
+        ?>
     </div>
 
     <script>
