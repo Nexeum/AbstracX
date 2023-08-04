@@ -183,9 +183,13 @@ function action_register(): void
     }
 
     if (true) {
-        mysqli_query($link, "INSERT INTO teams (gid," . implode(",", $temp1) . ",status,score) VALUES (1,\"" . implode("\",\"", $temp2) . "\",\"Normal\",0)");
+        $result = mysqli_query($link, "INSERT INTO teams (" . implode(",", $temp1) . ",status,score) VALUES (\"" . implode("\",\"", $temp2) . "\",\"Normal\",0)");
+        if (!$result) {
+            $_SESSION["message"][] = "Error" . mysqli_error($link);
+        }else{
+            $_SESSION["message"][] = "Registeration Successful";
+        }
     }
-    $_SESSION["message"][] = "Registeration Successful";
 }
 
 
