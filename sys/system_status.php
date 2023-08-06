@@ -419,7 +419,7 @@ function display_rankings(): void
             }
     
             $rank = ($page - 1) * $perpage + 1;
-            echo "<tr><td>$rank</td><td><a href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</a></td>" . ($group == 0 ? "<td>$groupname</td>" : "") . "<td>$solvedn / $solveda</div></td><td>$temp[score]</td></tr>";
+            echo "<tr><td>$rank</td><td><a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</a></td>" . ($group == 0 ? "<td>$groupname</td>" : "") . "<td>$solvedn / $solveda</div></td><td>$temp[score]</td></tr>";
     
             $rank++;
         }

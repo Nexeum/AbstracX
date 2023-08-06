@@ -173,13 +173,13 @@ function display_message(): void
 
     $currentmessage = $_SESSION["message"];
 
-    echo "<div class='messagebox' onclick='$(this).slideUp(250);' title='Click to hide'>";
+    echo "<div class='mb-3' onclick='$(this).slideUp(250);' title='Click to hide'>";
 
     if ((isset($admin["mode"]) && $admin["mode"] == "Lockdown") && $_SESSION["status"] != "Admin") {
         echo "Lockdown Mode";
     } else {
         foreach ($_SESSION["message"] as $line) {
-            echo filter($line) . "<br>";
+            echo "<div class='alert alert-info'>" . filter($line) . "</div>";
         }
     }
 

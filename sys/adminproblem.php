@@ -395,9 +395,9 @@ $link = mysqli_connect("localhost", "root", "", "nexeum");
                     </td>
                 </tr>
             </table>
-            <br><input type='submit' value='Create Problem' />
-            <input type='reset' value='Reset' />
-            <input type='button' value='Cancel' onclick="cancelAddProblem()" />
+            <button class="btn btn-outline-success" type="submit">Create Problem</button>
+            <input class="btn btn-outline-warning" value='Reset' type='reset'/>
+            <button class="btn btn-outline-danger mx-1" onclick="cancelUpdate()">Cancel</button>
         </form>
     </div>
 </div>
