@@ -72,7 +72,7 @@ function action_adminwork(): void
                 $solvedn = 0;
             }
 
-            $json .= "<!--$temp[tid]--><tr><td>$rank</td><td><a href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</td><td>$solvedn</td><td>$temp[score]</td></tr><!--$temp[tid]-->";
+            $json .= "<!--$temp[tid]--><tr><td>$rank</td><td><a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</td><td>$solvedn</td><td>$temp[score]</td></tr><!--$temp[tid]-->";
         }
     }
     $json .= "</tbody></table>";
@@ -287,7 +287,7 @@ function action_ajaxrefresh($type): bool|string
     }
 
     if (!isset($admin["cache-problems"]) || $admin["cache-problems"] == "") {
-        $admin["cache-problems"] = "<table class='table table-borderless'><tr><h4>Problems Index</h4></tr><tr><td>Not Available</td></tr></table>";
+        $admin["cache-problems"] = "<table class='table table-borderless'><tr class='table table-primary'><th><h4>Problems Index</h4></th></tr><tr><td>Not Available</td></tr></table>";
     }
 
     if ($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") {
@@ -358,7 +358,7 @@ function action_ajaxrefresh($type): bool|string
                         $probname = mysqli_getdata("SELECT name FROM problems WHERE status='Active' AND pid=$c[pid]");
                         $probname = "<a href='?display=problem&pid=$c[pid]'>" . $probname[0]["name"] . "</a>";
                     }
-                    $json["ajax-privateclar"] .= "<tr><td><b><a href='?display=submissions&tid=$_SESSION[tid]'>$_SESSION[teamname]</a> ($probname)</b> : $c[query]</td></tr>";
+                    $json["ajax-privateclar"] .= "<tr><td><b><a class='list-group-item' href='?display=submissions&tid=$_SESSION[tid]'>$_SESSION[teamname]</a> ($probname)</b> : $c[query]</td></tr>";
                     if (!empty($c["reply"])) {
                         $json["ajax-privateclar"] .= "<tr><td><i><b>Judge's Response</b> : $c[reply]</i></td></tr>";
                     }
