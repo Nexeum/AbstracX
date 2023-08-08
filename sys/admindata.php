@@ -1,6 +1,10 @@
 <div>
-    <h2>Administrator Options : Data Commitment</h2>
-    <table class='warn'>
+    <table class="table table-borderless">
+        <tr class="table-primary">
+            <th>
+                <h3>Administrator Options : Data Commitment</h3>
+            </th>
+        </tr>
         <tr>
             <td>
                 The Data Commitment procedure is designed to be used after contests to obtain a more permanent record of
@@ -21,16 +25,18 @@
     <br>
     <form action='?action=commitdata' method='post'
         onSubmit="return confirm('Are you sure you wish to perform a Data Commitment operation?');">
-        <label>
-            <input name='recordname' placeholder='Enter Record Name Here'>
-        </label>
-        <input type='submit' value='Commit Data'>
+        <input class="form-control" name='recordname' placeholder='Enter Record Name Here'>
+        <button class="btn btn-outline-success" type='submit'>Commit Data</button>
     </form>
     <br><br>
-    <h2>Administrator Options : Committed Data</h2>
 
-    <table>
-        <tr>
+    <table class="table table-borderless">
+        <tr class="table-primary">
+            <th colspan="4">
+                <h3>Administrator Options : Committed Data</h3>
+            </th>
+        </tr>
+        <tr class="table-info">
             <th>Record Name</th>
             <th>Date & Time</th>
             <th>Status</th>

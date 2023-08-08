@@ -109,18 +109,17 @@ function display_admingroup()
         echo "<script>window.location='?display=faq';</script>";
         return;
     }
-    echo "<h2>Group Settings</h2>";
-    echo "<form action='?action=group-create' method='post'><table><tr><th>New Group Name</th><td><input class='form-control' type='text' name='groupname'></td><td><input class='form-control' type='submit' value='Create New Group'></td></tr></table></form><br>";
+    echo "<form action='?action=group-create' method='post'><table class='table table-borderless'><tr class='table-primary'><th colspan='3'><h3>Group Settings</h3></th></tr><tr><th class='table-info'>New Group Name</th><td><input class='form-control' type='text' name='groupname'></td><td><button class='btn btn-outline-success' type='submit'>Create New Group</button></td></tr></table></form><br>";
     $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx<3;");
 
     echo "<script>function group_status(gid,action){ document.location='?action=group-status&gid='+gid+'&status='+action; }</script>";
-    echo "<table><tr><th>Group ID</th><th>Group Name</th><th>Status</th><th>Options</th></tr>";
+    echo "<table class='table table-borderless'><tr><th class='table-info'>Group ID</th><th class='table-info'>Group Name</th><th class='table-info'>Status</th><th class='table-info'>Options</th></tr>";
     $gids = array();
     $status = array();
     while ($row = mysqli_fetch_array($data)) {
         $gids[] = $row["gid"];
         $status[] = $row["statusx"];
-        echo "<tr><td>$row[gid]</td><td>$row[groupname]</td><td><select name='group-status-$row[gid]' onChange='if(confirm(\"Are you sure you wish to perform this operation?\")) group_status($row[gid],this.value); else this.value=$row[statusx];'><option value=0>Normal</option><option value=1>Restricted</option><option value=2>Suspended</option><option value=3>Delete</option></select></td><td><input type='button' onClick=\"gname = prompt('Enter New Group Name (only alphanumeric, underscore, dot and dash characters allowed):'); if(gname) document.location='?action=group-modify&gid=$row[gid]&groupname='+gname; \" value='Rename'></td></tr>";
+        echo "<tr><td>$row[gid]</td><td>$row[groupname]</td><td><select class='form-select' name='group-status-$row[gid]' onChange='if(confirm(\"Are you sure you wish to perform this operation?\")) group_status($row[gid],this.value); else this.value=$row[statusx];'><option value=0>Normal</option><option value=1>Restricted</option><option value=2>Suspended</option><option value=3>Delete</option></select></td><td><button class='btn btn-outline-warning' type='button' onClick=\"gname = prompt('Enter New Group Name (only alphanumeric, underscore, dot and dash characters allowed):'); if(gname) document.location='?action=group-modify&gid=$row[gid]&groupname='+gname; \">Rename</button></td></tr>";
     }
     echo "</table>";
     echo "<script>gids = [" . implode(",", $gids) . "]; status = [" . implode(",", $status) . "]; for(var i=0;i<gids.length;++i) $('select[name=\"group-status-'+gids[i]+'\"]').val(status[i]);</script>";
