@@ -122,64 +122,73 @@
     </script>
 
     <div id="teamedit" style="display:none;">
-        <h2>Administrator Options: Update Team Data</h2>
         <form action="?action=updateteam" method="post">
-            <table>
-                <tr>
-                    <th colspan="2">Team Information (Compulsory)</th>
-                    <td class="vdiv" rowspan="8"></td>
-                    <th colspan="2">Team Member 1 (Compulsory)</th>
+            <table class="table table-borderless">
+                <tr class="table-primary">
+                    <th colspan="5">
+                        <h3>Administrator Options: Update Team Data</h3>
+                    </th>
                 </tr>
                 <tr>
-                    <td>Team Name</td>
-                    <td>
-                        <input id="update_teamname" name="update_teamname">
-                    </td>
-                    <td>Full Name</td>
-                    <td>
-                        <input id="update_name1" name="update_name1">
-                    </td>
+                    <th class="table-info" colspan="2">Team Information (Compulsory)</th>
+                    <th></th>
+                    <th class="table-info" colspan="2">Team Member 1 (Compulsory)</th>
                 </tr>
                 <tr>
-                    <td>Team Name</td>
-                    <td><input id="update_teamname2" name="update_teamname2"></td>
-                    <td>Roll Number</td>
-                    <td><input id="update_roll1" name="update_roll1"></td>
-                </tr>
-                <tr>
-                    <td>Password</td>
+                    <td class="table-info">Team Name</td>
                     <td>
-                        <input id="update_pass" name="update_pass" placeholder="**********">
+                        <input class="form-control" id="update_teamname" name="update_teamname">
                     </td>
-                    <td>Branch</td>
+                    <td></td>
+                    <td class="table-info">Full Name</td>
                     <td>
-                        <input id="update_branch1" name="update_branch1">
+                        <input class="form-control" id="update_name1" name="update_name1">
                     </td>
                 </tr>
                 <tr>
-                    <td>Score</td>
+                    <td class="table-info">Team Name</td>
+                    <td><input class="form-control" id="update_teamname2" name="update_teamname2"></td>
+                    <td></td>
+                    <td class="table-info">Roll Number</td>
+                    <td><input class="form-control" id="update_roll1" name="update_roll1"></td>
+                </tr>
+                <tr>
+                    <td class="table-info">Password</td>
                     <td>
-                        <input id="update_score" name="update_score" disabled="disabled">
+                        <input class="form-control" id="update_pass" name="update_pass" placeholder="**********">
                     </td>
-                    <td>Email Address</td>
+                    <td></td>
+                    <td class="table-info">Branch</td>
                     <td>
-                        <input id="update_email1" name="update_email1">
+                        <input class="form-control" id="update_branch1" name="update_branch1">
                     </td>
                 </tr>
                 <tr>
-                    <td>Solved</td>
+                    <td class="table-info">Score</td>
                     <td>
-                        <input id="update_solved" name="update_solved" title="Solved Problem IDs separated by Commas">
+                        <input class="form-control" id="update_score" name="update_score" disabled="disabled">
                     </td>
-                    <td>Phone Number</td>
+                    <td></td>
+                    <td class="table-info">Email Address</td>
                     <td>
-                        <input id="update_phone1" name="update_phone1">
+                        <input class="form-control" id="update_email1" name="update_email1">
                     </td>
                 </tr>
                 <tr>
-                    <td>Status</td>
+                    <td class="table-info">Solved</td>
                     <td>
-                        <select id="update_status" name="update_status">
+                        <input class="form-control" id="update_solved" name="update_solved" title="Solved Problem IDs separated by Commas">
+                    </td>
+                    <td></td>
+                    <td class="table-info">Phone Number</td>
+                    <td>
+                        <input class="form-control" id="update_phone1" name="update_phone1">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-info">Status</td>
+                    <td>
+                        <select class="form-select" id="update_status" name="update_status">
                             <option>Waiting</option>
                             <option>Normal</option>
                             <option>Admin</option>
@@ -187,12 +196,11 @@
                             <option>Delete</option>
                         </select>
                     </td>
-                    <td rowspan="2" colspan="2"></td>
                 </tr>
                 <tr>
-                    <td>Group Name</td>
+                    <td class="table-info">Group Name</td>
                     <td>
-                        <select id="update_gid" name="update_gid">
+                        <select class="form-select" id="update_gid" name="update_gid">
                             <option value="0">Unknown Group</option>
                             <?php
                             $data = mysqli_query($link, "SELECT * FROM groups WHERE statusx < 3;");
@@ -204,46 +212,53 @@
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="2">Team Member 2 (Optional)</th>
-                    <td class="vdiv" rowspan="6"></td>
-                    <th colspan="2">Team Member 3 (Optional)</th>
+                    <th colspan="5"></th>
                 </tr>
                 <tr>
-                    <td>Full Name</td>
-                    <td><input id="update_name2" name="update_name2"></td>
-                    <td>Full Name</td>
-                    <td><input id="update_name3" name="update_name3"></td>
+                    <th class="table-info" colspan="2">Team Member 2 (Optional)</th>
+                    <th></th>
+                    <th class="table-info" colspan="2">Team Member 3 (Optional)</th>
                 </tr>
                 <tr>
-                    <td>Roll Number</td>
-                    <td><input id="update_roll2" name="update_roll2"></td>
-                    <td>Roll Number</td>
-                    <td><input id="update_roll3" name="update_roll3"></td>
+                    <td class="table-info">Full Name</td>
+                    <td><input class="form-control" id="update_name2" name="update_name2"></td>
+                    <td></td>
+                    <td class="table-info">Full Name</td>
+                    <td><input class="form-control" id="update_name3" name="update_name3"></td>
                 </tr>
                 <tr>
-                    <td>Branch</td>
-                    <td><input id="update_branch2" name="update_branch2"></td>
-                    <td>Branch</td>
-                    <td><input id="update_branch3" name="update_branch3"></td>
+                    <td class="table-info">Roll Number</td>
+                    <td><input class="form-control" id="update_roll2" name="update_roll2"></td>
+                    <td></td>
+                    <td class="table-info">Roll Number</td>
+                    <td><input class="form-control" id="update_roll3" name="update_roll3"></td>
                 </tr>
                 <tr>
-                    <td>Email Address</td>
-                    <td><input id="update_email2" name="update_email2"></td>
-                    <td>Email Address</td>
-                    <td><input id="update_email3" name="update_email3"></td>
+                    <td class="table-info">Branch</td>
+                    <td><input class="form-control" id="update_branch2" name="update_branch2"></td>
+                    <td></td>
+                    <td class="table-info">Branch</td>
+                    <td><input class="form-control" id="update_branch3" name="update_branch3"></td>
                 </tr>
                 <tr>
-                    <td>Phone Number</td>
-                    <td><input id="update_phone2" name="update_phone2"></td>
-                    <td>Phone Number</td>
-                    <td><input id="update_phone3" name="update_phone3"></td>
+                    <td class="table-info">Email Address</td>
+                    <td><input class="form-control" id="update_email2" name="update_email2"></td>
+                    <td></td>
+                    <td class="table-info">Email Address</td>
+                    <td><input class="form-control" id="update_email3" name="update_email3"></td>
+                </tr>
+                <tr>
+                    <td class="table-info">Phone Number</td>
+                    <td><input class="form-control" id="update_phone2" name="update_phone2"></td>
+                    <td></td>
+                    <td class="table-info">Phone Number</td>
+                    <td><input class="form-control" id="update_phone3" name="update_phone3"></td>
                 </tr>
             </table>
-            <hr>
-            <div>
+            <div class="mb-3">
                 <input type="hidden" id="update_tid" name="update_tid">
-                <input type="submit" value="Update Team Data">
-                <input type="button" value="Cancel" onclick="toggleSections('teamlist', 'teamedit');" />
+                <button class="btn btn-outline-success" type="submit">Update Team Data</button>
+                <button class="btn btn-outline-danger" type="button" onclick="toggleSections('teamlist', 'teamedit');">Cancel</button>
             </div>
         </form>
     </div>
