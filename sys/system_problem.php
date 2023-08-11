@@ -225,7 +225,7 @@ function display_problem()
     }
     echo "</tbody></table>";
     if ($_SESSION["tid"] == 0) {
-        echo "<p>Please login to submit solutions.</p>";
+        echo "<div class='alert alert-danger' role='alert'>Please login to submit solutions.</div>";
     } else if ($admin["mode"] != "Active" && $admin["mode"] != "Passive" && $_SESSION["status"] != "Admin") {
         echo "<p>You cannot submit solutions at the moment as the contest is not running. Please try again later.</p>";
     } else if ($admin["mode"] == "Passive" && $_SESSION["status"] != "Admin" && preg_match("/^CQM\-[0-9]+$/i", $pgroup)) {
