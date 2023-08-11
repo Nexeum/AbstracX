@@ -176,7 +176,7 @@ function display_message(): void
     echo "<div class='mb-3' onclick='$(this).slideUp(250);' title='Click to hide'>";
 
     if ((isset($admin["mode"]) && $admin["mode"] == "Lockdown") && $_SESSION["status"] != "Admin") {
-        echo "Lockdown Mode";
+        echo "<div class='alert alert-danger' role='alert'>Lockdown Mode</div>";
     } else {
         foreach ($_SESSION["message"] as $line) {
             echo "<div class='alert alert-info'>" . filter($line) . "</div>";

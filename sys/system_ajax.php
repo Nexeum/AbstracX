@@ -43,15 +43,15 @@ function action_adminwork(): void
         <table class='table table-borderless'>
             <thead>
                 <tr class='table-primary'>
-                    <th colspan='4' class='text-center'>
+                    <th colspan='4'>
                         <h4><a class='list-group-item' href='?display=rankings'>Current Rankings</a></h4>
                     </th>
                 </tr>
                 <tr class='table-info'>
-                    <th class='text-center'>Rank</th>
-                    <th class='text-center'>Team</th>
-                    <th class='text-center'>Solved</th>
-                    <th class='text-center'>Score</th>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Solved</th>
+                    <th>Score</th>
                 </tr>
             </thead><tbody>";
     if (isset($admin["ranklist"]) && $admin["ranklist"] >= 0) {
@@ -275,13 +275,13 @@ function action_ajaxrefresh($type): bool|string
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-rankings"])) {
-        $json["ajax-rankings"] = "<table class='table table-borderless'><tr><h4>Current Rankings</h4></tr><tr><td>Not Available</td></tr></table>";
+        $json["ajax-rankings"] = "<table class='table table-borderless'><tr class='table-primary'><th><h4>Current Rankings</h4></th></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-rankings"] = $admin["cache-rankings"];
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-allsubmit"])) {
-        $json["ajax-allsubmit"] = "<table class='table table-borderless'><tr><h4>All Submissions</h4></tr><tr><td>Not Available</td></tr></table>";
+        $json["ajax-allsubmit"] = "<table class='table table-borderless'><tr class='table-primary'><th><h4>All Submissions</h4></th></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-allsubmit"] = $admin["cache-allsubmit"];
     }
@@ -291,7 +291,7 @@ function action_ajaxrefresh($type): bool|string
     }
 
     if ($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") {
-        $json["ajax-problem"] = "<table class='table table-borderless'><tr><h4>Problems Index</h4></tr><tr><td>Not Available</td></tr></table>";
+        $json["ajax-problem"] = "<table class='table table-borderless'><tr class='table-primary'><th><h4>Problems Index</h4></th></tr><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-problem"] = $admin["cache-problems"];
     }
@@ -320,7 +320,7 @@ function action_ajaxrefresh($type): bool|string
     }
 
     if (($admin["mode"] == "Lockdown" && $_SESSION["status"] != "Admin") || !isset($admin["cache-clarlatest"])) {
-        $json["ajax-publicclar"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h4></th></tr></thead><tr><td>Not Available</td></tr></table>";
+        $json["ajax-publicclar"] = "<table class='table table-borderless'><thead><tr class='table-primary'><th><h4><a class='list-group-item' href='?display=clarifications' title='Link to Clarifications Page'>Public Clarifications</a></h4></th></tr></thead><tr><td>Not Available</td></tr></table>";
     } else {
         $json["ajax-publicclar"] = $admin["cache-clarlatest"];
     }
