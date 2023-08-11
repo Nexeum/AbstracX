@@ -235,13 +235,13 @@ function display_submissions()
                     <td>$temp[time]</td>
                     <td class='$result'><a class='list-group-item' href='?$urlargs&res=$r'>$fresult</a></td>";
         } else {
-            echo "<tr class='$result'>
+            echo "<tr class='$rowClass'>
                     <td>$temp[rid]</td>
-                    <td><a href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]'>$teamname</a></td>
-                    <td><a href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]'>$probname</a></td>
-                    <td><a href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&tid=$temp[tid]", "", $urlargs) . "&tid=$temp[tid]'>$teamname</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&pid=$temp[pid]", "", $urlargs) . "&pid=$temp[pid]'>$probname</a></td>
+                    <td><a class='list-group-item' href='?" . str_replace("&lan=" . urlencode($temp["language"]), "", $urlargs) . "&lan=" . urlencode($temp["language"]) . "' title='Link to $temp[lan] Submissions'>$temp[lan]</a></td>
                     <td>$temp[time]</td>
-                    <td class='$result'><a href='?$urlargs&res=$r'>$fresult</a></td>";
+                    <td class='$result'><a class='list-group-item' href='?$urlargs&res=$r'>$fresult</a></td>";
         }
 
         if ($_SESSION["status"] == "Admin") {
