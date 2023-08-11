@@ -44,7 +44,7 @@ function action_clarcache()
     $filedata = "";
     if (mysqli_num_rows($data) > 0) {
         while ($temp = mysqli_fetch_array($data)) {
-            $filedata .= "<table class='table table-borderless'><tr><td><b><a href='?display=submissions&tid=$temp[tid]'>" . $team[$temp["tid"]] . "</a> (";
+            $filedata .= "<table class='table table-borderless'><tr class='table-primary'><th><h4>Public Clarifications</h4></th></tr><tr><td><b><a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>" . $team[$temp["tid"]] . "</a> (";
             $filedata .= ($temp["pid"] == 0) ? "General" : "<a href='?display=problem&pid=$temp[pid]'>" . $prob[$temp["pid"]] . "</a>";
             $filedata .= ")</b> : " . ($temp["query"]) . "";
             if (!empty($temp["reply"])) {
