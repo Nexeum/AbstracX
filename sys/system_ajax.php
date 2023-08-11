@@ -231,45 +231,49 @@ function action_ajaxrefresh($type): bool|string
             $limit = 5;
         }
         $data = mysqli_query($link, "SELECT * FROM problems,runs WHERE runs.tid='$_SESSION[tid]' AND problems.pid=runs.pid AND runs.access!='deleted' AND problems.status='Active' ORDER BY rid DESC LIMIT 0," . $limit);
-        while ($temp = mysqli_fetch_array($data)) {
-            if ($_SESSION["status"] == "Admin") {
-                $t = mysqli_query($link, "SELECT name,code FROM problems WHERE pid=$temp[pid]");
-            } else {
-                $t = mysqli_query($link, "SELECT name,code FROM problems WHERE pid=$temp[pid] and status='Active'");
+        
+        if (mysqli_num_rows($data) === 0) {
+            $json["ajax-mysubmit"] .= "<tr><td colspan='4'>No Submissions Available</td></tr>";
+        }else{
+            while ($temp = mysqli_fetch_array($data)) {
+                if ($_SESSION["status"] == "Admin") {
+                    $t = mysqli_query($link, "SELECT name,code FROM problems WHERE pid=$temp[pid]");
+                } else {
+                    $t = mysqli_query($link, "SELECT name,code FROM problems WHERE pid=$temp[pid] and status='Active'");
+                }
+                if (mysqli_num_rows($t) == 1) {
+                    $row = mysqli_fetch_array($t);
+                    $probname = $row['name'];
+                    $probcode = $row['code'];
+                } else {
+                    continue;
+                }
+                $result = $temp["result"];
+                if (isset($fullresult[$result])) {
+                    $result = $fullresult[$result];
+                }
+    
+                $rowClass = '';
+                if ($temp["result"] == "AC") {
+                    $rowClass = 'table-success'; // Green row for AC
+                } elseif ($temp["result"] == "WA") {
+                    $rowClass = 'table-danger'; // Red row for WA
+                } elseif ($temp["result"] == "TLE") {
+                    $rowClass = 'table-secondary'; // Light blue row for Time Limit Exceeded
+                }  elseif ($temp["result"] == "CE") {
+                    $rowClass = 'table-warning'; // Yellow row for CE
+                } elseif ($temp["result"] == "RTE") {
+                    $rowClass = 'table-warning'; // Yellow row for RE
+                } elseif ($temp["result"] == "PE") {
+                    $rowClass = 'table-warning'; // Yellow blue row for PE
+                } elseif ($temp["result"] == "SC") {
+                    $rowClass = 'table-danger'; // Red row for Suspicious code
+                } else {
+                    $rowClass = 'table-secondary'; // Gray row for other results
+                }          
+    
+                $json["ajax-mysubmit"] .= "<tr class='$rowClass'><td><a class='list-group-item' href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td><td title=\"Link to Problem : $probname\"><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>$probcode</td><td>$temp[language]</td><td title='$result'>$temp[result]</td></tr>";
             }
-            if (mysqli_num_rows($t) == 1) {
-                $row = mysqli_fetch_array($t);
-                $probname = $row['name'];
-                $probcode = $row['code'];
-            } else {
-                continue;
-            }
-            $result = $temp["result"];
-            if (isset($fullresult[$result])) {
-                $result = $fullresult[$result];
-            }
-
-            // Assign Bootstrap classes based on result
-            $rowClass = '';
-            if ($temp["result"] == "AC") {
-                $rowClass = 'table-success'; // Green row for AC
-            } elseif ($temp["result"] == "WA") {
-                $rowClass = 'table-danger'; // Red row for WA
-            } elseif ($temp["result"] == "TLE") {
-                $rowClass = 'table-secondary'; // Light blue row for Time Limit Exceeded
-            }  elseif ($temp["result"] == "CE") {
-                $rowClass = 'table-warning'; // Yellow row for CE
-            } elseif ($temp["result"] == "RTE") {
-                $rowClass = 'table-warning'; // Yellow row for RE
-            } elseif ($temp["result"] == "PE") {
-                $rowClass = 'table-warning'; // Yellow blue row for PE
-            } elseif ($temp["result"] == "SC") {
-                $rowClass = 'table-danger'; // Red row for Suspicious code
-            } else {
-                $rowClass = 'table-secondary'; // Gray row for other results
-            }          
-
-            $json["ajax-mysubmit"] .= "<tr class='$rowClass'><td><a class='list-group-item' href='?display=code&rid=$temp[rid]' title='Link to Code'>$temp[rid]</a></td><td title=\"Link to Problem : $probname\"><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>$probcode</td><td>$temp[language]</td><td title='$result'>$temp[result]</td></tr>";
         }
         $json["ajax-mysubmit"] .= "</table>";
     }
