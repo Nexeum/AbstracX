@@ -78,12 +78,6 @@ function display_submissions()
         }
     }
 
-    if (count($filter)) {
-        echo "<b>Active Filter(s)</b> : " . implode(" , ", $filters) . " (Click to Remove)";
-    } else {
-        echo "<b>Active Filter(s)</b> : None";
-    }
-
     if (isset($filter["tid"])) {
         echo "<a onClick=\"$('#team-information').slideToggle();$('#problem-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide team information.'>$teamdata[teamname] : Team Information</a>";
     }
@@ -136,80 +130,8 @@ function display_submissions()
         echo "</table></div>";
     }
 
-    if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<div id='submission-statistics' style='display:none;'>";
-    }
-    if (!isset($filter["result"])) {
-        $t1 = mysqli_query($link, "SELECT result,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by result;");
-        for ($info2 = array(); $t2 = mysqli_fetch_array($t1);) {
-            if ($t2["result"] == "") {
-                $t2["result"] = "...";
-            }
-            $info2[$t2["result"]] = $t2["cnt"];
-        }
-        if (!isset($info2["..."])) {
-            $info2["..."] = 0;
-        }
-        $info = array("TOT" => $info2["..."], "..." => $info2["..."]);
-        foreach ($fullresult as $key => $value) {
-            if (key_exists($key, $info2)) {
-                $info["TOT"] += $info[$key] = $info2[$key];
-            } else {
-                $info[$key] = 0;
-            }
-        }
-        if ($info != NULL) {
-            echo "<table class='table table-borderless'><tr class='table-primary'><th>Total Submissions</th>";
-            foreach ($fullresult as $key => $value) {
-                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&res=$key'>" . ($value) . "</a></th>";
-            }
-            echo "<th>Unjudged Submissions</th></tr><tr><td>" . $info["TOT"] . "</td>";
-            foreach ($fullresult as $key => $value) {
-                echo "<td>" . $info[$key] . "</td>";
-            }
-            echo "<td>" . $info["..."] . "</td></tr></table>";
-        }
-    }
-    if (!isset($filter["language"])) {
-        $t1 = mysqli_query($link, "SELECT language,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by language;");
-        for ($info2 = array(); $t2 = mysqli_fetch_array($t1);) {
-            $info2[$t2["language"]] = $t2["cnt"];
-        }
-        $info = array();
-        foreach ($extension as $key => $value) {
-            if (key_exists($key, $info2)) {
-                $info[$key] = $info2[$key];
-            } else {
-                $info[$key] = 0;
-            }
-        }
-        if ($info != NULL) {
-            echo "<table class='table table-borderless'><tr class='table-primary'>";
-            foreach ($extension as $key => $value) {
-                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key) . "</a></th>";
-            }
-            echo "</tr><tr>";
-            foreach ($extension as $key => $value) {
-                echo "<td>" . $info[$key] . "</td>";
-            }
-            echo "</tr></table>";
-        }
-    }
-    if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "</div>";
-    }
-
-    echo "<h2>Submission Status</h2>";
     if (isset($filter["pid"])) {
         echo "<div class='mb-3'><button class=\"btn btn-primary\" onClick=\"$('#problem-information').slideToggle();$('#team-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide problem information.'>$probdata[name] : Problem Information</button></div>";
-    }
-    if ($_SESSION["status"] == "Admin") {
-        if ($rejudge == "action=rejudge") {
-            $rejudge .= "&all=1";
-        }
-        echo "<div class='mb-3'><button class='btn btn-warning' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\">Rejudge Submissions</button></div>";    }
-    if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<div class='mb-3'><button class='btn btn-success' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button></div>";
     }
 
     $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC");
@@ -224,9 +146,22 @@ function display_submissions()
     $x = paginate($urlargs, $totalCount, $perpage);
     $page = $x[0];
     echo "<div class='mb-3'>
-        <table class='table table-borderless'>
-            <thead>
-                <tr class='table table-primary'>
+        <table class='table table-borderless'>";
+
+            if (count($filter)) {
+                echo "<caption>Active Filter(s) : " . implode(" , ", $filters) . " (Click to Remove) </caption>";
+            } else {
+                echo "<caption>Active Filter(s) : None </caption>";
+            }
+        
+            echo
+            " <thead>
+                <tr class='table-primary'>
+                    <th colspan='7'>
+                        <h3>Submission Status</h3>
+                    </th>
+                </tr>
+                <tr class='table-info'>
                     <th>Run ID</th>
                     <th>Team</th>
                     <th>Problem</th>
@@ -332,6 +267,79 @@ function display_submissions()
     $totalpages = max(1, ceil($totalCount / $perpage));
     $currentPage = $x[0];
 
+    if (!isset($filter["result"]) || !isset($filter["language"])) {
+        echo "<div id='submission-statistics' style='display:none;'>";
+    }
+    if (!isset($filter["result"])) {
+        $t1 = mysqli_query($link, "SELECT result,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by result;");
+        for ($info2 = array(); $t2 = mysqli_fetch_array($t1);) {
+            if ($t2["result"] == "") {
+                $t2["result"] = "...";
+            }
+            $info2[$t2["result"]] = $t2["cnt"];
+        }
+        if (!isset($info2["..."])) {
+            $info2["..."] = 0;
+        }
+        $info = array("TOT" => $info2["..."], "..." => $info2["..."]);
+        foreach ($fullresult as $key => $value) {
+            if (key_exists($key, $info2)) {
+                $info["TOT"] += $info[$key] = $info2[$key];
+            } else {
+                $info[$key] = 0;
+            }
+        }
+        if ($info != NULL) {
+            echo "<table class='table table-borderless'><tr class='table-primary'><th colspan='10'><h3>Status overview</h3></th></tr>
+            <tr class='table-info'><th>Total Submissions</th>";
+            foreach ($fullresult as $key => $value) {
+                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&res=$key'>" . ($value) . "</a></th>";
+            }
+            echo "<th>Unjudged Submissions</th></tr><tr><td>" . $info["TOT"] . "</td>";
+            foreach ($fullresult as $key => $value) {
+                echo "<td>" . $info[$key] . "</td>";
+            }
+            echo "<td>" . $info["..."] . "</td></tr></table>";
+        }
+    }
+    if (!isset($filter["language"])) {
+        $t1 = mysqli_query($link, "SELECT language,count(*) as cnt FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition group by language;");
+        for ($info2 = array(); $t2 = mysqli_fetch_array($t1);) {
+            $info2[$t2["language"]] = $t2["cnt"];
+        }
+        $info = array();
+        foreach ($extension as $key => $value) {
+            if (key_exists($key, $info2)) {
+                $info[$key] = $info2[$key];
+            } else {
+                $info[$key] = 0;
+            }
+        }
+        if ($info != NULL) {
+            echo "<table class='table table-borderless'><tr class='table-primary'><th colspan='6'><h3>Languages overview</h3></th></tr><tr class='table-info'>";
+            foreach ($extension as $key => $value) {
+                echo "<th><a class='list-group-item' href='?" . ($urlargs) . "&lan=" . urlencode($key) . "'>" . ($key) . "</a></th>";
+            }
+            echo "</tr><tr>";
+            foreach ($extension as $key => $value) {
+                echo "<td>" . $info[$key] . "</td>";
+            }
+            echo "</tr></table>";
+        }
+    }
+    if (!isset($filter["result"]) || !isset($filter["language"])) {
+        echo "</div>";
+    }
+    echo "<div class='d-flex mb-3 justify-content-center'>";
+    if ($_SESSION["status"] == "Admin") {
+        if ($rejudge == "action=rejudge") {
+            $rejudge .= "&all=1";
+        }
+        echo "<button class='btn btn-warning mx-1' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\">Rejudge Submissions</button>";    }
+    if (!isset($filter["result"]) || !isset($filter["language"])) {
+        echo "<button class='btn btn-success mx-1' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button>";
+    }
+    echo "</div>";
     echo "
         <div class='mb-3 d-flex justify-content-center'>
             <nav aria-label='Page navigation example'>

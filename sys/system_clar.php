@@ -165,8 +165,6 @@ function display_clarifications()
     }
     echo " ]</div>";
 
-    echo "<h3>Clarifications</h3>";
-
     if ($_SESSION["status"] == "Admin") {
         $total = mysqli_query($link, "SELECT count(*) as total FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private'" : "access!='Delete'")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")));
     } else {
@@ -195,7 +193,7 @@ function display_clarifications()
     while ($temp = mysqli_fetch_array($data)) {
         $prob[$temp["pid"]] = filter($temp["name"]);
     }
-    echo "<div class='mb-3'><table class='table table-borderless'><thead><tr class='table-primary'><th>Query / Response</th><th>Options</th></tr></thead><tbody>";
+    echo "<div class='mb-3'><table class='table table-borderless'><thead><tr class='table-primary'><th colspan='2'><h4>Clarifications</h4></th></tr><tr class='table-info'><th>Query / Response</th><th>Options</th></tr></thead><tbody>";
     if ($_SESSION["status"] == "Admin") {
         $data = mysqli_query($link, "SELECT * FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private'" : "access!='Delete'")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")) . " ORDER BY time ASC LIMIT " . (($page - 1) * $limit) . ",$limit");
     } else {
