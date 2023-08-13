@@ -180,7 +180,7 @@ function display_clarifications()
     $url = "display=clarifications&type=" . $type . "&reply=" . $reply;
     $_GET["page"] = max(1, ceil($totalCount / $limit));
     $x = paginate($url, $totalCount, $limit);
-    $page = $x[0];
+    $currentPage = $x[0];
     $pagenav = $x[1];
 
     $team = array();
@@ -195,9 +195,9 @@ function display_clarifications()
     }
     echo "<div class='mb-3'><table class='table table-borderless'><thead><tr class='table-primary'><th colspan='2'><h4>Clarifications</h4></th></tr><tr class='table-info'><th>Query / Response</th><th>Options</th></tr></thead><tbody>";
     if ($_SESSION["status"] == "Admin") {
-        $data = mysqli_query($link, "SELECT * FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private'" : "access!='Delete'")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")) . " ORDER BY time ASC LIMIT " . (($page - 1) * $limit) . ",$limit");
+        $data = mysqli_query($link, "SELECT * FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private'" : "access!='Delete'")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")) . " ORDER BY time ASC LIMIT " . (($currentPage - 1) * $limit) . ",$limit");
     } else {
-        $data = mysqli_query($link, "SELECT * FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private' AND tid=" . $_SESSION["tid"] : "access!='Delete' AND (clar.access='Public' or tid=" . $_SESSION["tid"] . ")")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")) . " ORDER BY time ASC LIMIT " . (($page - 1) * $limit) . ",$limit");
+        $data = mysqli_query($link, "SELECT * FROM clar WHERE " . ($type == "public" ? "access='Public'" : ($type == "private" ? "access='Private' AND tid=" . $_SESSION["tid"] : "access!='Delete' AND (clar.access='Public' or tid=" . $_SESSION["tid"] . ")")) . " " . ($reply == "no" ? " AND reply='' " : ($reply == "yes" ? " AND reply!='' " : "")) . " ORDER BY time ASC LIMIT " . (($currentPage - 1) * $limit) . ",$limit");
     }
     while ($temp = mysqli_fetch_array($data)) {
         if (!isset($temp["tid"])) {
@@ -230,6 +230,31 @@ function display_clarifications()
     }
     echo "<form name='updateclar' action='?action=updateclar' method='post'><input type='hidden' name='field'><input type='hidden' name='time'><input type='hidden' name='value'></form>";
     echo "</tbody></table></div>$pagenav";
+    echo "<h1>".$currentPage."</h1>";
+    echo "<h1>".$totalCount."</h1>";
+    echo "
+    <div class='mb-3 d-flex justify-content-center'>
+        <nav aria-label='Page navigation example'>
+            <ul class='pagination'>
+                <li class='page-item" . ($currentPage == 1 ? " disabled" : "") . "'>
+                    <a class='page-link' href='?$url&" . ($currentPage == 1 ? "" : "page=" . ($currentPage - 1)) . "' aria-label='Previous'>
+                    <span aria-hidden='true'>&laquo;</span>
+                    </a>
+                </li>";
+
+    for ($page = max(1, $currentPage - 2); $page <= min($currentPage + 2, $totalCount); $page++) {
+    echo "<li class='page-item" . ($currentPage == $page ? " active" : "") . "'><a class='page-link' href='?$url&page=$page'>$page</a></li>";
+    }
+
+    echo "
+                <li class='page-item" . ($currentPage == $totalCount ? " disabled" : "") . "'>
+                    <a class='page-link' href='?$url&" . ($currentPage == $totalCount ? "" : "page=" . ($currentPage + 1)) . "' aria-label='Next'>
+                    <span aria-hidden='true'>&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>";
 
     if ($_SESSION["status"] == "Admin") {
         echo "<div class='mb-3'><input class='btn btn-danger' type='button' value='Delete All Clarification Requests' onClick=\"if(confirm('Are you sure you wish to Delete All Clarification Requests?')){ f=document.forms['updateclar']; f.field.value='Clear'; f.submit(); }\"></div>";
