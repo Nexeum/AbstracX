@@ -82,23 +82,23 @@
         </h2>
         <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlush">
             <div class="accordion-body">
-                <p>The first thing you need to do it register your team using form given on the <a target='new' href='?display=register'>Registration
+                <p>The first thing you need to do it register your team using form given on the <a target='new' class='list-group-item' href='?display=register'>Registration
                         Page</a>. Once you choose a unique team name and give details about the (1-3) members of your team,
                     you need to wait until an Administrator authorizes your account (after verifying its authenticity).
                     Details (with the exception being your Password) provided during registration cannot be changed unless
                     you request an Administrator to do it for you (which means you'll need a good reason). Once that is
                     done, you may log in.</p>
                 <p>Once logged in, you may the view information you provided during registeration and change your password
-                    from the <a target='new' href='?display=account'>Account Settings</a> page. You can access and search
-                    through the list of all currently available problems from the <a href='?display=problem' target=new>Problems
+                    from the <a target='new' class='list-group-item' href='?display=account'>Account Settings</a> page. You can access and search
+                    through the list of all currently available problems from the <a class='list-group-item' href='?display=problem' target=new>Problems
                         Index</a> (solved problems will automatically be marked green). If the contest is in Active or
                     Passive Mode, you may also submit solutions to problems by selecting a file to upload or by copy-pasting
                     your code in the area provided, provided the language you have used is supported and allowed for that
                     particular problem. Your code must read from the Stanard Input and print to the Standard Output, and
                     must be efficient (fast) enough to finish within the time limit of the problem. You can see the results
-                    of the program run on the <a href='?display=submissions' target=new>Submission Status</a> Page.</p>
+                    of the program run on the <a class='list-group-item' href='?display=submissions' target=new>Submission Status</a> Page.</p>
                 <p>If you have any questions that haven't already been answered here, or any ambiguity regarding the problems
-                    themselves during the contests, you may use the <a target='new' href='?display=clarifications'>Clarifications</a>
+                    themselves during the contests, you may use the <a target='new' class='list-group-item' href='?display=clarifications'>Clarifications</a>
                     Feature to ask Administrators or other teams your question. Usually, clarifications can only been seen
                     by the Administrators and team that requested it. However, if an Administrator thinks it is appropriate,
                     he may make your question and his reply 'Public', thus allowing all teams to see it.</p>
@@ -141,12 +141,12 @@
         </h2>
         <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlush">
             <div class="accordion-body">
-                <p>Please refer to and use the <a target='new' href='?display=problem&pid=1'>Squares</a> Problem to test
+                <p>Please refer to and use the <a target='new' class='list-group-item' href='?display=problem&pid=1'>Squares</a> Problem to test
                     your choice of programming language. Accepted solutions to this problem have also been made Public for
-                    educational reasons, and are available in the following languages : <a target='new' href='?display=code&rid=1'>C</a>,
-                    <a target='new' href='?display=code&rid=2'>C++</a>, <a target='new' href='?display=code&rid=3'>C#</a>,
-                    <a target='new' href='?display=code&rid=4'>Java</a>,
-                    <a target='new' href='?display=code&rid=9'>Python</a> and <a target='new' href='?display=code&rid=10'>Ruby</a>. Please remember that there is a 100KB limit on
+                    educational reasons, and are available in the following languages : <a target='new' class='list-group-item' href='?display=code&rid=1'>C</a>,
+                    <a target='new' class='list-group-item' href='?display=code&rid=2'>C++</a>, <a target='new' class='list-group-item' href='?display=code&rid=3'>C#</a>,
+                    <a target='new' class='list-group-item' href='?display=code&rid=4'>Java</a>,
+                    <a target='new' class='list-group-item' href='?display=code&rid=9'>Python</a> and <a target='new' class='list-group-item' href='?display=code&rid=10'>Ruby</a>. Please remember that there is a 100KB limit on
                     the size of the code you can submit.
                 </p>
                 <p>Please do bother not submitting malicious programs that might harm the Execution Environment or the

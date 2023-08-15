@@ -32,63 +32,57 @@ include("sys/system_init.php");
                     <img src="assets/logo.svg" alt="Logo" width="30" height="30" class="d-inline-block align-top">
                     Nexeum
                 </a>
-                <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <form class="me-3">
-                        <div class="form-white input-group">
-                            <input type="search" class="form-control rounded" placeholder="Search or jump to... ( / )" aria-label="Search" aria-describedby="search-addon" />
-                        </div>
-                    </form>
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=notice">Important Notices</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=faq">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=scoreboard">Scoreboard</a>
-                        </li>
-                        <?php if ($_SESSION["tid"] != 0) {
-                            echo "<li class='nav-item'><a href='?display=account' class='nav-link'>Account Settings</a></li>";
-                        }
-                        ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=problem">Problems</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=clarifications">Clarifications</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=rankings">Rankings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?display=submissions">Submissions</a>
-                        </li>
-                        <?php if ($_SESSION["status"] == "Admin") : ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Administrador
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="?display=adminsettings">Administrator Settings</a></li>
-                                    <li><a class="dropdown-item" href="?display=adminproblem">Problems Settings</a></li>
-                                    <li><a class="dropdown-item" href="?display=adminteam">Teams Settings</a></li>
-                                    <li><a class="dropdown-item" href="?display=admingroup">Group Settings</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="?display=admindata">Data Commitment</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="?display=adminlogs">Logs</a></li>
-                                </ul>
+                    <div class="d-flex justify-content-center">
+                        <ul class="navbar-nav me-auto mb-5 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=notice">Important Notices</a>
                             </li>
-                        <?php endif; ?>
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=faq">FAQ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=scoreboard">Scoreboard</a>
+                            </li>
+                            <?php if ($_SESSION["tid"] != 0) {
+                                echo "<li class='nav-item'><a href='?display=account' class='nav-link'>Account Settings</a></li>";
+                            }
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=problem">Problems</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=clarifications">Clarifications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=rankings">Rankings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="?display=submissions">Submissions</a>
+                            </li>
+                            <?php if ($_SESSION["status"] == "Admin") : ?>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Administrador
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="?display=adminsettings">Administrator Settings</a></li>
+                                        <li><a class="dropdown-item" href="?display=adminproblem">Problems Settings</a></li>
+                                        <li><a class="dropdown-item" href="?display=adminteam">Teams Settings</a></li>
+                                        <li><a class="dropdown-item" href="?display=admingroup">Group Settings</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="?display=admindata">Data Commitment</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="?display=adminlogs">Logs</a></li>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
