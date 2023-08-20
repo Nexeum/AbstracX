@@ -165,19 +165,15 @@ function display_admingroup()
     echo "</table>";
     echo "
     <script>
-        gids = [" . implode(",", $gids) . "];
-        status = [" . implode(",", $status) . "];
+        var gids = [" . implode(",", $gids) . "]
+        var statusjs = [" . implode(",", $status) . "]
 
-        for (var i = 0; i < status.length; i++) {
-            console.log('Index: ' + i + ', Value: ' + status[i]);
+        for (var i = 0; i < statusjs.length; i++) {
+            console.log('Index: ' + i + ', Value: ' + statusjs[i]);
         }        
-        
+
         for (var i = 0; i < gids.length; i++) {
-            if (status[i] === ',') {
-                $('select[name=\"group-status-' + gids[i] + '\"]').val(status[i + 1]);
-            }else{
-                $('select[name=\"group-status-' + gids[i] + '\"]').val(status[i]);
-            }
+            $('select[name=\"group-status-' + gids[i] + '\"]').val(statusjs[i]);
         }
         
     </script>";
