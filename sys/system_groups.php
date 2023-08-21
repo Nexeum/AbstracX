@@ -167,11 +167,7 @@ function display_admingroup()
     <script>
         var gids = [" . implode(",", $gids) . "]
         var statusjs = [" . implode(",", $status) . "]
-
-        for (var i = 0; i < statusjs.length; i++) {
-            console.log('Index: ' + i + ', Value: ' + statusjs[i]);
-        }        
-
+        
         for (var i = 0; i < gids.length; i++) {
             $('select[name=\"group-status-' + gids[i] + '\"]').val(statusjs[i]);
         }
