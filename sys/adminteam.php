@@ -66,15 +66,15 @@
                             <td>$members</td>
                             <td>$ip $platform</td>
                             <td>
-                                <button class='btn btn-info' onClick=\"$script\">Edit</button>
+                                <button class='btn btn-outline-info' onClick=\"$script\">Edit</button>
                             </td>
                         </tr>";
                 }
             ?>
         </table>
         <div class="mb-3">
-            <button class="btn btn-info" onclick="window.location='?display=register'">Add New Team</button>
-            <button class="btn btn-success"
+            <button class="btn btn-outline-info" onclick="window.location='?display=register'">Add New Team</button>
+            <button class="btn btn-outline-success"
                 onclick="confirmAction('?action=updatewaiting', 'Are you sure that for all Waiting Teams, you wish to set the status to Normal?');">Set Status to 'Normal' for all 'Waiting' Teams</button>
         </div>
         <?php

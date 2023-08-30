@@ -78,7 +78,7 @@ function display_notice(): void
 
     if (!$edit && $_SESSION["status"] == "Admin") {
         echo "<div class='mb-3'>
-                <button type='button' class='btn btn-primary' onclick=\"window.location='?display=notice&edit=1';\">Edit Notice</button>
+                <button type='button' class='btn btn-outline-primary' onclick=\"window.location='?display=notice&edit=1';\">Edit Notice</button>
               </div>";
     }
 }

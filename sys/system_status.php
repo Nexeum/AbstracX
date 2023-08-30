@@ -246,13 +246,13 @@ function display_submissions()
 
         if ($_SESSION["status"] == "Admin") {
             echo "<td>
-                    <button class='btn btn-warning mx-1' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">Rejudge</button>";
+                    <button class='btn btn-outline-warning mx-1' onClick=\"window.location='?action=rejudge&rid=$temp[rid]';\">Rejudge</button>";
             if ($temp["access"] == "private") {
-                echo "<button class='btn btn-secondary mx-1' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$temp[rid]';\">Private</button>";
+                echo "<button class='btn btn-outline-secondary mx-1' title='Make this code Public (visible to all).' onClick=\"window.location='?action=makecodepublic&rid=$temp[rid]';\">Private</button>";
             } else {
-                echo "<button class='btn btn-info mx-1' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$temp[rid]';\">Public</button>";
+                echo "<button class='btn btn-outline-info mx-1' title='Make this code Private (visible only to the team that submitted it).' onClick=\"window.location='?action=makecodeprivate&rid=$temp[rid]';\">Public</button>";
             }
-            echo "<button class='btn btn-danger mx-1' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">Delete</button>
+            echo "<button class='btn btn-outline-danger mx-1' onClick=\"if(confirm('Are you sure you wish to delete Run ID $temp[rid]?'))window.location='?action=makecodedeleted&rid=$temp[rid]';\">Delete</button>
                 </td>";
         } else if ($_SESSION["status"] == "Admin" || $_SESSION["tid"] == $temp["tid"] || $temp["access"] == "public") {
             echo "<td>
@@ -335,9 +335,9 @@ function display_submissions()
         if ($rejudge == "action=rejudge") {
             $rejudge .= "&all=1";
         }
-        echo "<button class='btn btn-warning mx-1' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\">Rejudge Submissions</button>";    }
+        echo "<button class='btn btn-outline-warning mx-1' onClick=\"if(confirm('Are you sure you wish to rejudge all currently selected submissions?'))window.location='?$rejudge';\">Rejudge Submissions</button>";    }
     if (!isset($filter["result"]) || !isset($filter["language"])) {
-        echo "<button class='btn btn-success mx-1' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button>";
+        echo "<button class='btn btn-outline-success mx-1' onClick=\"$('#submission-statistics').slideToggle();$('#problem-information').slideUp();$('#team-information').slideUp();\" title='Click here to show/hide submission statistics.'>Statistics</button>";
     }
     echo "</div>";
     echo "

@@ -191,7 +191,18 @@ try:
     cursor = link.cursor(sql.cursors.DictCursor)
     print("Connected to Server ...")
 
-    while 1:  # Infinite Loop
+
+    # Fetch the count of unjudged submissions from the database
+    cursor.execute(
+        "SELECT COUNT(*) AS unjudged_count "
+        "FROM runs "
+        "WHERE runs.access!='deleted' AND runs.result IS NULL "
+        "AND runs.language IN " + str(tuple(languages))
+    )
+    unjudged_count_row = cursor.fetchone()
+    unjudged_count = unjudged_count_row["unjudged_count"]
+
+    for _ in range(unjudged_count):
         if "-cache" not in sys.argv:
             cursor.execute(
                 "SELECT rid,runs.pid as pid,tid,language,runs.name,runs.code as code,error,input,problems.output as output,timelimit,options FROM runs,problems WHERE problems.pid=runs.pid and runs.access!='deleted' and runs.result is NULL and runs.language in " + str(
