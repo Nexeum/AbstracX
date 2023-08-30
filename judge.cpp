@@ -11,9 +11,9 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 
-
-// sudo apt-get install libmysqlcppconn-dev
 using namespace std;
+
+string languages = "('C', 'C++', 'Java', 'Python')";
 
 map<string, string> extension = {
     {"C", "c"},
@@ -31,11 +31,13 @@ sql::Connection *connection;
 sql::Statement *statement;
 sql::ResultSet *result;
 
-std::string fileRead(const string &filename) {
+string fileRead(const string &filename) {
+    string code;
     ifstream file(filename);
     stringstream buffer;
     buffer << file.rdbuf();
-    return buffer.str();
+    code = buffer.str();
+    return code;
 }
 
 void fileWrite(const string &filename, const string &data) {
@@ -43,34 +45,18 @@ void fileWrite(const string &filename, const string &data) {
     file << data;
 }
 
-void create(const string &codefilename, const string &language) {
-    std::map<string, string> compileCommands = {
-        {"C", "gcc env/" + codefilename + ".c -lm -lcrypt -O2 -pipe -ansi -DONLINE_JUDGE -w -o env/" + codefilename + " " + ioeredirect},
-        {"C++", "g++ env/" + codefilename + ".cpp -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o env/" + codefilename + " " + ioeredirect},
-        {"C#", "mcs env/" + codefilename + ".cs -out:env/" + codefilename + ".exe " + ioeredirect},
-        {"Java", "javac -g:none -Xlint -d env env/" + codefilename + ".java " + ioeredirect}
-    };
-
-    if (compileCommands.find(language) != compileCommands.end()) {
-        string compileCommand = compileCommands[language];
-        system(compileCommand.c_str());
-    }
+void create(const string &name, const string &language) {
+    const string codefilename = name + "." + extension[language];
+    string compileCommand = extension[language] + " env/" + codefilename + " -o env/" + codefilename + " " + ioeredirect;
+    cout << "Compilation Command: " << compileCommand << endl;
+    system(compileCommand.c_str());
 }
 
-void execute(const string &exename, const string &language) {
-    std::map<string, string> commandMapping = {
-        {"C", "env/" + exename + " " + ioeredirect},
-        {"C++", "env/" + exename + " " + ioeredirect},
-        {"C#", "mono env/" + exename + ".exe " + ioeredirect},
-        {"Java", "java -client -classpath env " + exename + " " + ioeredirect},
-        {"Python", "python env/" + exename + " " + ioeredirect},
-        {"Ruby", "ruby env/" + exename + ".rb " + ioeredirect}
-    };
-
-    if (commandMapping.find(language) != commandMapping.end()) {
-        string command = commandMapping[language];
-        system(command.c_str());
-    }
+void execute(const string &name, const string &language) {
+    const string exename = name;
+    string command = extension[language] + " env/" + exename + " " + ioeredirect;
+    cout << "Execution Command: " << command << endl;
+    system(command.c_str());
 }
 
 int main() {
@@ -83,33 +69,66 @@ int main() {
         
         while (true) {
             result = statement->executeQuery(
-                "SELECT rid, runs.pid as pid, tid, language, runs.name, "
+                "SELECT rid, runs.pid as pid, tid, language, runs.name as name, "
                 "runs.code as code, error, input, problems.output as output, "
                 "timelimit, options FROM runs, problems WHERE problems.pid=runs.pid "
                 "AND runs.access!='deleted' AND runs.result IS NULL AND "
                 "runs.language IN " + languages + " ORDER BY rid ASC LIMIT 0, 1"
             );
             
-            if (result->rowsCount() > 0) {
-                std::string code = fileRead("env/code." + extension[result["language"]]);
-                fileWrite("env/" + result["name"] + "." + extension[result["language"]], code);
+            if (result->next()) {
+                cout << "Found unjudged submission." << endl;
                 
-                create(result["name"], result["language"]);
-                execute(result["name"], result["language"]);
-                
+                string language = result->getString("language");
+                cout << "Language: " << language << endl;
+
+                string code = fileRead("env/code." + extension[language]);
+
+                string filename = "env/" + result->getString("name") + "." + extension[language];
+                fileWrite(filename, code);
+                cout << "Code written to file: " << filename << endl;
+
+                create(result->getString("name"), language);
+                cout << "Code compiled." << endl;
+
+                execute(result->getString("name"), language);
+                cout << "Code executed." << endl;
+
+                int timetaken = system("cat env/output.txt | wc -l");
+                cout << "Time taken: " << timetaken << " seconds" << endl;
+
+                string error = "No error";
+                ifstream errorfile("env/error.txt");
+                if (errorfile.is_open()) {
+                    stringstream buffer;
+                    buffer << errorfile.rdbuf();
+                    error = buffer.str();
+                }
+                cout << "Error message: " << error << endl;
+
+                string output = "No output";
+                ifstream outputfile("env/output.txt");
+                if (outputfile.is_open()) {
+                    stringstream buffer;
+                    buffer << outputfile.rdbuf();
+                    output = buffer.str();
+                }
+                cout << "Program output: " << output << endl;
+
                 statement->execute(
-                    "UPDATE runs SET time=" + std::to_string(timetaken) + ", "
-                    "result='" + result + "', error='" + error + "', "
-                    "output='" + output + "' WHERE rid=" + result["rid"]
+                    "UPDATE runs SET time=" + to_string(timetaken) + ", "
+                    "result='" + language + "', error='" + error + "', "
+                    "output='" + output + "' WHERE rid=" + result->getString("rid")
                 );
+                cout << "Submission result updated in the database." << endl;
             } else {
-                std::cout << "No hay presentaciones para juzgar. Esperando..." << std::endl;
+                cout << "No submissions to judge. Waiting..." << endl;
                 sleep(5); 
             }
         }
     } catch (sql::SQLException &e) {
-        std::cerr << "MySQL Error: " << e.what() << std::endl;
-    }
+        cerr << "MySQL Error: " << e.what() << endl;
+    }    
     
     statement->close();
     connection->close();
