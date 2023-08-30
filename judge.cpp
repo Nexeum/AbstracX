@@ -5,9 +5,17 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <mysql_driver.h>
-#include <mysql_connection.h>
+#include "mysql_connection.h"
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
 
-std::map<std::string, std::string> extension = {
+
+// sudo apt-get install libmysqlcppconn-dev
+using namespace std;
+
+map<string, string> extension = {
     {"C", "c"},
     {"C++", "cpp"},
     {"C#", "cs"},
@@ -16,27 +24,27 @@ std::map<std::string, std::string> extension = {
     {"Ruby", "rb"}
 };
 
-std::string ioeredirect = " 0<env/input.txt 1>env/output.txt 2>env/error.txt";
+string ioeredirect = " 0<env/input.txt 1>env/output.txt 2>env/error.txt";
 
 sql::mysql::MySQL_Driver *driver;
 sql::Connection *connection;
 sql::Statement *statement;
 sql::ResultSet *result;
 
-std::string fileRead(const std::string &filename) {
-    std::ifstream file(filename);
-    std::stringstream buffer;
+std::string fileRead(const string &filename) {
+    ifstream file(filename);
+    stringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
 }
 
-void fileWrite(const std::string &filename, const std::string &data) {
-    std::ofstream file(filename);
+void fileWrite(const string &filename, const string &data) {
+    ofstream file(filename);
     file << data;
 }
 
-void create(const std::string &codefilename, const std::string &language) {
-    std::map<std::string, std::string> compileCommands = {
+void create(const string &codefilename, const string &language) {
+    std::map<string, string> compileCommands = {
         {"C", "gcc env/" + codefilename + ".c -lm -lcrypt -O2 -pipe -ansi -DONLINE_JUDGE -w -o env/" + codefilename + " " + ioeredirect},
         {"C++", "g++ env/" + codefilename + ".cpp -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o env/" + codefilename + " " + ioeredirect},
         {"C#", "mcs env/" + codefilename + ".cs -out:env/" + codefilename + ".exe " + ioeredirect},
@@ -44,13 +52,13 @@ void create(const std::string &codefilename, const std::string &language) {
     };
 
     if (compileCommands.find(language) != compileCommands.end()) {
-        std::string compileCommand = compileCommands[language];
+        string compileCommand = compileCommands[language];
         system(compileCommand.c_str());
     }
 }
 
-void execute(const std::string &exename, const std::string &language) {
-    std::map<std::string, std::string> commandMapping = {
+void execute(const string &exename, const string &language) {
+    std::map<string, string> commandMapping = {
         {"C", "env/" + exename + " " + ioeredirect},
         {"C++", "env/" + exename + " " + ioeredirect},
         {"C#", "mono env/" + exename + ".exe " + ioeredirect},
@@ -60,7 +68,7 @@ void execute(const std::string &exename, const std::string &language) {
     };
 
     if (commandMapping.find(language) != commandMapping.end()) {
-        std::string command = commandMapping[language];
+        string command = commandMapping[language];
         system(command.c_str());
     }
 }
