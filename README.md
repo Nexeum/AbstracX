@@ -8,12 +8,6 @@ The Competitive Programming System is a feature-rich web application developed u
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
-
-## Índice
-- [Sección 1](#Environment Variables)
-- [Sección 2](#Available languages)
-- [Sección 3](#Run Locally)
-
 ## Environment Variables
 
 To run this project, you will need to set the variables in `system_config` and `judge.py`.
