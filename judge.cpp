@@ -13,6 +13,8 @@
 
 using namespace std;
 
+// sudo apt-get install libmysqlcppconn-dev
+
 string languages = "('C', 'C++', 'Java', 'Python')";
 
 map<string, string> extension = {
