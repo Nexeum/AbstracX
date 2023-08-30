@@ -237,7 +237,7 @@ function display_clarifications()
     echo " ]</th></tr>";
     echo "</tbody></table></div>";
     if ($_SESSION["status"] == "Admin") {
-        echo "<div class='mb-3'><button class='btn btn-danger' type='button' onclick=\"if(confirm('¿Estás seguro de que deseas eliminar todas las solicitudes de aclaración?')) { f = document.forms['updateclar']; f.field.value = 'Clear'; f.submit(); }\">Delete All Clarification Requests</button></div>";
+        echo "<div class='mb-3'><button class='btn btn-outline-danger' type='button' onclick=\"if(confirm('¿Estás seguro de que deseas eliminar todas las solicitudes de aclaración?')) { f = document.forms['updateclar']; f.field.value = 'Clear'; f.submit(); }\">Delete All Clarification Requests</button></div>";
     }
     echo "
     <div class='mb-3 d-flex justify-content-center'>
@@ -286,7 +286,7 @@ function display_clarifications()
         }
         echo "</select></td></tr>";
         echo "<tr><th class='table-info'>Query</th><td><textarea class='form-control' name='query' placeholder=\"Type your query here\"></textarea></td></tr>";
-        echo "<tr><td colspan='2'><button class='btn btn-success' type='submit'>Submit</button></td></tr></table></form></div>";
+        echo "<tr><td colspan='2'><button class='btn btn-outline-success' type='submit'>Submit</button></td></tr></table></form></div>";
     }
     echo "<div class='small'>This feature exists only to provide contestants a way to communicate with the judges in case of any ambiguity regarding problems or the contest itself.
 		<br>The Query Text cannot contain single or double quotes.
