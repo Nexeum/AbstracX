@@ -1,17 +1,32 @@
-# Use the official Python image as the base image
-FROM python:3
+# Usa la imagen oficial de Python basada en Alpine
+FROM python:3-alpine
 
-# Set the working directory inside the container
-COPY judge.py /app/judge.py
-
-# Copy the server code and other necessary files to the container
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Install dependencies (if required)
-RUN pip install pymysql
+# Instala las dependencias necesarias
+RUN apk update && \
+    apk add --no-cache g++ fpc mono openjdk11 python3 py3-pip ruby && \
+    pip install --no-cache-dir pymysql
 
-# Expose the port your Python server is running on (modify the port if needed)
+# Crea un usuario no privilegiado y cambia al usuario
+RUN adduser -D appuser
+USER appuser
+
+# Crea directorios para datos persistentes
+RUN mkdir /app/data /app/logs
+
+# Configura el prompt del contenedor
+RUN echo PS1="\[\e[1;32m\]\u@\h:\w\[\e[m\]\$ " >> /etc/profile
+
+# Copia el código del servidor de Python al directorio de trabajo
+COPY judge.py /app/judge.py
+
+# Usa volúmenes para montar directorios persistentes
+VOLUME ["/app/data", "/app/logs"]
+
+# Expone el puerto en el que se ejecutará el servidor (ajústelo según sea necesario)
 EXPOSE 8000
 
-# Run the Python server
+# Ejecuta el servidor de Python al iniciar el contenedor
 CMD ["python", "judge.py", "-judge"]
