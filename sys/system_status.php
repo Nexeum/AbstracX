@@ -105,35 +105,6 @@ function display_submissions()
         echo "</table></div>";
     }
 
-    if (isset($filter["pid"])) {
-        echo "<div id='problem-information' style='display:none;'>
-            <table class='table table-borderless'>
-            <tr class='table-primary'>
-                <th colspan='6'>Information</th>
-            </tr>
-			<tr>
-                <th class='table-info'>Problem ID</th>
-                <td>$probdata[pid]</td>
-                <th class='table-info'>Problem Type</th>
-                <td>$probdata[type]</td>
-                <th class='table-info'>Time Limit</th>
-                <td>$probdata[timelimit] sec</td>
-            </tr>
-			<tr>
-                <th class='table-info'>Problem Code</th>
-                <td>$probdata[code]</td>
-                <th class='table-info'>Input File Size</th>
-                <td>" . display_filesize(strlen($probdata["input"])) . "</td>
-                <th class='table-info'>Score</th>
-                <td>$probdata[score]</td>
-            </tr>";
-        echo "</table></div>";
-    }
-
-    if (isset($filter["pid"])) {
-        echo "<div class='mb-3'><button class=\"btn btn-primary\" onClick=\"$('#problem-information').slideToggle();$('#team-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide problem information.'>$probdata[name] : Problem Information</button></div>";
-    }
-
     $totalQuery = mysqli_query($link, "SELECT count(*) as total FROM runs WHERE access!='deleted' AND tid in (SELECT tid FROM teams WHERE status='Normal' OR status='Admin') AND pid in (SELECT pid FROM problems WHERE status" . (($_SESSION["status"] == "Admin") ? "!='Delete'" : "='Active'") . ") $condition ORDER BY rid DESC");
     $totalResult = mysqli_fetch_array($totalQuery);
     $totalCount = $totalResult["total"];
@@ -329,6 +300,37 @@ function display_submissions()
     }
     if (!isset($filter["result"]) || !isset($filter["language"])) {
         echo "</div>";
+    }
+
+    if (isset($filter["pid"])) {
+        echo "<div id='problem-information' style='display:none;'>
+            <table class='table table-borderless'>
+            <tr class='table-primary'>
+                <th colspan='6'>
+                    <h3>Information</h3>
+                </th>
+            </tr>
+			<tr>
+                <th class='table-info'>Problem ID</th>
+                <td>$probdata[pid]</td>
+                <th class='table-info'>Problem Type</th>
+                <td>$probdata[type]</td>
+                <th class='table-info'>Time Limit</th>
+                <td>$probdata[timelimit] sec</td>
+            </tr>
+			<tr>
+                <th class='table-info'>Problem Code</th>
+                <td>$probdata[code]</td>
+                <th class='table-info'>Input File Size</th>
+                <td>" . display_filesize(strlen($probdata["input"])) . "</td>
+                <th class='table-info'>Score</th>
+                <td>$probdata[score]</td>
+            </tr>";
+        echo "</table></div>";
+    }
+
+    if (isset($filter["pid"])) {
+        echo "<div class='mb-3'><button class=\"btn btn-outline-primary mx-1\" onClick=\"$('#problem-information').slideToggle();$('#team-information').slideUp();$('#submission-statistics').slideUp();\" title='Click here to show/hide problem information.'>$probdata[name] : Problem Information</button></div>";
     }
     echo "<div class='d-flex mb-3 justify-content-center'>";
     if ($_SESSION["status"] == "Admin") {

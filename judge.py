@@ -19,10 +19,10 @@ if "-judge" not in sys.argv:
 
 timeoffset = 0
 # Initialize Database Constants
-sql_hostname = 'localhost'
+sql_hostname = '192.168.20.4'
 sql_hostport = 3306
 sql_username = 'root'
-sql_password = ''
+sql_password = 'judge'
 sql_database = 'nexeum'
 
 # Initialize Language Constants
