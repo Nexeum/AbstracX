@@ -119,7 +119,7 @@ def execute(exename, language):
         "C++": f"env/{exename} {ioeredirect}",
         "C#": f"mono env/{exename}.exe {ioeredirect}",
         "Java": f"java -client -classpath env {exename} {ioeredirect}",
-        "Python": f"python env/{exename}.py {ioeredirect}",
+        "Python": f"python3 env/{exename}.py {ioeredirect}",
         "Ruby": f"ruby env/{exename}.rb {ioeredirect}"
     }
 
@@ -322,7 +322,10 @@ try:
                     " +", " ", re.sub("\n *", "\n", re.sub(" *\n", "\n", correct))):
                     result = "AC"
                 elif (re.sub(r"\s", "", output) == re.sub(r"\s", "", correct)):
-                    result = "AC" if "P" in run["options"] else "PE"
+                    if "P" in run["options"]:
+                        result = "PE"
+                    else:
+                        result = "AC"
                 else:
                     result = "WA"
             print("Output Judgement Complete.")
