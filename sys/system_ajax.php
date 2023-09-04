@@ -128,8 +128,8 @@ function action_adminwork(): void
             $json .= "
                 <tr class='$rowClass'>
                 <td>$temp[rid]</td>
-                <td><a href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td>
-                <td title=\"$temp[probname]\"><a href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td>
+                <td><a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>" . substr($temp["teamname"], 0, 100) . (strlen($temp["teamname"]) > 100 ? "..." : "") . "</td>
+                <td title=\"$temp[probname]\"><a class='list-group-item' href='?display=problem&pid=$temp[pid]'>$temp[probcode]</td>
                 <td title='$result'>$temp[result]</td>
                 </tr>";
         }

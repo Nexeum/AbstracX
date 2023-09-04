@@ -191,12 +191,12 @@ function display_problem()
         if (mysqli_num_rows($data)) {
             echo "
             <tr>
-                <th>
-                    <a href='?display=clarifications'>Clarifications</a>
+                <th colspan='6'>
+                    <a class='list-group-item' href='?display=clarifications'>Clarifications</a>
                 </th>
             </tr>
             <tr>
-                <td>";
+                <td colspan='6'>";
             while ($temp = mysqli_fetch_array($data)) {
                 $teamnameQuery = mysqli_query($db_connection,"SELECT teamname FROM teams WHERE tid=" . $temp["tid"]);
                 if (mysqli_num_rows($teamnameQuery) == 1) {
@@ -209,7 +209,7 @@ function display_problem()
                 <p>
                     <b>
                         <a href='?display=submissions&tid=" . $temp["tid"] . "'>" . filter($teamname) . "</a>
-                    </b> : $temp[query]";
+                    </b> $temp[query]";
                 if (!empty($temp["reply"])) {
                     echo "
                     <i>

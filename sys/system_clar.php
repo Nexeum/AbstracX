@@ -197,7 +197,7 @@ function display_clarifications()
                 echo($temp["access"] == "Public" ? "<option selected='selected'>Public</option><option>Private</option>" : "<option>Public</option><option selected='selected'>Private</option>");
                 echo "<option>Delete</option></select></td>";
             } else if ($_SESSION["tid"] == $temp["tid"] && empty($temp["reply"])) {
-                echo "<td " . ($highlight) . " rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "><input type='button' value='Delete' onClick=\"if(confirm('Are you sure you want to delete this clarification?')){ f=document.forms['updateclar']; f.field.value='Status'; f.time.value=$temp[time]; f.value.value='Delete'; f.submit(); } \"></td>";
+                echo "<td " . ($highlight) . " rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "><button class='btn btn-outline-danger mx-1' onClick=\"if(confirm('Are you sure you want to delete this clarification?')){ f=document.forms['updateclar']; f.field.value='Status'; f.time.value=$temp[time]; f.value.value='Delete'; f.submit(); } \">Delete</button></td>";
             } else {
                 echo "<td rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "></td></tr>";
             }
