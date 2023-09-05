@@ -169,6 +169,31 @@ function display_clarifications()
     while ($temp = mysqli_fetch_array($data)) {
         $prob[$temp["pid"]] = filter($temp["name"]);
     }
+    if ($_SESSION["tid"]) {
+        echo "<script>
+                function validate_clar(){ 
+                    var str=\"\";
+                    if($(\"textarea[name='query']\").val().match(/" . preg_replace("/\n/", "\\n", $invalidchars) . "/) != null) {
+                        str += \"Query contains invalid characters.\\n\";
+                    }
+                    if (str == \"\") {
+                        return true;
+                    }
+                    alert(str);
+                    return false;
+                }
+            </script>";
+        echo "<div class='mb-3'><form action='?action=requestclar' method='post' onSubmit='return validate_clar();'>";
+        echo "<table class='table table-borderless'><thead><tr class='table-primary'><th colspan='2'><h3>Clarification Submissions</h3></th></tr><tr><th class='table-info'>Team Name</th><td>" . $_SESSION["teamname"] . "</td></tr></thead>";
+        echo "<tr><th class='table-info'>Select Problem</th><td><select class='form-select' name='problem'><option value=0>General (No Specific Problem)</option>";
+        $data = mysqli_query($link, "SELECT * FROM problems WHERE status='Active' ORDER BY pid");
+        while ($problem = mysqli_fetch_array($data)) {
+            echo "<option value='" . $problem["pid"] . "'>" . filter($problem["name"]) . "</option>";
+        }
+        echo "</select></td></tr>";
+        echo "<tr><th class='table-info'>Query</th><td><textarea class='form-control' name='query' placeholder=\"Type your query here\"></textarea></td></tr>";
+        echo "<tr><td colspan='2'><button class='btn btn-outline-success' type='submit'>Submit</button></td></tr></table></form></div>";
+    }
     echo "<div class='mb-3'><table class='table table-borderless'>";
     echo "<thead><tr class='table-primary'><th colspan='2'><h4>Clarifications</h4></th></tr><tr class='table-info'><th>Query / Response</th><th>Options</th></tr></thead><tbody>";
     if ($_SESSION["status"] == "Admin") {
@@ -192,10 +217,10 @@ function display_clarifications()
             }
             echo "<tr><td " . ($highlight) . "><b><a href='?display=submissions&tid=$temp[tid]'>" . $team[$temp["tid"]]["name"] . "</a> (" . ($temp["pid"] == 0 ? "General" : "<a href='?display=problem&pid=$temp[pid]'>" . $prob[$temp["pid"]] . "</a>") . ")</b> : " . $temp["query"] . "</td>";
             if ($_SESSION["status"] == "Admin") {
-                echo "<td " . ($highlight) . " rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "><input type='button' class='btn btn-info' value='Reply' onClick=\"reply=prompt('Enter response (previous response will be overwritten) : ','" . $temp["reply"] . "'); if(reply.match(/" . preg_replace("/\n/", "\\n", $invalidchars) . "/) != null){ alert('Reply contains invalid characters.'); } else if(reply != null){ f=document.forms['updateclar']; f.field.value='Reply'; f.time.value=$temp[time]; f.value.value=reply; f.submit(); }\"> ";
+                echo "<td " . ($highlight) . " rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "><div class='d-flex mb-3 justify-content-center'>";
                 echo "<select class='form-select' onChange=\"if(confirm('Are you sure you wish to perform this operation?')){ f=document.forms['updateclar']; f.field.value='Status'; f.time.value=$temp[time]; f.value.value=this.value; f.submit(); }\">";
                 echo($temp["access"] == "Public" ? "<option selected='selected'>Public</option><option>Private</option>" : "<option>Public</option><option selected='selected'>Private</option>");
-                echo "<option>Delete</option></select></td>";
+                echo "<option>Delete</option></select><button class='btn btn-info mx-1' onClick=\"reply=prompt('Enter response (previous response will be overwritten) : ','" . $temp["reply"] . "'); if(reply.match(/" . preg_replace("/\n/", "\\n", $invalidchars) . "/) != null){ alert('Reply contains invalid characters.'); } else if(reply != null){ f=document.forms['updateclar']; f.field.value='Reply'; f.time.value=$temp[time]; f.value.value=reply; f.submit(); }\">Reply</button></div></td>";
             } else if ($_SESSION["tid"] == $temp["tid"] && empty($temp["reply"])) {
                 echo "<td " . ($highlight) . " rowspan=" . (empty($temp["reply"]) ? 1 : 2) . "><button class='btn btn-outline-danger mx-1' onClick=\"if(confirm('Are you sure you want to delete this clarification?')){ f=document.forms['updateclar']; f.field.value='Status'; f.time.value=$temp[time]; f.value.value='Delete'; f.submit(); } \">Delete</button></td>";
             } else {
@@ -263,31 +288,6 @@ function display_clarifications()
         </nav>
     </div>";
 
-    if ($_SESSION["tid"]) {
-        echo "<script>
-                function validate_clar(){ 
-                    var str=\"\";
-                    if($(\"textarea[name='query']\").val().match(/" . preg_replace("/\n/", "\\n", $invalidchars) . "/) != null) {
-                        str += \"Query contains invalid characters.\\n\";
-                    }
-                    if (str == \"\") {
-                        return true;
-                    }
-                    alert(str);
-                    return false;
-                }
-            </script>";
-        echo "<div class='mb-3'><form action='?action=requestclar' method='post' onSubmit='return validate_clar();'>";
-        echo "<table class='table table-borderless'><thead><tr class='table-primary'><th colspan='2'><h3>Clarification Submissions</h3></th></tr><tr><th class='table-info'>Team Name</th><td>" . $_SESSION["teamname"] . "</td></tr></thead>";
-        echo "<tr><th class='table-info'>Select Problem</th><td><select class='form-select' name='problem'><option value=0>General (No Specific Problem)</option>";
-        $data = mysqli_query($link, "SELECT * FROM problems WHERE status='Active' ORDER BY pid");
-        while ($problem = mysqli_fetch_array($data)) {
-            echo "<option value='" . $problem["pid"] . "'>" . filter($problem["name"]) . "</option>";
-        }
-        echo "</select></td></tr>";
-        echo "<tr><th class='table-info'>Query</th><td><textarea class='form-control' name='query' placeholder=\"Type your query here\"></textarea></td></tr>";
-        echo "<tr><td colspan='2'><button class='btn btn-outline-success' type='submit'>Submit</button></td></tr></table></form></div>";
-    }
     echo "<div class='small'>This feature exists only to provide contestants a way to communicate with the judges in case of any ambiguity regarding problems or the contest itself.
 		<br>The Query Text cannot contain single or double quotes.
 		<br>Please refrain from using this feature unless absolutely necessary. Ensure that your problem has not already been answered in the <a href='?display=faq'>FAQ Section</a>.

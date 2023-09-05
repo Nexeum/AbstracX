@@ -411,6 +411,7 @@ function display_rankings(): void
     <tbody>";
     $data = mysqli_query($link, "SELECT * FROM teams WHERE status='Normal' " . ($group == 0 ? "" : " AND gid=$group ") . " ORDER BY score DESC, penalty ASC LIMIT " . (($page - 1) * $perpage) . "," . $perpage);
     if(mysqli_num_rows($data) > 0){
+        $rank = ($page - 1) * $perpage + 1;
         while ($temp = mysqli_fetch_array($data)) {
             $solvedn_query = mysqli_query($link, "SELECT count(distinct runs.pid) as x FROM runs,problems WHERE runs.tid='$temp[tid]' and runs.result='AC' and runs.pid=problems.pid and problems.status='Active'");
             $solvedn_result = mysqli_fetch_array($solvedn_query);
@@ -428,8 +429,15 @@ function display_rankings(): void
                 $groupname = $groupname_result["groupname"];
             }
     
-            $rank = ($page - 1) * $perpage + 1;
-            echo "<tr><td>$rank</td><td><a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</a></td>" . ($group == 0 ? "<td>$groupname</td>" : "") . "<td>$solvedn / $solveda</div></td><td>$temp[score]</td></tr>";
+            echo "
+            <tr>
+                <td>$rank</td>
+                <td>
+                    <a class='list-group-item' href='?display=submissions&tid=$temp[tid]'>$temp[teamname]</a>
+                </td>" . ($group == 0 ? "<td>$groupname</td>" : "") . "
+                <td>$solvedn / $solveda</div>
+                </td><td>$temp[score]</td>
+                </tr>";
     
             $rank++;
         }
