@@ -289,7 +289,6 @@ try:
                     print("Timer : " + str(timetaken + 1) + "/" + str(run["timelimit"]))
                     if (running == 0): 
                         break
-                    time.sleep(1)
                 if running == 0 and (run["pid"] != 13 or float(timediff) < 0.5):
                     print("Process Complete.")
                     timetaken = timediff
@@ -338,13 +337,11 @@ try:
             float(timetaken), result, re.escape(error), re.escape(output), int(run["rid"])));
             link.commit()
             print("Result (%s,%.3f) updated on Server.\n" % (result, timetaken))
-            time.sleep(1)
         else:
             os.system("clear")
             print("\nNexeum Online Judge : Execution Protocol\n")
             print("There are currently no unjudged sumbissions on the server.\n")
             print("Press CTRL+C to terminate the Execution Protocol.")
-            time.sleep(1)
             countdown = 3
             while countdown > 0:
                 os.system("clear")
@@ -352,7 +349,6 @@ try:
                 print("Contacting server in " + str(countdown) + " seconds ...\n")
                 
                 print("Press CTRL+C to terminate the Execution Protocol.")
-                time.sleep(1)
                 countdown -= 1
             os.unlink("lock.txt")
             sys.exit(0)

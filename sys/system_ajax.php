@@ -210,7 +210,7 @@ function action_ajaxrefresh($type): bool|string
         $json["ajax-contest-time"] = -1;
     }
     $json["ajax-contest-status"] = $admin["mode"];
-    if ($admin["lastjudge"] >= time() - 30) {
+    if ($admin["lastjudge"] >= (time() - 600)) {
         $json["ajax-contest-judgement"] = "<a title='The Execution Protocol is active. Submissions will be judged as soon as they are the next in queue.'>Ongoing</a>";
     } else {
         $json["ajax-contest-judgement"] = "<a title='The Execution Protocol is currently not active. Submissions will be judged once it is initiated.'>Waiting</a>";
