@@ -66,7 +66,7 @@ function display_main(): void
 
 function display_notice(): void
 {
-    echo "<table class='table table-borderless'><thead><tr class='table-primary'><th><h3>Important Notices</h3></th></tr></thead></table>";
+    echo "<table class='table table-borderless'><thead><tr class='table-primary'><th><h3>Important Notices</h3></th></tr></thead>";
 
     $edit = (isset($_GET["edit"]) && $_GET["edit"] == 1) ? 1 : 0;
 
@@ -77,34 +77,41 @@ function display_notice(): void
     }
 
     if (!$edit && $_SESSION["status"] == "Admin") {
-        echo "<div class='mb-3'>
+        echo "<tr><td>
                 <button type='button' class='btn btn-outline-primary' onclick=\"window.location='?display=notice&edit=1';\">Edit Notice</button>
-              </div>";
+              </td></tr>";
     }
+    echo "</table>";
 }
 
 function display_edit_notice(): void
 {
     global $admin;
-
-    echo "<div class='mb-3'>
+    echo "<tr>
+            <td>
+                <div class='mb-3'>
             <form action='?action=noticeupdate' method='post'>
-            <div class='mb-3'>
-              <textarea class='form-control' name='notice'>";
+            <div class='mb-3'>";
 
-                if (isset($admin["notice"])) {
-                    echo stripslashes($admin["notice"]);
-                }
+            if (isset($admin["notice"])) {
+                $lines = substr_count($admin["notice"], "\n") + 1;
+                echo "<textarea class='form-control' rows='$lines' name='notice'>";
+                echo stripslashes($admin["notice"]);
+                echo "</textarea>";
+            } else {
+                echo "<textarea class='form-control' rows='1' name='notice'></textarea>";
+            }
 
-    echo "</textarea>
-          </div>
+    echo "</div>
                 <div class='mb-3'>
                     <button type='submit' class='btn btn-primary'>Update Notice</button>
                     <button type='button' class='btn btn-secondary' onclick='window.location.reload();'>Clear Changes</button>
                     <button type='button' class='btn btn-danger' onclick=\"window.location='?display=notice';\">Cancel</button>
                 </div>
             </form>
-            </div>";
+            </div>
+            </td>
+        </tr>";
 }
 
 function display_read_notice(): void
@@ -115,24 +122,29 @@ function display_read_notice(): void
         $data = $admin["notice"];
         $lines = explode("\n", $data);
         $isHeader = true;
+
         foreach ($lines as $line) {
             $line = trim($line);
+            
             if ($line != "") {
                 if ($isHeader) {
-                    echo "<table class='table table-borderless'><thead><tr class='table-info'><th>" . stripslashes($line) . "</th></tr><tr></thead><td>";
+                    echo "<tr class='table-info'><th>" . stripslashes($line) . "</th></tr>";
+                    echo "<tr><td>";
                 } else {
                     echo stripslashes($line);
                 }
+                
                 $isHeader = false;
             } else {
                 if (!$isHeader) {
-                    echo "</td></tr></table>";
+                    echo "</td></tr>";
                 }
                 $isHeader = true;
             }
         }
+
         if (!$isHeader) {
-            echo "</td></tr></table>";
+            echo "</td></tr>";
         }
     }
 }

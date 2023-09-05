@@ -157,14 +157,21 @@ function display_problem()
         <tr>
             <th class='table-info'>Special Options</th>
             <th colspan=3>" . $execoptions[$row["options"]] . "</th>
-            <th colspan=2><input class='btn btn-outline-info'type='button' value='" . ((isset($_GET["edit"]) and $_GET["edit"] == "0") ? "Reset" : "Edit") . " HTML Source' onClick=\"window.location=window.location.search.replace('&edit=0','')+'&edit=0';\"></th>
+            <th colspan=2><input class='btn btn-outline-info' type='button' value='" . ((isset($_GET["edit"]) and $_GET["edit"] == "0") ? "Reset" : "Edit") . " HTML Source' onClick=\"window.location=window.location.search.replace('&edit=0','')+'&edit=0';\"></th>
             </tr>";
     }
     echo "
     <tr>
         <td class='text-start' colspan='6'>";
     if ($_SESSION["status"] == "Admin" and isset($_GET["edit"]) and $_GET["edit"] == "0") {
-        echo "<form method='post' action='?action=updateproblemhtml&pid=$pid'><textarea name='statement' id='statement'>" . ($statement2) . "</textarea><input type='submit' value='Update Problem Statement'> <input type='button' value='Cancel' onClick=\"window.location=window.location.search.replace('&edit=0','');\"></form>";
+        $lines = substr_count($statement2, "\n") + 1;
+        echo "<form method='post' action='?action=updateproblemhtml&pid=$pid'>
+            <textarea class='form-control' name='statement' rows='$lines' id='statement'>" . ($statement2) . "</textarea>
+            <div class='mb-3 d-flex justify-content-center'>
+            <button type='submit' class='btn btn-outline-success mx-1'>Update Problem Statement</button>
+            <button class='btn btn-outline-danger mx-1' onClick=\"window.location=window.location.search.replace('&edit=0','');\">Cancel</button>
+            </div>
+            </form>";
     } else {
         echo $statement;
     }
@@ -288,9 +295,14 @@ function display_problem()
                     </th>
                 </tr>
                 <tr>
-                    <td colspan='4'>
-                        <textarea class='form-control' id='code_text' name='code_text' placeholder='Insert your code here' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea>
-                    </td>
+                    <td colspan='4'>";
+                        if (!empty($editcode)) {
+                            $lines = substr_count($editcode, "\n") + 1;
+                            echo "<textarea class='form-control' id='code_text' name='code_text' placeholder='Insert your code here' rows='$lines' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea>";
+                        } else {
+                            echo "<textarea class='form-control' id='code_text' name='code_text' placeholder='Insert your code here' rows='10' onChange=\"if(this.value!='') $('select#code_mode').attr('value','Text');\">$editcode</textarea>";
+                        }
+                   echo "</td>
                 </tr>
             </table>
             <table class='table table-borderless'> 
@@ -307,6 +319,7 @@ function display_problem()
                 </tr>
             </table>
         </form>";
+
     }
 }
 
