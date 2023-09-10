@@ -61,6 +61,8 @@ function display_problem()
                 $ac = $t;
                 unset($t);
             }
+            $problemCounter = 0;
+            $letters = range('A', 'Z');
             foreach ($g as $i => $gn) {
                 echo "<span id='group" . ($i + 1) . "'>
                 <table class='table table-borderless'>
@@ -84,6 +86,7 @@ function display_problem()
                 <tbody>";
                 $data = mysqli_query($db_connection,"SELECT * FROM problems WHERE status='Active' and pgroup='" . $gn . "' ORDER BY pid");
                 while ($problem = mysqli_fetch_array($data)) {
+                    $problemLetter = $letters[$problemCounter];
                     $t = mysqli_query($db_connection,"SELECT (SELECT count(*) FROM runs WHERE pid=$problem[pid] AND result='AC' AND access!='deleted') as ac, (SELECT count(*) FROM runs WHERE pid=$problem[pid] AND access!='deleted') as tot");
                     if (mysqli_num_rows($t) && $t = mysqli_fetch_array($t)) {
                         $statistics = "<a class='list-group-item' title='Accepted Solutions / Total Submissions' class='list-group-item' href='?display=submissions&pid=$problem[pid]'>" . $t["ac"] . " / " . $t["tot"] . "</a>";
@@ -91,7 +94,7 @@ function display_problem()
                         $statistics = "NA";
                     }
                     echo "<tr>
-                            <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]'>$problem[pid]</a></td>
+                            <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]'>$problemLetter</a></td>
                             <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]'>" . stripslashes($problem["name"]) . "</a></td>
                             <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]'>" . stripslashes($problem["code"]) . "</a></td>";
                     if ($admin["mode"] != "Active" || $_SESSION["status"] == "Admin") {
@@ -106,7 +109,9 @@ function display_problem()
                         <td><a class='list-group-item' href='?display=problem&pid=$problem[pid]'>$problem[score]</a></td>
                         <td>$statistics</td>
                         </tr>";
+                    $problemCounter++;
                 }
+                $problemCounter = 0; 
                 echo "</tbody>
                 </table>";
                 echo "</span>";
@@ -121,6 +126,13 @@ function display_problem()
     if ($_SESSION["status"] == "Admin") {
         $statement2 = stripslashes($row["statement"]);
     }
+
+    $imgData = $row['image'];
+    $imgExt = $row['imgext'];
+
+    $imageSrc = "data:image/$imgExt;base64," . base64_encode($imgData);
+    echo "<img src='$imageSrc' alt='Imagen'>";
+
     $statement = preg_replace("/<image\s*\/?>/i", "<img src='data:image/jpeg;base64," . $row['image'] . "' />", $statement);
     $tQuery = mysqli_query($db_connection,"SELECT (SELECT count(*) FROM runs WHERE pid=$pid AND result='AC' AND access!='deleted') as ac, (SELECT count(*) FROM runs WHERE pid=$pid AND access!='deleted') as tot");
     if (mysqli_num_rows($tQuery) && $tResult = mysqli_fetch_array($tQuery)) {
@@ -430,8 +442,10 @@ function action_updateproblem()
     $ext = file_upload("update_file_image", "sys/temp/image", "image/jpeg,image/gif,image/png", $maxfilesize);
     if ($ext != -1) {
         $f = fopen("sys/temp/image.$ext", "rb");
-        $img = base64_encode(fread($f, filesize("sys/temp/image.$ext")));
+        $img = fread($f, filesize("sys/temp/image.$ext"));
         fclose($f);
+        $img = mysqli_real_escape_string($link, $img);
+
         mysqli_query($link,"UPDATE problems SET image='$img', imgext='$ext' WHERE pid=$pid");
     }
 
