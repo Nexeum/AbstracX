@@ -1,60 +1,112 @@
-# Competitive Programming System
+# AbstracX - Competitive Programming Platform
 
-The Competitive Programming System is a feature-rich web application developed using HTML, CSS, and JavaScript. It allows users to write, compile/execute, and evaluate problem solutions in multiple programming languages. The system supports the following languages, with their respective latest versions:
+AbstracX is a feature-rich web application that enables users to write, compile, execute, and evaluate programming solutions in a variety of languages. Developed using modern web technologies, including PHP and Python, AbstracX provides a robust and user-friendly platform for competitive programming, coding challenges, and algorithm practice.
 
-## Badges
+## Table of Contents
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+- [Project Overview](#project-overview)
+- [Architecture and Design](#architecture-and-design)
+- [Technologies Used](#technologies-used)
+- [Installation and Configuration](#installation-and-configuration)
+- [Project Structure](#project-structure)
+- [Documentation](#documentation)
+- [Community and Support](#community-and-support)
+- [Roadmap and Versioning](#roadmap-and-versioning)
+- [Contributing](#contributing)
 
-## Environment Variables
+## Project Overview
 
-To run this project, you will need to set the variables in `system_config` and `judge.py`.
+AbstracX is a comprehensive web application designed to facilitate competitive programming and coding challenges. Key features include:
 
+- Creation and management of programming problems with customizable test cases
+- Submission and evaluation of solutions in multiple programming languages
+- Real-time disqualification, re-evaluation, and code review functionality
+- Intuitive web interface for an optimal user experience
 
-## Available languages
+The project aims to provide a robust platform for coding enthusiasts, students, and professionals to hone their programming skills, participate in competitive events, and showcase their abilities.
 
-- C (Latest Version: C17)
-- C++ (Latest Version: 4:12.2.0-3)
-- C# (Latest Version: C# 9.0)
-- Java (Latest Version: 11.0.17+8-2)
-- Python (Latest Version: 3.11.2-1+b1)
-- Ruby (Latest Version: 3.1)
+## Architecture and Design
 
-## Run Locally
+AbstracX follows a client-server architecture, with a JavaScript-based frontend and a PHP/Python-powered backend. The system is designed with a focus on modularity, extensibility, and security. This allows for the easy addition of new programming languages, problem types, and features as the project evolves.
 
-Clone the project
+## Technologies Used
+
+The AbstracX project was developed using the following key technologies:
+
+- **Backend**: PHP, Python
+- **Frontend**: HTML, CSS, JavaScript
+- **Database**: MySQL
+- **Containerization**: Docker
+- **Continuous Integration**: GitHub Actions
+
+## Installation and Configuration
+
+To set up the AbstracX development environment, please follow these steps:
+
+1. Clone the project repository:
 
 ```bash
-  git clone https://github.com/Nexeum/Judge.git
+  git clone https://github.com/Nexeum/AbstracX.git
 ```
 
-Go to the project directory
+2. Go to the project directory
 
 ```bash
   cd Judge
 ```
 
-Start the server
+3. Start the server
 
 ```bash
   python3 judge.py -judge
 ```
 
+## Project Structure
 
-## Screenshots
+The AbstracX project follows a modular structure, with the following key components:
 
-![App Screenshot](https://iq.opengenus.org/content/images/2021/04/Coding-Judge-1.jpg)
+- `sys/`: Contains the PHP application code, including controllers, models, and views.
+- `judge.py`: Contains the Python  application code, including APIs, services, and data models.
+- `assets/`: Holds the frontend assets, such as HTML templates, CSS, and JavaScript files.
 
-## Features
+This structure allows for a clear separation of concerns and facilitates the expansion of the project as new features and functionalities are added.
 
-- Allows the creation of problems, with their input and output files. 
-- Allows to evaluate the problem submissions, under the test cases specified in the creation.
-- Allows disqualification, re-evaluation and code review in real time
+## Documentation
 
+The AbstracX project provides comprehensive documentation, which can be accessed at the [project's documentation site](https://abstracx.readthedocs.io). The documentation includes:
 
-## Authors
+- API reference
+- User guides and tutorials
+- Architectural and design documents
+- Developer guides and contribution instructions
 
-- [@Nexeum](https://www.github.com/nexeum)
+## Community and Support
 
+The AbstracX project has an active community of users and contributors. You can reach out for support or engagement through the following channels:
+
+- **Issue Tracker**: Report bugs, request features, or ask questions by [opening an issue](https://github.com/Nexeum/AbstracX/issues/new/choose) on the project's GitHub repository.
+- **Discussions**: Participate in conversations, share ideas, or seek help from the community on the [project's discussion forum](https://github.com/Nexeum/AbstracX/discussions).
+- **Email**: For any inquiries or private communications, you can reach the project maintainers at `abstracx@example.com`.
+
+## Roadmap and Versioning
+
+AbstracX follows a semantic versioning strategy, with major releases denoted by the first digit, minor releases by the second digit, and patch releases by the third digit (e.g., `v1.2.3`).
+
+The project's roadmap includes the following key milestones:
+
+- **v1.0 (Q3 2023)**: Initial stable release with core features
+- **v1.1 (Q4 2023)**: Support for additional programming languages
+- **v2.0 (Q1 2024)**: Enhanced judging engine and improved user interface
+
+For a detailed changelog and upcoming release plans, please refer to the [project's releases page](https://github.com/Nexeum/AbstracX/releases).
+
+## Contributing
+
+We welcome contributions to the AbstracX project. If you'd like to contribute, please follow these guidelines:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Make your changes and ensure they pass the existing test suite.
+4. Submit a pull request with a detailed description of your changes.
+
+Before starting work on a new feature or bug fix, please check the project's [issue tracker](https://github.com/Nexeum/AbstracX/issues) and discuss your plans with the project maintainers to ensure alignment with the project's goals and roadmap.
